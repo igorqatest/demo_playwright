@@ -38,6 +38,6 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run only PayPal test
-        run: npx playwright test tests/ansel_claims/claim_ansel_papercheck.spec.ts --headed=false
+      - name: Run only Papercheck test
+        run: xvfb-run --auto-servernum -- npx playwright test tests/ansel_claims/claim_ansel_papercheck.spec.ts --headed
         continue-on-error: true
