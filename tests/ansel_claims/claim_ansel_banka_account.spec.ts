@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { config } from '../reusable';
 
-test('Venmo Claim', async ({ page }) => {
+test('Bank account Claim', async ({ page }) => {
     test.setTimeout(120_000);
   console.log('✅ Navigating to Member Portal...');
   await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
@@ -57,17 +57,33 @@ for (let i = 0; i < 10; i++) {
   await page.mouse.wheel(0, 400);
   await page.waitForTimeout(100);
 }
-await page.getByRole('button', { name: '+Add payment method' }).click();
-await page.getByRole('row', { name: 'Bank account Configure' }).getByRole('button').click();
-await page.locator('input[name="firstName"]').fill('John');
-await page.locator('input[name="lastName"]').fill('Doe');
-await page.getByRole('textbox', { name: 'XXXXXXXXX' }).fill('110000000');
-await page.locator('input[name="accountNumber"]').fill('000123456789');
-await page.getByRole('button', { name: 'Submit' }).click();
+const bankAccountRow = page.getByRole('row', { name: /Bank account/i });
 
+if (await bankAccountRow.isVisible()) {
+  console.log('Bank account already added. Skipping add flow.');
+  await page.getByRole('button', { name: 'Next step' }).click();
+} else {
+  console.log('No bank account found. Proceeding to add.');
 
-await page.waitForTimeout(4000);
-await page.getByRole('button', { name: 'Next step' }).click();
+  const addPaymentButton = page.getByRole('button', { name: '+Add payment method' });
+  await addPaymentButton.click();
+
+  await page.getByRole('row', { name: 'Bank account Configure' }).getByRole('button').click();
+  await page.locator('input[name="firstName"]').fill('John');
+  await page.locator('input[name="lastName"]').fill('Doe');
+  await page.locator('input[name="routingNumber"]').fill('110000000');
+  await page.locator('input[name="accountNumber"]').fill('000123456789');
+
+  const errorLocator = page.locator('text=This payment method has already been added');
+
+  if (await errorLocator.isVisible()) {
+    await page.getByRole('button', { name: 'Cancel' }).click();
+  } else {
+    await page.getByRole('button', { name: 'Submit' }).click();
+  }
+
+  await page.getByRole('button', { name: 'Next step' }).click();
+}
 
 for (let i = 0; i < 10; i++) {
     await page.mouse.wheel(0, 400);

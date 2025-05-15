@@ -52,14 +52,32 @@ await page.getByRole('button', { name: 'Next step' }).click();
 await page.getByRole('button', { name: 'Next step' }).click();
 // Confirm uploads
 await page.getByRole('button', { name: 'Next step' }).click();
-// Payment preference
-await page.getByRole('button', { name: '+Add payment method' }).click();
-await page.getByRole('row', { name: 'PayPal payout method Configure' }).getByRole('button').click();
-await page.locator('input[name="username"]').fill('igor.pejin+anselquotetest@joinansel.com');
-await page.locator('input[name="confirmUsername"]').fill('igor.pejin+anselquotetest@joinansel.com');
-await page.getByRole('button', { name: 'Submit' }).click();
-await page.waitForTimeout(4000);
-await page.getByRole('button', { name: 'Next step' }).click();
+// Try to find an existing PayPal method row using visible email
+const existingPaypal = page.locator('text=igor.pejin+anselquotetest@joinansel.com');
+
+if (await existingPaypal.isVisible()) {
+  console.log('✅ PayPal is already added. Skipping addition.');
+  await page.getByRole('button', { name: 'Next step' }).click();
+} else {
+  console.log('➕ Adding PayPal method...');
+  await page.getByRole('button', { name: '+Add payment method' }).click();
+  await page.getByRole('row', { name: 'PayPal payout method Configure' }).getByRole('button').click();
+
+  await page.locator('input[name="username"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  await page.locator('input[name="confirmUsername"]').fill('igor.pejin+anselquotetest@joinansel.com');
+
+  const errorMessage = page.locator('text=This payment method has already been added');
+
+  await page.getByRole('button', { name: 'Submit' }).click();
+
+  if (await errorMessage.isVisible()) {
+    console.log('⚠️ Payment method already exists error appeared. Cancelling.');
+    await page.getByRole('button', { name: 'Cancel' }).click();
+  }
+
+  await page.waitForTimeout(4000);
+  await page.getByRole('button', { name: 'Next step' }).click();
+}
 
 for (let i = 0; i < 10; i++) {
     await page.mouse.wheel(0, 400);

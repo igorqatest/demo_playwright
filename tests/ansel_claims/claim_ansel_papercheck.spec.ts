@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { config } from '../reusable';
 
-test('Venmo Claim', async ({ page }) => {
+test('Papercheck Claim', async ({ page }) => {
     test.setTimeout(120_000);
   console.log('✅ Navigating to Member Portal...');
   await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
