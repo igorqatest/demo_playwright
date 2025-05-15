@@ -81,6 +81,7 @@ if (await bankAccountRow.isVisible()) {
   } else {
     await page.getByRole('button', { name: 'Submit' }).click();
   }
+    await page.waitForTimeout(2000);
 
   await page.getByRole('button', { name: 'Next step' }).click();
 }
