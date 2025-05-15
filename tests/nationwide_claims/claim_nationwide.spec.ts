@@ -75,6 +75,10 @@ await page.getByRole('button', { name: 'Next step' }).click();
 await page.waitForTimeout(2000);
 
 // Payment preference
+for (let i = 0; i < 10; i++) {
+    await page.mouse.wheel(0, 400);
+    await page.waitForTimeout(100);
+  }
 await page.getByRole('button', { name: '+Add payment method' }).click();
 await page.getByRole('button', { name: 'Configure' }).nth(1).click();
 await page.locator('input[name="username"]').fill('igor.pejin+anselquotetest@joinansel.com');
