@@ -65,7 +65,7 @@ for (let i = 0; i < 10; i++) {
     await page.waitForTimeout(100);
   }
  await page.locator('label').first().click();
- //await page.getByRole('button', { name: 'Submit' }).click();
+ await page.getByRole('button', { name: 'Submit' }).click();
 
 // Wait page to settle
 await page.waitForLoadState('networkidle');

@@ -1,0 +1,43 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout your repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Cache Playwright browser binaries
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            playwright-browsers-${{ runner.os }}
+
+      # Install project dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Install Playwright and its browser dependencies (only if not cached)
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run only Papercheck test
+        run: xvfb-run --auto-servernum -- npx playwright test tests/ansel_claims/claim_ansel_papercheck.spec.ts --retries=0 --headed
+        continue-on-error: false
