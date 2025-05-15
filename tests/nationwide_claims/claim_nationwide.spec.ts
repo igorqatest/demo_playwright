@@ -72,6 +72,8 @@ await page.getByRole('button', { name: 'Next step' }).click();
 await page.getByRole('button', { name: 'Next step' }).click();
 // Confirm uploads
 await page.getByRole('button', { name: 'Next step' }).click();
+await page.waitForTimeout(2000);
+
 // Payment preference
 await page.getByRole('button', { name: '+Add payment method' }).click();
 await page.getByRole('button', { name: 'Configure' }).nth(1).click();
