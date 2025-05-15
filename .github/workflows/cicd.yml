@@ -6,32 +6,23 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      browser:
-        description: "Browser to run tests on"
-        required: true
-        default: "chromium"
-        type: choice
-        options:
-          - chromium
-          - firefox
-          - webkit
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit] # All 3 browsers will run in parallel
 
     steps:
-      # Checkout your repository code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # Cache Playwright browser binaries
       - name: Cache Playwright Browsers
         uses: actions/cache@v3
         with:
@@ -40,23 +31,19 @@ jobs:
           restore-keys: |
             playwright-browsers-${{ runner.os }}
 
-      # Install project dependencies
       - name: Install dependencies
         run: npm install
 
-      # Install Playwright and its browser dependencies (only if not cached)
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # Run Playwright tests
-      - name: Run all Ansel claim tests
-        run: xvfb-run --auto-servernum -- npx playwright test tests/ansel_claims --retries=0 --headed
+      - name: Run Playwright tests on ${{ matrix.browser }}
+        run: xvfb-run --auto-servernum -- npx playwright test tests/ansel_claims --project=${{ matrix.browser }} --retries=0
 
-      # Upload Playwright HTML report
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.browser }}
           path: playwright-report/
           retention-days: 30
