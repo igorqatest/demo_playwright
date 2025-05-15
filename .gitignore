@@ -1,0 +1,4 @@
+# Ignore Playwright and test reports
+allure-results/
+playwright-report/
+test-results/
