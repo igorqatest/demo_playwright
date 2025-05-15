@@ -1,0 +1,112 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce Enrollment Link Click (Simplified Version)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Next step' })
+    - locator resolved to <button disabled tabindex="-1" class="ui loading primary disabled button">Next step</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    10 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:58:59
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Salesforce Enrollment Link Click (Simplified Version)', async ({ page }) => {
+   4 |     console.log('🚀 Starting Test');
+   5 |
+   6 |     // Step 1: Login to Salesforce
+   7 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view', { waitUntil: 'domcontentloaded' });
+   8 |
+   9 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  10 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  11 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  12 |
+  13 |     await page.waitForTimeout(10000);
+  14 |     /*
+  15 |         // Step 2: Remove blocking notifications
+  16 |         const alert = page.locator('.slds-notify_alert');
+  17 |         if (await alert.isVisible()) {
+  18 |             await page.evaluate(() => document.querySelector('.slds-notify_alert')?.remove());
+  19 |         }*/
+  20 |
+  21 |     console.log('🔍 Looking for the enrollment link...');
+  22 |
+  23 |     // Step 3: Extract the link or click it directly
+  24 |     const linkElement = page.getByText('https://qa-aig-platform.joinansel.com/enrollment');
+  25 |
+  26 |     if (await linkElement.isVisible()) {
+  27 |         const linkText = await linkElement.innerText();
+  28 |         await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+  29 |     } else {
+  30 |         console.log('⚠️ Link not found, trying alternative methods...');
+  31 |
+  32 |         await page.getByRole('button', { name: 'Get The Link' }).click();
+  33 |         // Shadow DOM Handling
+  34 |         const shadowLink = await page.evaluate(() => {
+  35 |             const shadowHost = document.querySelector('#sectionContent-174');
+  36 |             return shadowHost?.shadowRoot?.querySelector('a')?.getAttribute('href') ?? null;
+  37 |         });
+  38 |
+  39 |         if (shadowLink) {
+  40 |             await page.goto(shadowLink, { waitUntil: 'domcontentloaded' });
+  41 |         } else {
+  42 |             console.log('⚠️ Trying XPath method...');
+  43 |             const xpathLink = page.locator('//a[contains(text(), "https://qa-aig-platform.joinansel.com/enrollment")]');
+  44 |             if (await xpathLink.isVisible()) {
+  45 |                 await xpathLink.click({ force: true });
+  46 |             } else {
+  47 |                 console.log('❌ Could not find the enrollment link.');
+  48 |             }
+  49 |         }
+  50 |     }
+  51 |     await page.getByRole('textbox').fill('9QfzXO0@');
+  52 |     await page.getByRole('button', { name: 'Next step' }).click();
+  53 |     await page.locator('input[name="firstName"]').fill('John');
+  54 |
+  55 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+  56 |     await page.getByRole('combobox').locator('i').click();
+  57 |     await page.getByRole('button', { name: 'Next step' }).click();
+> 58 |     await page.getByRole('button', { name: 'Next step' }).click();
+     |                                                           ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  59 |
+  60 |     await page.getByText('Yes', { exact: true }).click();
+  61 |
+  62 |     await page.getByText('Yes', { exact: true }).click();
+  63 |     await page.getByText('Yes, my youngest child is under 18 years old')
+  64 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+  65 |     await page.getByRole('button', { name: 'Next step' }).click();
+  66 |     
+  67 |
+  68 |
+  69 |     console.log('🎯 Test Completed.');
+  70 |
+  71 | });
+  72 |
+```

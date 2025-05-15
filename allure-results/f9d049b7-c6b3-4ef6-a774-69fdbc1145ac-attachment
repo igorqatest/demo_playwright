@@ -1,0 +1,87 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: API test DELETE
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-32.spec.ts:52:5
+
+# Error details
+
+```
+Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: "igor"
+Received string:    ""
+    at /Users/pejin/Documents/Playwright QA/tests/test-32.spec.ts:58:18
+```
+
+# Test source
+
+```ts
+   1 | import {test, expect} from '@playwright/test';
+   2 |
+   3 |
+   4 | test('API test GET', async ({ request }) => {
+   5 |     const response = await request.get('https://reqres.in/api/users/2');
+   6 |     expect(response.ok()).toBeTruthy();
+   7 |     expect(response.status()).toBe(200);
+   8 |     /* const data = await response.json();
+   9 |     expect(data.data.first_name).toBe('Janet');
+  10 |     expect(data.data.last_name).toBe('Weaver');
+  11 |     expect(JSON.stringify(data)).toContain('Janet'); */
+  12 |     const text = await response.text();
+  13 |     expect(text).toContain('Janet');
+  14 |     console.log('✅ API response is correct!', await response.json());
+  15 |
+  16 |
+  17 | });
+  18 | test('API test POST', async ({ request }) => {
+  19 |     const response = await request.post('https://reqres.in/api/users',{
+  20 |         data: {
+  21 |             "name": "igor",
+  22 |             "surname": "pejin",
+  23 |             "city": "Osijek",
+  24 |             "job": "developer"
+  25 |         }
+  26 |     });
+  27 |     expect(response.ok()).toBeTruthy();
+  28 |     expect(response.status()).toBe(201);
+  29 |    
+  30 |     const text = await response.text();
+  31 |     expect(text).toContain('igor');
+  32 |     console.log('✅ API response is correct!', await response.json());
+  33 | });
+  34 |
+  35 | test('API test PUT', async ({ request }) => {
+  36 |     const response = await request.put('https://reqres.in/api/users/2',{
+  37 |         data: {
+  38 |             "name": "igor",
+  39 |             "surname": "pejin",
+  40 |             "city": "Osijek",
+  41 |             "job": "developer"
+  42 |         }
+  43 |     });
+  44 |     expect(response.ok()).toBeTruthy();
+  45 |     expect(response.status()).toBe(200);
+  46 |    
+  47 |     const text = await response.text();
+  48 |     expect(text).toContain('igor');
+  49 |     console.log('✅ API response is correct!', await response.json());
+  50 | });
+  51 |
+  52 | test('API test DELETE', async ({ request }) => {
+  53 |     const response = await request.delete('https://reqres.in/api/users/2');
+  54 |     expect(response.ok()).toBeTruthy();
+  55 |     expect(response.status()).toBe(204);
+  56 |    
+  57 |     const text = await response.text();
+> 58 |     expect(text).toContain('igor');
+     |                  ^ Error: expect(received).toContain(expected) // indexOf
+  59 |     console.log('✅ API response is correct!', await response.json());
+  60 |
+  61 | });
+```

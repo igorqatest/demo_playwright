@@ -1,0 +1,161 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce Enrollment Link Click (Optimized)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:100:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Next step' })
+    - locator resolved to <button class="ui primary button">Next step</button>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+    at clickNextStepWithDelay (/Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:159:63)
+    at /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:172:11
+```
+
+# Test source
+
+```ts
+   59 |
+   60 |     // Step 4: Function to Click "Next step" with Delay
+   61 |     async function clickNextStepWithDelay(delay = 1000) {
+   62 |         await page.getByRole('button', { name: 'Next step' }).click();
+   63 |     }
+   64 |
+   65 |     // Proceed through form with controlled delays
+   66 |     await clickNextStepWithDelay(1500);
+   67 |     await clickNextStepWithDelay(1500);
+   68 |     await page.getByText('Yes', { exact: true }).click();
+   69 |     await page.getByText('Yes', { exact: true }).click();
+   70 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+   71 |
+   72 |     await clickNextStepWithDelay(1500);
+   73 |     await clickNextStepWithDelay(1500);
+   74 |     await clickNextStepWithDelay(2000);
+   75 |     await clickNextStepWithDelay(2000);
+   76 |     await clickNextStepWithDelay(2000);
+   77 |     await clickNextStepWithDelay(2000);
+   78 |     await clickNextStepWithDelay(2000);
+   79 |     await clickNextStepWithDelay(2000);
+   80 |     await clickNextStepWithDelay(2000);
+   81 |     await clickNextStepWithDelay(2000);
+   82 |
+   83 |
+   84 |     // Confirm selections
+   85 |     await page.getByText('Yes').click();
+   86 |     await page.getByText('I typically pay copays').click();
+   87 |     await clickNextStepWithDelay(1500);
+   88 |
+   89 |     await page.getByText('I generally can purchase').click();
+   90 |     await clickNextStepWithDelay(2500);
+   91 |
+   92 |     
+   93 |   
+   94 |
+   95 |     console.log('🎯 Test Completed.');
+   96 | }); */
+   97 |
+   98 | import { test, expect } from '@playwright/test';
+   99 |
+  100 | test('Salesforce Enrollment Link Click (Optimized)', async ({ page }) => {
+  101 |     console.log('🚀 Starting Test');
+  102 |
+  103 |     // Step 1: Login to Salesforce
+  104 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view', { waitUntil: 'domcontentloaded' });
+  105 |
+  106 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  107 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  108 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  109 |
+  110 |     // Wait for Salesforce dashboard to load
+  111 |     await page.waitForTimeout(5000);
+  112 |     console.log('✅ Logged in to Salesforce.');
+  113 |
+  114 |     // Step 2: Extract Enrollment Link from Employee Shopping Link Field
+  115 |     console.log('🔍 Looking for the Employee Shopping Link...');
+  116 |
+  117 |     // Locate the correct span that contains the Employee Shopping Link
+  118 |     const linkSpan = page.locator('span.test-id__field-value').filter({ hasText: 'https' });
+  119 |
+  120 |     // Wait for the span to be visible
+  121 |     await linkSpan.waitFor({ state: 'visible', timeout: 10000 });
+  122 |
+  123 |     // Extract the URL text from the span
+  124 |     let linkText = await linkSpan.innerText();
+  125 |     console.log(`✅ Found Enrollment Link: ${linkText}`);
+  126 |
+  127 |     // If the link is empty, click "Edit Employee Shopping Link" and extract it again
+  128 |     if (!linkText.trim()) {
+  129 |         console.log('⚠️ Link is empty. Clicking "Edit Employee Shopping Link" to reveal it...');
+  130 |
+  131 |         // Click the Edit button
+  132 |         await page.locator('button[title="Edit Employee Shopping Link"]').click();
+  133 |
+  134 |         // Wait for the field to update
+  135 |         await page.waitForTimeout(2000); // Adjust if needed
+  136 |
+  137 |         // Extract the updated text
+  138 |         linkText = await page.locator('span.test-id__field-value').filter({ hasText: 'https' }).innerText();
+  139 |         console.log(`✅ Found Updated Enrollment Link: ${linkText}`);
+  140 |     }
+  141 |
+  142 |     // Navigate to the extracted link
+  143 |     await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+  144 |     console.log('✅ Successfully navigated to the Enrollment Link.');
+  145 |
+  146 |     // Step 3: Fill Form Details
+  147 |     console.log('📝 Filling out form details...');
+  148 |     await page.getByRole('textbox').fill('9QfzXO0@');
+  149 |     await page.getByRole('button', { name: 'Next step' }).click();
+  150 |
+  151 |     await page.locator('input[name="firstName"]').fill('John');
+  152 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+  153 |     await page.getByRole('combobox').locator('i').click();
+  154 |
+  155 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+  156 |
+  157 |     // Step 4: Function to Click "Next step" with Delay
+  158 |     async function clickNextStepWithDelay(delay = 1000) {
+> 159 |         await page.getByRole('button', { name: 'Next step' }).click();
+      |                                                               ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  160 |     }
+  161 |
+  162 |     // Proceed through form with controlled delays
+  163 |     await clickNextStepWithDelay(1500);
+  164 |     await clickNextStepWithDelay(1500);
+  165 |     await page.getByText('Yes', { exact: true }).click();
+  166 |     await page.getByText('Yes', { exact: true }).click();
+  167 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+  168 |
+  169 |     await clickNextStepWithDelay(1500);
+  170 |     await clickNextStepWithDelay(1500);
+  171 |     await clickNextStepWithDelay(2000);
+  172 |     await clickNextStepWithDelay(2000);
+  173 |     await clickNextStepWithDelay(2000);
+  174 |     await clickNextStepWithDelay(2000);
+  175 |     await clickNextStepWithDelay(2000);
+  176 |     await clickNextStepWithDelay(2000);
+  177 |     await clickNextStepWithDelay(2000);
+  178 |     await clickNextStepWithDelay(2000);
+  179 |
+  180 |     // Confirm selections
+  181 |     await page.getByText('Yes').click();
+  182 |     await page.getByText('I typically pay copays').click();
+  183 |     await clickNextStepWithDelay(1500);
+  184 |
+  185 |     await page.getByText('I generally can purchase').click();
+  186 |     await clickNextStepWithDelay(2500);
+  187 |
+  188 |     console.log('🎯 Test Completed.');
+  189 | });
+```

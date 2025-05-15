@@ -1,0 +1,5 @@
+🧭 Logged in and navigating to Contract page
+📂 Opened Related tab
+🔗 Clicked CS- link
+✅ Clicked on the first name link in the list
+🧭 Navigating to contract page and clicking "Get The Link"...

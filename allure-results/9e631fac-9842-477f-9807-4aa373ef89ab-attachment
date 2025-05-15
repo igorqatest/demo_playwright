@@ -1,0 +1,38 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByText('trenutci užasa')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:9:44
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://dnevnik.hr/');
+   5 |   await page.getByRole('button', { name: 'Prihvati i zatvori:' }).click();
+   6 |   //await page.getByRole('link', { name: 'Dinamo Financije pod' }).click();
+   7 |   const headline = page.locator('h3[data-cms2-content-element="title"]');
+   8 |   //await headline.first().click();
+>  9 |   await page.getByText('trenutci užasa' ).click();
+     |                                            ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  10 |
+  11 |
+  12 | });
+```

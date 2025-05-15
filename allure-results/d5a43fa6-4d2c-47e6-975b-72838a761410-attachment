@@ -1,0 +1,198 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:14:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveValue(expected)
+
+Locator: getByPlaceholder('Search', { exact: true }).first()
+Expected string: "playwright by testers"
+Received string: "playwright by testers demo"
+Call log:
+  - expect.soft.toHaveValue with timeout 5000ms
+  - waiting for getByPlaceholder('Search', { exact: true }).first()
+    9 × locator resolved to <input type="text" role="combobox" autocorrect="off" aria-controls="i0" autocomplete="off" name="search_query" aria-expanded="true" placeholder="Search" aria-autocomplete="list" class="ytSearchboxComponentInput yt-searchbox-input title"/>
+      - unexpected value "playwright by testers demo"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:57:31
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to content"
+- banner:
+  - text: Already have an account?
+  - link "Sign in →"
+- main:
+  - heading "Create your free account" [level=1]
+  - text: Explore GitHub's core features for individuals and organizations.
+  - group: See what's included
+  - 'img "GitHub Mascots: Mona, Copilot, and a rubber duck floating on top of an astral background of stars."'
+  - heading "Sign up to GitHub" [level=2]
+  - text: Email
+  - textbox "Email"
+  - text: Password
+  - textbox "Password"
+  - text: Password should be at least 15 characters OR at least 8 characters including a number and a lowercase letter. Username
+  - textbox "Username"
+  - text: Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.
+  - button "Continue"
+  - paragraph:
+    - text: By creating an account, you agree to the
+    - link "Terms of Service"
+    - text: . For more information about GitHub's privacy practices, see the
+    - link "GitHub Privacy Statement"
+    - text: . We'll occasionally send you account-related emails.
+- alert:
+  - img
+  - paragraph:
+    - text: We use optional cookies to improve your experience on our websites and to display personalized advertising based on your online activity. If you reject optional cookies, only cookies necessary to provide you the services listed above will be used. You may change your selection on which cookies to accept by clicking "Manage Cookies" at the bottom of the page to change your selection. This selection is maintained for 180 days. Please review your selections regularly.
+    - link "How to manage cookie preferences"
+    - text: "|"
+    - link "Privacy Statement"
+    - text: "|"
+    - link "Third-Party Cookies"
+    - text: .
+  - button "Accept"
+  - button "Reject"
+  - button "Manage cookies"
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.youtube.com/');
+   4 |    await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+   5 |    await page.getByRole('combobox', { name: 'Search' }).fill('playwright by testers');
+   6 |    await page.waitForTimeout(500);
+   7 |    await page.getByRole('combobox', { name: 'Search' }).press('Enter');
+   8 |    await page.getByRole('link', { name: 'Playwright by Testers Talk☑️' }).click();
+   9 | });
+   10 |  */
+   11 |
+   12 | import { test, expect } from '@playwright/test';
+   13 |
+   14 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+   15 |   await page.goto('https://www.youtube.com/');
+   16 |
+   17 |   // Dismiss cookie banner if present
+   18 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+   19 |   if (await rejectCookies.isVisible()) {
+   20 |     await rejectCookies.click();
+   21 |   }
+   22 |
+   23 |   // Search input
+   24 |   /* const searchInput = page.getByRole('combobox', { name: /Search/i });
+   25 |   await searchInput.waitFor({ state: 'visible' });
+   26 |   await searchInput.fill('playwright by testers');
+   27 |   await page.waitForTimeout(500); */
+   28 |   // 🔍 Click the Search button instead of pressing Enter
+   29 |   /* const searchButton = page.getByRole('button', { name: /Search/i });
+   30 |   await searchButton.click(); */
+   31 |   //await searchInput.press('Enter');
+   32 |   
+   33 |   await page.getByPlaceholder('Search').fill('playwright by testers demo');
+   34 |   await page.waitForTimeout(500);
+   35 |
+   36 |   const mySearch = page.getByPlaceholder('Search', { exact: true}).first()
+   37 |   await expect(mySearch).toBeVisible();
+   38 |   console.log('✅ It is visible!');
+   39 |
+   40 |   await expect(mySearch).toBeEditable();
+   41 |   console.log('✅ It is editable!');
+   42 |
+   43 |   await expect(mySearch).toBeEnabled();
+   44 |   console.log('✅ It is enabled!');
+   45 |
+   46 |   //await expect(mySearch).toHaveAttribute('placeholder', 'Search');
+   47 |   try {
+   48 |     await expect(mySearch).toHaveAttribute('placeholder', 'Search');
+   49 |     console.log('✅ Placeholder is correct');
+   50 |   } catch (error) {
+   51 |     console.warn('⚠️ Placeholder check failed:', error.message);
+   52 |     await page.screenshot({ path: 'placeholder-error.png' });
+   53 |   }
+   54 |
+   55 |
+   56 |   console.log('✅ It has "Search" placeholder!');
+>  57 |   await expect.soft(mySearch).toHaveValue('playwright by testers');
+      |                               ^ Error: Timed out 5000ms waiting for expect(locator).toHaveValue(expected)
+   58 |   console.log('✅ It has "playwright by testers" value!');
+   59 |   await expect(mySearch).not.toBeEmpty();
+   60 |   console.log('✅ It is not empty!');
+   61 |  
+   62 |     await page.getByPlaceholder('Search').press('Enter');
+   63 |     
+   64 |
+   65 |
+   66 |     const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i }).first();
+   67 |       await page.waitForTimeout(500);
+   68 |   await videoLink.click(); 
+   69 |
+   70 |   //await expect(page).toHaveURL(/watch/);
+   71 |   //await expect(page.getByRole('heading', { name: 'Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', exact: true }).locator('yt-formatted-string')).toContainText('Playwright');
+   72 |   //await expect(page).toHaveTitle('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial');
+   73 |   await page.waitForTimeout(1000);
+   74 |
+   75 |   const matches = await page.locator('a.yt-simple-endpoint').filter({ hasText: 'Playwright by Testers Talk' }).count();
+   76 |   console.log(`🔍 Found ${matches} matching links`);
+   77 |   
+   78 |   /* const signIn = page.getByRole('link', { name: 'Sign in' });
+   79 |   await signIn.click(); */
+   80 |   await page.getByText('Open panel').first().click();
+   81 |   await page.waitForTimeout(2000);
+   82 |  
+   83 |   
+   84 |   const title = page.locator('#title yt-formatted-string').first();
+   85 | await expect(title).toHaveText(/Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial/i, { timeout: 10000 });
+   86 | console.log('🎬 Title:', (await title.textContent())?.trim());
+   87 |
+   88 | const count = await page.locator('a.yt-simple-endpoint').filter({ hasText: 'Playwright by Testers Talk' }).count();
+   89 | console.log(`🔍 Matching links: ${count}`);
+   90 |
+   91 | console.log('✅ Video title is visible!');
+   92 |
+   93 |   await  page.goto('https://github.com/');
+   94 |    await page.getByRole('link', { name: 'Sign in' }).click();
+   95 |   await page.waitForTimeout(2000);
+   96 |   
+   97 |   await page.getByLabel('Homepage', { exact: true}).click();
+   98 |   await page.getByText('Learn more').first().click();
+   99 |   await page.waitForTimeout(2000); 
+  100 |
+  101 |   //await page.getByRole('link', { name: 'Sign in' }).click();
+  102 |   //await page.getByText('Sign up').first().click();
+  103 |
+  104 |    let mySignIn;
+  105 |
+  106 |   try {
+  107 |     await page.getByText('Sign up to GitHub').first();
+  108 |     console.log('✅ Clicked "Sign up"');
+  109 |   } catch (error) {
+  110 |     console.warn('⚠️ Failed to click "Sign up":', error.message);
+  111 |     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  112 |     await page.screenshot({ path: `screenshots/sign-up-error-${timestamp}.png` });
+  113 |   } 
+  114 |
+  115 |     try {
+  116 |     await page.getByText('Sign up').first().click();
+  117 |     console.log('✅ Clicked "Sign up" button');
+  118 |   } catch (error) {
+  119 |     console.warn('⚠️ Failed to click "Sign up":', error.message);
+  120 |     await page.screenshot({ path: 'screenshots/sign-up-click-error.png' });
+  121 |   }  
+  122 |   console.log('✅ Test passed');
+  123 | });
+```

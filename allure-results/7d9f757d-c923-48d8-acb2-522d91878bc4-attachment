@@ -1,0 +1,95 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Submit proposal form with dynamic data
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:5:5
+
+# Error details
+
+```
+Error: locator.fill: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('input[name="startDate"]')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:57:52
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import { format } from 'date-fns';
+   4 |
+   5 | test('Submit proposal form with dynamic data', async ({ page }) => {
+   6 |   // 1. Go to Salesforce Quote page
+   7 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTen0AG/view');
+   8 |
+   9 |   // 2. Login
+  10 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  11 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  12 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  13 |
+  14 |   // 3. Click Details tab and wait
+  15 |   await page.getByRole('tab', { name: 'Details' }).click();
+  16 |   await page.waitForTimeout(500);
+  17 |
+  18 |   // 4. Scroll to and click the Proposal Link
+  19 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  20 |   await proposalLink.scrollIntoViewIfNeeded();
+  21 |
+  22 |   // 5. Open new tab safely
+  23 |   const [newPage] = await Promise.all([
+  24 |     page.context().waitForEvent('page'),
+  25 |     proposalLink.click(),
+  26 |   ]);
+  27 |
+  28 |   await newPage.waitForLoadState();
+  29 |
+  30 |   // 6. Scroll to and click acceptance radio
+  31 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+  32 |   await newPage.getByText('Yes, I accept this proposal').click();
+  33 |
+  34 |   // 7. Generate dynamic personal data
+  35 |   const firstName = faker.person.firstName();
+  36 |   const lastName = faker.person.lastName();
+  37 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  38 |
+  39 |   const ackFirstName = faker.person.firstName();
+  40 |   const ackLastName = faker.person.lastName();
+  41 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  42 |
+  43 |   // 8. Generate and format dates
+  44 |   const today = format(new Date(), 'MM/dd/yyyy');
+  45 |   const threeWeeksLater = format(new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), 'MM/dd/yyyy');
+  46 |
+  47 |   // 9. Fill proposal contact form
+  48 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  49 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  50 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  51 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  52 |
+  53 |   // 10. Select platform type
+  54 |   await newPage.getByText('Ansel enrollment platform').click();
+  55 |
+  56 |   // 11. Fill start and end dates (no calendar UI interaction needed)
+> 57 |   await newPage.locator('input[name="startDate"]').fill(today);
+     |                                                    ^ Error: locator.fill: Test timeout of 30000ms exceeded.
+  58 |   await newPage.locator('input[name="endDate"]').fill(threeWeeksLater);
+  59 |
+  60 |   // 12. Fill acknowledgment section
+  61 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  62 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  63 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  64 |
+  65 |   // 13. Agree and finalize
+  66 |   await newPage.getByText('By checking this box, I agree').click();
+  67 |
+  68 |   // ✅ At this point, form is filled — you can optionally click "Submit" if required.
+  69 | });
+```

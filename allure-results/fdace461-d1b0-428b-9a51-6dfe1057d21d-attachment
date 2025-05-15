@@ -1,0 +1,59 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: locator('h3[data-cms2-content-element="title"]') resolved to 93 elements:
+    1) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">FOTO Otkriven identitet pljačkaša koji je ubijen …</h3> aka getByRole('link', { name: 'Frano Petrinović, pljačkaš' })
+    2) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">Tužiteljstvo objavilo detalje pucnjave: Pljačkaš …</h3> aka getByRole('link', { name: 'Očevid nakon pljačke banke u' })
+    3) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">Izbjegnut potres u Dinamu: To bi bio skandal, dra…</h3> aka getByRole('link', { name: 'Dinamo Financije pod' })
+    4) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">Predstavnik Hrvatskih voda o poplavama u Đurđenov…</h3> aka getByRole('link', { name: 'Tin Kovačić i Željko Kovačevi' })
+    5) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">UZNEMIRUJUĆE Dramatična snimka ubojstva pljačkaša…</h3> aka getByRole('link', { name: 'Policijski očevid nakon' })
+    6) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">VIDEO Najbolji na svijetu laktom pogodio gorostas…</h3> aka getByRole('link', { name: 'Mathias Gidsel Uh, ovo je' })
+    7) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">Cure detalji pucnjave u centru Splita: Svjedoci o…</h3> aka getByRole('link', { name: 'Očevid nakon pokušaja pljačke banke u Splitu - 1 2:22 7 Pokušaj pljačke Cure' })
+    8) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">↵                    10 fotodokaza da slavne žene…</h3> aka getByRole('link', { name: 'Rublje za oblikovanje tijela nosi i Jennifer Lopez 10 TRIKOVI I POMAGAČI 10' })
+    9) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">↵                    Thompson upozorio fanove nak…</h3> aka getByRole('link', { name: 'Marko Perković Thompson \'\'' })
+    10) <h3 class="title" data-upscore-title="" data-cms2-content-element="title">Karlovac i Kostajnica pod mjerama obrane, iščekuj…</h3> aka getByRole('link', { name: 'Anja Perković i Daniel Joha' })
+    ...
+
+Call log:
+  - waiting for locator('h3[data-cms2-content-element="title"]')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:14:63
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://dnevnik.hr/');
+   5 |   await page.getByRole('button', { name: 'Prihvati i zatvori:' }).click();
+   6 |   //await page.getByRole('link', { name: 'Dinamo Financije pod' }).click();
+   7 |   const headline = page.locator('h3[data-cms2-content-element="title"]');
+   8 |   //await headline.first().click();
+   9 |   //await page.locator('span.subtitle', { hasText: 'Bravo!'}).click();
+  10 |   //await page.locator('span:has-text("Bravo!")').click();
+  11 |   //await page.getByText('Bravo!').click();
+  12 |   //await page.locator('a:has-text("bravo!")').click();
+  13 |   //await page.getByRole('link', { name: 'Marin Čilić Bravo!' }).click();
+> 14 |   await page.locator('h3[data-cms2-content-element="title"]').click();
+     |                                                               ^ Error: locator.click: Error: strict mode violation: locator('h3[data-cms2-content-element="title"]') resolved to 93 elements:
+  15 |   //await page.locator('a span:has-text("Bravo!")').first().click();  //await page.locator('.subtitle span:has-text("Bravo!")').click();
+  16 |   //await page.getByText('trenutci užasa').click();
+  17 |   //await page.locator('span.subtitle', { hasText: 'trenutci užasa' }).click();
+  18 |   //await page.locator('span.subtitle span', { hasText: 'trenutci užasa' }).click();
+  19 |   //await page.locator('a:has-text("trenutci užasa")').click();
+  20 |
+  21 | });
+```

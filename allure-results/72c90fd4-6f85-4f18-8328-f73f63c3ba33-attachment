@@ -1,0 +1,178 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping only Primary
+- Location: /Users/pejin/Documents/Playwright new/tests/symetra_shopping/symetra_spouse.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Male' }) resolved to 2 elements:
+    1) <div role="option" aria-checked="false" aria-selected="true" class="selected item">…</div> aka getByRole('option', { name: 'Female' })
+    2) <div class="item" role="option" aria-checked="false" aria-selected="false">…</div> aka getByRole('option', { name: 'Male', exact: true })
+
+Call log:
+  - waiting for getByRole('option', { name: 'Male' })
+
+    at /Users/pejin/Documents/Playwright new/tests/symetra_shopping/symetra_spouse.spec.ts:176:53
+```
+
+# Test source
+
+```ts
+   76 |   console.log('🔓 Verification passed');
+   77 |
+   78 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   79 |
+   80 |   // ✅ Ensure fresh continuation from the correct start page
+   81 |
+   82 |    // Select "No" for married, and "I'm not a parent"
+   83 |    await newPage.getByText('Yes', { exact: true }).click();
+   84 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+   85 |
+   86 |   await newPage.getByText('I\'m not a parent').click();
+   87 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   88 |   console.log('👪 Household questions');
+   89 |
+   90 |   // ⏭ Continue steps
+   91 |   for (let i = 1; i <= 8; i++) {
+   92 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+   93 |     console.log(`➡️ Page ${i + 2} complete`);
+   94 |   }
+   95 |    // Let's talk about medical expenses
+   96 |   await newPage.getByText('Yes').click();
+   97 |   await newPage.getByText('I typically pay the full cost').click();
+   98 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   99 |   console.log('💰 Medical expenses questions');
+  100 |
+  101 |   // We'll keep your budget in mind
+  102 |   await newPage.getByText('I can purchase what I want').click();
+  103 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+  104 |     console.log('✅ Purchasing what I want');
+  105 |
+  106 |
+  107 | // Select Ansel benefits
+  108 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  109 |
+  110 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+  111 |     await newPage.waitForTimeout(2000);
+  112 |
+  113 |     try {
+  114 |         const spouseButton = await newPage.getByText('My spouse and me');
+  115 |         await spouseButton.click({ force: true, timeout: 3000 });
+  116 |         console.log('🟢 Clicked "My spouse and me"');
+  117 |       } catch (error) {
+  118 |         console.log('⚪ "My spouse and me" not found or already moved on');
+  119 |       }
+  120 | console.log('✅ Select ansel benefits');
+  121 | await newPage.waitForTimeout(1000);
+  122 |
+  123 |
+  124 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  125 |   await newPage.waitForTimeout(1000);
+  126 |
+  127 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  128 |
+  129 |   
+  130 |   for (let i = 0; i < 10; i++) {
+  131 |     await page.mouse.wheel(0, 400);
+  132 |     await page.waitForTimeout(100);
+  133 |   }
+  134 |   await newPage.waitForTimeout(2000);
+  135 |   await newPage.getByRole('listbox').filter({ hasText: 'FemaleMale' }).click();
+  136 |
+  137 |   await newPage.waitForTimeout(1000);
+  138 |
+  139 | // Generate a random 9-digit phone number
+  140 | const random9Digits = Math.floor(100000000 + Math.random() * 900000000);
+  141 |
+  142 | // Format it properly like (XXX) XXX-XXXX
+  143 | const formattedPhone = `(${String(random9Digits).slice(0, 3)}) ${String(random9Digits).slice(3, 6)}-${String(random9Digits).slice(6)}`;
+  144 |
+  145 | await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).type(formattedPhone, { delay: 100 });
+  146 | console.log(`📱 Filled formatted phone number: ${formattedPhone}`);  
+  147 | await newPage.waitForTimeout(1000);
+  148 |
+  149 | await newPage.getByRole('listbox').filter({ hasText: 'MobileStandard' }).click();
+  150 |   await newPage.locator('input[name="SET_STREET_ADDRESS"]').fill('123 Main St');
+  151 |   await newPage.waitForTimeout(1000);
+  152 |
+  153 |   await newPage.locator('input[name="SET_ZIP_CODE"]').fill('12345');
+  154 |   await newPage.locator('input[name="SET_CITY"]').fill('Random City');
+  155 |
+  156 |
+  157 | // Add spouse
+  158 | await newPage.getByRole('button', { name: '+ Add dependent' }).click();
+  159 | await newPage.getByRole('listbox').filter({ hasText: 'SpouseChildDomestic' }).click();
+  160 | // Then select the 'Spouse' option
+  161 | await newPage.getByRole('option', { name: 'Spouse' }).click();
+  162 | await newPage.waitForTimeout(1000);
+  163 |
+  164 | await newPage.locator('input[name="firstName"]').fill('Jane');
+  165 | await newPage.locator('input[name="lastName"]').fill('Doe');
+  166 | // Open the gender dropdown
+  167 | await newPage.waitForTimeout(1000);
+  168 | await newPage.getByRole('listbox').filter({ hasText: /^FemaleMale$/ }).click();
+  169 |
+  170 | // Wait for the options to become visible
+  171 |
+  172 | // Pick a random gender
+  173 | const gender = Math.random() > 0.5 ? 'Male' : 'Female';
+  174 |
+  175 | // Select the gender option
+> 176 | await newPage.getByRole('option', { name: gender }).click();
+      |                                                     ^ Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Male' }) resolved to 2 elements:
+  177 |
+  178 | console.log(`✅ Selected gender: ${gender}`);
+  179 | // Wait for the options to become visible
+  180 | //await newPage.waitForSelector('[role="option"]'); // This ensures options are ready
+  181 |
+  182 | // Pick a random gender
+  183 |
+  184 |
+  185 | // Select date of birth
+  186 | await newPage.locator('input[name="birthdate"]').fill('01/01/2004');
+  187 |
+  188 | // SSN
+  189 | // Helper to generate random SSN
+  190 | function generateRandomSSN() {
+  191 |   const part1 = Math.floor(100 + Math.random() * 900); // 3 digits
+  192 |   const part2 = Math.floor(10 + Math.random() * 90);   // 2 digits
+  193 |   const part3 = Math.floor(1000 + Math.random() * 9000); // 4 digits
+  194 |   return `${part1}-${part2}-${part3}`;
+  195 | }
+  196 |
+  197 | // Then fill it
+  198 | const randomSSN = generateRandomSSN();
+  199 |
+  200 |
+  201 | await newPage.getByRole('button', { name: 'Save' }).click();
+  202 |
+  203 | await newPage.getByRole('button', { name: 'Next step' }).click();
+  204 | console.log('📬 Contact info filled');
+  205 |
+  206 |
+  207 |   
+  208 |
+  209 |   await newPage.locator('input[name="password"]').fill('Demo123456');
+  210 |   await newPage.locator('input[name="confirmPassword"]').fill('Demo123456');
+  211 |   await newPage.evaluate(() => {
+  212 |     const cb = document.querySelector('input[name="agreeToTerms"]');
+  213 |     if (cb) cb.removeAttribute('readonly');
+  214 |     (cb as HTMLInputElement)?.click();
+  215 |   });
+  216 |
+  217 |
+  218 |   // Done!
+  219 |   console.log('✅ Flow completed to this point.'); 
+  220 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 200);
+  221 |   await newPage.getByRole('button', { name: 'Submit' }).click();
+  222 |   console.log(' Final step complete, Shopping Finished');
+  223 |
+  224 | });
+```

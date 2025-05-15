@@ -1,0 +1,56 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Bing search for Playwright
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:11:5
+
+# Error details
+
+```
+Error: locator.fill: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('textbox', { name: 'Enter your search term' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:25:19
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.bing.com/');
+   4 |     await page.getByRole('link', { name: 'Accept' }).click();
+   5 |     await page.getByRole('textbox', { name: 'characters out of 2000' }).fill('playwright by testers');
+   6 |     await page.getByRole('textbox', { name: 'characters out of 2000' }).press('Enter');
+   7 | }); */
+   8 |
+   9 | import { test, expect } from '@playwright/test';
+  10 |
+  11 | test('Bing search for Playwright', async ({ page }) => {
+  12 |   // Navigate to Bing
+  13 |   await page.goto('https://www.bing.com/');
+  14 |
+  15 |   await page.getByRole('link', { name: 'Accept' }).click();
+  16 |
+  17 |   // Accept cookies (if present)
+  18 |   const acceptButton = page.getByRole('link', { name: 'Accept' });
+  19 |   if (await acceptButton.isVisible()) {
+  20 |     await acceptButton.click();
+  21 |   }
+  22 |
+  23 |   // Type into the search box
+  24 |   const searchBox = page.getByRole('textbox', { name: 'Enter your search term' });
+> 25 |   await searchBox.fill('playwright by testers');
+     |                   ^ Error: locator.fill: Test timeout of 30000ms exceeded.
+  26 |   await searchBox.press('Enter');
+  27 |
+  28 |   // Optional: Wait for search results to show up
+  29 |   await expect(page.locator('#b_results')).toBeVisible();
+  30 | });
+```

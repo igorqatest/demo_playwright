@@ -1,0 +1,12 @@
+🚀 Starting test...
+✅ Logged into Salesforce
+📂 Opened Related tab
+🔗 Clicked CS- link
+✅ Opened first prospective record
+🔐 Extracted SSN: 217-67-0862
+🎂 Extracted and formatted DOB: 12/21/1964
+🎯 Clicked "Get The Link"
+🔗 Extracted shopping link
+🆕 Navigated to shopping link in new tab
+🔐 Verification started
+🔓 Verification passed

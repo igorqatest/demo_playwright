@@ -1,0 +1,114 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: My first test
+- Location: /Users/pejin/Documents/Playwright new/tests/claim_symetra.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('div.menu.transition.visible').locator('button[data-qa-button_new_claim="true"]').first()
+
+    at /Users/pejin/Documents/Playwright new/tests/claim_symetra.spec.ts:33:29
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { config } from './reusable.ts';
+   3 |
+   4 | test('My first test', async ({ page }) => {
+   5 |   console.log('✅ Navigating to Member Portal...');
+   6 |   await page.goto(config.urlMemberSymetra, { waitUntil: 'domcontentloaded' });
+   7 |
+   8 |   console.log('✅ Filling in Login form...');
+   9 |   const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+  10 |   await emailInput.type(config.userMemberSymetra, { delay: 10 });
+  11 |
+  12 |   const passwordInput = page.locator('input[name="password"]');
+  13 |   await passwordInput.type(config.passwordMemberSymetra, { delay: 10 });
+  14 |
+  15 |   await page.getByRole('button', { name: 'Sign in' }).click();
+  16 |
+  17 |   console.log('✅ Waiting for Dashboard to load...');
+  18 |   await page.waitForTimeout(15000); // Adjust the timeout as needed
+  19 |
+  20 |    // 1. Click on "File new claim"
+  21 | await page.getByRole('button', { name: 'File new claim' }).click();
+  22 | console.log('✅ Clicked "File new claim" button');
+  23 |
+  24 | // 2. Wait until the dropdown menu becomes visible and stable
+  25 | const dropdownMenu = page.locator('div.menu.transition.visible');
+  26 | console.log('✅ Dropdown menu is now visible');
+  27 |
+  28 | // 3. Now find all member buttons inside the dropdown
+  29 | const memberButtons = dropdownMenu.locator('button[data-qa-button_new_claim="true"]');
+  30 | console.log('✅ Member buttons found');
+  31 |
+  32 | // 4. Click the first member (or nth, or random as you want)
+> 33 | await memberButtons.first().click();
+     |                             ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  34 | console.log('✅ Successfully clicked the first member');
+  35 |
+  36 |
+  37 |   await page.getByRole('button', { name: 'Next step' }).click();
+  38 |
+  39 |   await page.locator('textarea[name="symptoms"]').fill('test');
+  40 |   await page.locator('textarea[name="providerDiagnosis"]').fill('test');
+  41 |   await page.locator('textarea[name="treatment"]').fill('test');
+  42 |   await page.locator('textarea[name="additionalInfo"]').fill('test');
+  43 |   await page.waitForTimeout(1000);
+  44 |   await page.getByRole('button', { name: 'Next step' }).click();
+  45 |
+  46 |
+  47 |   await page.getByText('Emergency room').click();
+  48 |   for (let i = 0; i < 10; i++) {
+  49 |     await page.mouse.wheel(0, 200);
+  50 |     await page.waitForTimeout(100);
+  51 |   }
+  52 | // 1. Type into the hospital field
+  53 | await page.locator('input.prompt').fill('Hospital');
+  54 |
+  55 | // 2. Wait for the suggestions to appear
+  56 | await page.waitForSelector('.results.visible .result');
+  57 |
+  58 | // 3. Click the first suggestion
+  59 | await page.locator('.results.visible .result').first().click();
+  60 |
+  61 | console.log('✅ Successfully clicked the first hospital!');
+  62 | //Tell us where you were treated
+  63 | await page.getByRole('button', { name: 'Next step' }).click();
+  64 | //Let´s prepare your documents
+  65 | await page.getByRole('button', { name: 'Next step' }).click();
+  66 | // Upload your pictures
+  67 | await page.getByRole('button', { name: 'Next step' }).click();
+  68 | // Confirm uploads
+  69 | await page.getByRole('button', { name: 'Next step' }).click();
+  70 | // Payment preference
+  71 | await page.getByRole('button', { name: '+Add payment method' }).click();
+  72 | await page.getByRole('row', { name: 'PayPal payout method Configure' }).getByRole('button').click();
+  73 | await page.locator('input[name="username"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  74 | await page.locator('input[name="confirmUsername"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  75 | await page.getByRole('button', { name: 'Submit' }).click();
+  76 | await page.waitForTimeout(4000);
+  77 | await page.getByRole('button', { name: 'Next step' }).click();
+  78 |
+  79 | for (let i = 0; i < 10; i++) {
+  80 |     await page.mouse.wheel(0, 400);
+  81 |     await page.waitForTimeout(100);
+  82 |   }
+  83 |  await page.locator('label').first().click();
+  84 |  await page.getByRole('button', { name: 'Submit' }).click();
+  85 |
+  86 |  await page.getByRole('button', { name: 'All done' }).click();
+  87 |  
+  88 | });
+```

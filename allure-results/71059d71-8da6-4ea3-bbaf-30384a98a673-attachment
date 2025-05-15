@@ -1,0 +1,42 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:3:5
+
+# Error details
+
+```
+Error: expect.toBeVisible: Error: strict mode violation: getByLabel('Contact Owner') resolved to 2 elements:
+    1) <th scope="col" title="Contact Owner Alias" aria-label="Contact Owner Alias" data-aura-rendered-by="120:748;a" class="initialSortAsc sortable  slds-is-sortable  slds-is-resizable">…</th> aka getByLabel('Contact Owner Alias', { exact: true })
+    2) <input min="60" max="3840" type="range" aria-label="Contact Owner Alias Column Width" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus"/> aka getByLabel('Contact Owner Alias Column')
+
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByLabel('Contact Owner')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:11:48
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username'}).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password'}).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log in'}).click();
+   8 |   await page.waitForTimeout(2000);
+   9 | await page.getByRole('link', { name: 'Contacts'}).click();  
+  10 | await page.getByRole('button', { name: 'New'}).click();
+> 11 | await expect(page.getByLabel('Contact Owner')).toBeVisible();
+     |                                                ^ Error: expect.toBeVisible: Error: strict mode violation: getByLabel('Contact Owner') resolved to 2 elements:
+  12 | });
+```

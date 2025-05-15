@@ -1,0 +1,47 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:3:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: locator('#brandBand_4').getByText('Contact Owner')
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for locator('#brandBand_4').getByText('Contact Owner')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:13:71
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username'}).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password'}).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log in'}).click();
+   8 |   await page.waitForTimeout(2000);
+   9 | await page.getByRole('link', { name: 'Contacts'}).click();  
+  10 | await page.getByRole('button', { name: 'New'}).click();
+  11 | await page.waitForTimeout(2000);
+  12 | //await expect(page.getByText('Contact Owner')).toBeVisible();
+> 13 | await expect(page.locator('#brandBand_4').getByText('Contact Owner')).toBeVisible();
+     |                                                                       ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+  14 | await expect(page.getByText('*Name')).toBeVisible();
+  15 | await expect(page.getByText('Salutation')).toBeVisible();
+  16 | });
+```

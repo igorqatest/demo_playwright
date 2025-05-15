@@ -1,0 +1,9 @@
+✅ Navigating to Member Portal...
+✅ Filling in Login form...
+✅ Waiting for Dashboard to load...
+✅ Clicked "File new claim"
+✅ Dropdown menu is now visible
+✅ Primary member option is visible
+✅ Successfully clicked "Primary" member
+✅ Successfully clicked the first hospital!
+✅ Clicked Submit button

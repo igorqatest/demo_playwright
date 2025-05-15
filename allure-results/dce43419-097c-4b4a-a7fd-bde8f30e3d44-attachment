@@ -1,0 +1,130 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:20:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Save' }) resolved to 2 elements:
+    1) <button type="button" part="button" kx-type="ripple" name="SaveAndNew" lwc-40a585din3p="" aria-disabled="false" kx-scope="button-neutral" class="slds-button slds-button_neutral">Save & New</button> aka getByRole('button', { name: 'Save & New' })
+    2) <button type="button" part="button" name="SaveEdit" kx-type="ripple" lwc-40a585din3p="" aria-disabled="false" kx-scope="button-brand" class="slds-button slds-button_brand">Save</button> aka getByRole('button', { name: 'Save', exact: true })
+
+Call log:
+  - waiting for getByRole('button', { name: 'Save' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:97:50
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | const screenshotDir = 'test-35';
+   6 |
+   7 | // Clean screenshot folder before test
+   8 | if (fs.existsSync(screenshotDir)) {
+   9 |   fs.readdirSync(screenshotDir).forEach(file => {
+   10 |     fs.unlinkSync(path.join(screenshotDir, file));
+   11 |   });
+   12 | } else {
+   13 |   fs.mkdirSync(screenshotDir);
+   14 | }
+   15 | // Helper to log and screenshot
+   16 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+   17 |   console.log(message);
+   18 |   await page.screenshot({ path: `${dir}/${step}.png` });
+   19 | }
+   20 | test('test', async ({ page }) => {
+   21 |  const screenshotDir = 'test-36';
+   22 |    if (fs.existsSync(screenshotDir)) {
+   23 |      fs.readdirSync(screenshotDir).forEach(file => {
+   24 |        fs.unlinkSync(path.join(screenshotDir, file));
+   25 |      });
+   26 |    } else {
+   27 |      fs.mkdirSync(screenshotDir);
+   28 |    }
+   29 |  
+   30 |    console.log('🌐 Opening login page...');
+   31 |    await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   32 |    await logAndScreenshot(page, screenshotDir, '1-login', '📸 Login page loaded');
+   33 |  
+   34 |    console.log('🔐 Logging in...');
+   35 |    await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   36 |    await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   37 |    await logAndScreenshot(page, screenshotDir, '2-login-filled', '📸 Credentials entered');
+   38 |    await page.getByRole('button', { name: 'Log In' }).click();
+   39 |    await page.waitForTimeout(2000);
+   40 |  
+   41 |    console.log('📇 Navigating to Opportunities tab...');
+   42 |
+   43 | // Click search button (if needed)
+   44 | console.log('📇 Navigating to Opportunities tab...');
+   45 |
+   46 | // Click the search button
+   47 | await page.getByRole('button', { name: 'Search' }).click();
+   48 | await page.waitForTimeout(1000);
+   49 |
+   50 | // Click on the "All Opportunities" entry in the dropdown
+   51 | const allOpportunities = page.locator('span:has-text("All Opportunities")').first();
+   52 | await allOpportunities.click();
+   53 | await page.getByRole('link', { name: 'Opportunities' }).click();
+   54 | await page.waitForTimeout(500);
+   55 | await page.getByRole('button', { name: 'New' }).click();
+   56 |
+   57 | // 🔽 Dropdowns
+   58 | await page.getByRole('textbox', { name: '*Opportunity Name' }).fill('Sample Opportunity');
+   59 |
+   60 | //await page.locator('#combobox-input-193').fill('Grand Hotels');
+   61 | /* console.log('🔽 Selecting Type...');
+   62 |   await page.locator('button[aria-label="Type"]').click();
+   63 |   await page.locator('lightning-base-combobox-item >> text=New cstomer').click();
+   64 |  */
+   65 | console.log('🔽 Selecting Lead Source...');
+   66 | await page.locator('button[aria-label="Lead Source"]').click();
+   67 | await page.locator('lightning-base-combobox-item >> text=Web').click();
+   68 |
+   69 | await page.locator('button[aria-label="Delivery/Installation Status"]').click();
+   70 | await page.getByText('In progress').click();
+   71 |
+   72 | // 📅 Date picker
+   73 | await page.getByRole('textbox', { name: 'Close Date' }).fill('04. 01. 2025.');
+   74 |
+   75 | // 🔢 Text fields
+   76 | await page.getByRole('textbox', { name: 'Opportunity Name' }).fill('Sample Opportunity');
+   77 | await page.getByRole('textbox', { name: 'Amount' }).fill('50000');
+   78 | await page.getByRole('textbox', { name: 'Next Step' }).fill('Follow up demo');
+   79 | await page.getByRole('textbox', { name: 'Probability (%)' }).fill('75');
+   80 | await page.getByRole('textbox', { name: 'Order Number' }).fill('ORD123456');
+   81 | await page.getByRole('textbox', { name: 'Main Competitor(s)' }).fill('Acme Corp');
+   82 | await page.getByRole('textbox', { name: 'Current Generator(s)' }).fill('Model X');
+   83 | await page.getByRole('textbox', { name: 'Tracking Number' }).fill('TRACK78910');
+   84 | await page.getByRole('textbox', { name: 'Description' }).fill('This opportunity is a sample for Playwright testing.');
+   85 |
+   86 | // 🔍 Search box - Account Name
+   87 | /* await page.getByRole('combobox', { name: 'Account Name' }).fill('Grand Hotels');
+   88 | await page.getByText('Grand Hotels & Resorts Ltd').click(); // Adjust if needed */
+   89 |
+   90 | // 🔍 Search box - Primary Campaign Source
+   91 | await page.getByRole('combobox', { name: 'Primary Campaign Source' }).fill('Test Campaign');
+   92 |
+   93 | // ☑️ Private checkbox (optional)
+   94 | await page.getByRole('checkbox', { name: 'Private' }).check();
+   95 |
+   96 | // 💾 Save
+>  97 | await page.getByRole('button', { name: 'Save' }).click();
+      |                                                  ^ Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Save' }) resolved to 2 elements:
+   98 |
+   99 | console.log('✅ New Opportunity created successfully!');
+  100 |
+  101 | });
+```

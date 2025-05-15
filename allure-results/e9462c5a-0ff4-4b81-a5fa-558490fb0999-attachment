@@ -1,0 +1,86 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Upload dynamic CSV file to census uploader
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.waitFor: Error: strict mode violation: locator('div[role="option"] span:text("BirthDate")') resolved to 2 elements:
+    1) <span class="text">BirthDate</span> aka getByText('BirthDate').first()
+    2) <span class="text">BirthDate</span> aka getByRole('option', { name: 'BirthDate' }).locator('span')
+
+Call log:
+  - waiting for locator('div[role="option"] span:text("BirthDate")') to be visible
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:52:23
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import createCSV from './utils/generate-csv'; // ✅ Import the CSV generator
+   3 |
+   4 | test('Upload dynamic CSV file to census uploader', async ({ page }) => {
+   5 |   // Step 1: Generate the CSV
+   6 |   const csvPath = await createCSV(10); // 🔄 10 fake rows, path returned
+   7 |
+   8 |   // Step 2: Navigate and login
+   9 |   await page.goto('https://qa-ansel-platform.joinansel.com/partner/login');
+  10 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('damianp+damianp@joinansel.com');
+  11 |   await page.locator('input[name="password"]').fill('Demo123456');
+  12 |   await page.getByRole('button', { name: 'Login' }).click();
+  13 |
+  14 |   // Step 3: Navigate through steps
+  15 |   await page.getByRole('button', { name: 'Request a quote' }).click();
+  16 |   await page.locator('label').filter({ hasText: 'damian test6360' }).click();
+  17 |   await page.getByRole('button', { name: 'Next step' }).click();
+  18 |   await page.getByRole('button', { name: '+ Add employer' }).click();
+  19 |
+  20 |   await page.locator('input[name="companyName"]').fill('ER test');
+  21 |   await page.locator('input[name="sicCode"]').fill('1');
+  22 |   await page.getByText('- Rice').click();
+  23 |   await page.locator('input[name="city"]').fill('Dallas');
+  24 |   await page.getByRole('combobox').getByRole('textbox').fill('Texas');
+  25 |   await page.getByRole('option', { name: 'Texas' }).click();
+  26 |   await page.locator('input[name="eligibleEmployees"]').fill('20');
+  27 |   await page.getByRole('button', { name: 'Next step' }).click();
+  28 |
+  29 |   await page.getByRole('listbox').filter({ hasText: 'May 1, 2025Jun 1, 2025Jul 1,' }).click();
+  30 |   await page.getByRole('option', { name: 'Jun 1,' }).click();
+  31 |   await page.getByRole('textbox', { name: 'Ex. All full-time employees' }).fill('Class A');
+  32 |   await page.getByRole('button', { name: 'Next step' }).click();
+  33 |
+  34 |   // Step 4: Upload the CSV file
+  35 |   const fileInput = page.locator('input[type="file"]');
+  36 |   await fileInput.setInputFiles(csvPath);
+  37 |   console.log(`📂 Uploaded file: ${csvPath}`);
+  38 |
+  39 |   // Optionally wait or verify something here (success toast, table shows rows, etc.)
+  40 |   await page.getByRole('button', { name: 'Next step' }).click();
+  41 |   //await page.getByRole('row', { name: 'Date of birth*' }).getByRole('listbox').click();
+  42 |   // 1. Open the "Date of birth*" dropdown
+  43 |
+  44 | /// 1. Click the dropdown under "Date of birth"
+  45 | // 1. Click the dropdown to expand options
+  46 | await page.getByRole('row', { name: /Date of birth/i })
+  47 |   .getByRole('listbox')
+  48 |   .click();
+  49 |
+  50 | // 2. Wait for the dropdown option 'BirthDate' to appear in the DOM
+  51 | const birthDateOption = page.locator('div[role="option"] span:text("BirthDate")');
+> 52 | await birthDateOption.waitFor({ timeout: 5000 });
+     |                       ^ Error: locator.waitFor: Error: strict mode violation: locator('div[role="option"] span:text("BirthDate")') resolved to 2 elements:
+  53 |
+  54 | // 3. Click the option
+  55 | await birthDateOption.click();
+  56 |
+  57 | });
+```

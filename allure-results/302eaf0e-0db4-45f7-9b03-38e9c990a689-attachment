@@ -1,0 +1,35 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-31.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Unexpected token "=" while parsing css selector "#id="user-name"". Did you mean to CSS.escape it?
+Call log:
+  - waiting for #id="user-name"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-31.spec.ts:8:41
+```
+
+# Test source
+
+```ts
+  1 | import { test, expect } from '@playwright/test';
+  2 |
+  3 | test('test', async ({ page }) => {
+  4 |   await page.goto('https://www.saucedemo.com/');
+  5 |   //await page.getByRole('button', {name: 'Search'}).click();
+  6 |   //await page.getByRole('searchbox').fill('playwright testing');
+  7 |   //await page.locator('[data-test="username"]').fill('standard_user');
+> 8 |   await page.locator('#id="user-name"').fill('standard_user');
+    |                                         ^ Error: locator.fill: Unexpected token "=" while parsing css selector "#id="user-name"". Did you mean to CSS.escape it?
+  9 | });
+```

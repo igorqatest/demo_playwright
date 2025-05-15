@@ -1,0 +1,159 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 📄 Extract all visible fields from Roster Member page (multi-section)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:84:5
+
+# Error details
+
+```
+Error: page.waitForSelector: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('#tab-17') to be visible
+    - waiting for navigation to finish...
+    - navigated to "https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:94:14
+```
+
+# Test source
+
+```ts
+   1 |  /*import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('🔍 Extract Roster Member Name from record page', async ({ page }) => {
+   4 |   console.log('🌐 Navigating to Roster Member record...');
+   5 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   6 |
+   7 |   console.log('🔐 Logging into Salesforce...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   10 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   11 |
+   12 |   // Wait for Lightning page to load
+   13 |   await page.waitForTimeout(5000);
+   14 |
+   15 |   // Locate field by label
+   16 |   const label = page.locator('.test-id__field-label', { hasText: 'Roster Member Name' });
+   17 |   const valueLocator = label.locator('xpath=ancestor::div[contains(@class,"slds-form-element")]//lightning-formatted-text');
+   18 |
+   19 |   const value = await valueLocator.innerText();
+   20 |
+   21 |   console.log(`🧾 Roster Member Name: ${value.trim()}`);
+   22 | }); */
+   23 |
+   24 | /* import { test, expect } from '@playwright/test';
+   25 |
+   26 | test('Extract Roster Member Details', async ({ page }) => {
+   27 |   console.log('🌐 Navigating to Roster Member detail page...');
+   28 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view', {
+   29 |     waitUntil: 'domcontentloaded'
+   30 |   });
+   31 |
+   32 |   console.log('🔐 Logging in...');
+   33 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   34 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   35 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   36 |
+   37 |   console.log('⏳ Waiting for page content to load...');
+   38 |   await page.waitForTimeout(4000);
+   39 |
+   40 |   // Targeting the detail panel
+   41 |   const fieldsToExtract = [
+   42 |     'Roster Member Name',
+   43 |     'First Name',
+   44 |     'Last Name',
+   45 |     'Gender',
+   46 |     'Date of Birth',
+   47 |     'SocialSecurityNumber',
+   48 |     'Email',
+   49 |     'Phone',
+   50 |     'Mobile Phone',
+   51 |     'Status',
+   52 |     'Role',
+   53 |     'Age',
+   54 |     'Street',
+   55 |     'City',
+   56 |     'Postal Code',
+   57 |     'State',
+   58 |     'Strategic Partner Name',
+   59 |     'Owner'
+   60 |   ];
+   61 |
+   62 |   for (const label of fieldsToExtract) {
+   63 |     const field = page.locator(`div.slds-form-element__label:text-is("${label}")`).first();
+   64 |     const value = field.locator('xpath=..').locator('.slds-form-element__control span');
+   65 |
+   66 |     try {
+   67 |       const isVisible = await field.isVisible();
+   68 |       if (isVisible) {
+   69 |         const fieldValue = await value.textContent();
+   70 |         console.log(`✅ ${label}: ${fieldValue?.trim() || '[Empty]'}`);
+   71 |       } else {
+   72 |         console.warn(`⚠️ ${label} not visible.`);
+   73 |       }
+   74 |     } catch (err) {
+   75 |       console.error(`❌ Error extracting ${label}:`, err.message);
+   76 |     }
+   77 |   }
+   78 |
+   79 |   console.log('✅ Extraction complete!');
+   80 | }); */
+   81 |
+   82 | import { test, expect } from '@playwright/test';
+   83 |
+   84 | test('📄 Extract all visible fields from Roster Member page (multi-section)', async ({ page }) => {
+   85 |   console.log('🌐 Navigating to Roster Member record...');
+   86 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   87 |
+   88 |   console.log('🔐 Logging into Salesforce...');
+   89 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   90 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   91 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   92 |
+   93 |   console.log('⏳ Waiting for page content...');
+>  94 |   await page.waitForSelector('#tab-17');
+      |              ^ Error: page.waitForSelector: Test timeout of 30000ms exceeded.
+   95 |   await page.waitForTimeout(3000);
+   96 |
+   97 |   // 🔄 Scroll to bottom slowly to force lazy-loaded fields
+   98 |   for (let i = 0; i < 10; i++) {
+   99 |     await page.mouse.wheel(0, 300);
+  100 |     await page.waitForTimeout(300);
+  101 |   }
+  102 |
+  103 |   const labels = await page.locator('#tab-17').all();
+  104 |
+  105 |   if (labels.length === 0) {
+  106 |     console.log('⚠️ No field labels found on the page.');
+  107 |     return;
+  108 |   }
+  109 |
+  110 |   console.log(`\n🔍 Found ${labels.length} fields. Extracting values...\n`);
+  111 |
+  112 |   for (const label of labels) {
+  113 |     try {
+  114 |       const labelText = (await label.textContent())?.trim() || '[No Label]';
+  115 |
+  116 |       const container = label.locator('xpath=../../..'); // Go to field container
+  117 |       const valueLocator = container.locator('#tab-17');
+  118 |
+  119 |       let valueText = '[No Value]';
+  120 |       if (await valueLocator.count()) {
+  121 |         valueText = (await valueLocator.first().textContent())?.trim() || '[No Value]';
+  122 |       }
+  123 |
+  124 |       console.log(`📄 ${labelText}: ${valueText}`);
+  125 |     } catch (err) {
+  126 |       console.error('❌ Failed extracting field:', err);
+  127 |     }
+  128 |   }
+  129 |
+  130 |   console.log('\n✅ Extraction complete!');
+  131 | });
+```

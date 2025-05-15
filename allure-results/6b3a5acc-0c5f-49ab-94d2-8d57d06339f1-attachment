@@ -1,0 +1,66 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Generate and Verify Enrollment Link
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-1.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Get The Link' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-1.spec.ts:17:60
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Generate and Verify Enrollment Link', async ({ page }) => {
+   4 |   console.log('🚀 Starting test: Generate and Verify Enrollment Link');
+   5 |
+   6 |   // Step 1: Navigate to Salesforce Login Page
+   7 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Lead/00QQL00000G25ae2AB/view');
+   8 |
+   9 |   // Step 2: Log in to Salesforce
+  10 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  11 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  12 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  13 |
+  14 |
+  15 |   // Step 4: Open "Details" tab and click "Get The Link"
+  16 |   await page.getByRole('tab', { name: 'Details' }).click();
+> 17 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+     |                                                            ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  18 |
+  19 |   // Step 5: Extract the Enrollment Link from the second textarea
+  20 |   const linkLocator = page.locator('textarea.slds-textarea').nth(1);
+  21 |   await linkLocator.waitFor({ state: 'visible', timeout: 5000 });
+  22 |
+  23 |   // Step 6: Retry extraction if necessary
+  24 |   let enrollmentLink = '';
+  25 |   for (let i = 0; i < 5; i++) {
+  26 |     enrollmentLink = await linkLocator.inputValue();
+  27 |     if (enrollmentLink.trim()) break; // Stop if value is found
+  28 |     await page.waitForTimeout(1000);
+  29 |   }
+  30 |
+  31 |   // Step 7: Validate the extracted link
+  32 |   //console.log(`🔗 Extracted Enrollment Link: ${enrollmentLink}`);
+  33 |   //expect(enrollmentLink).not.toBe('');
+  34 |   //expect(enrollmentLink).toMatch(/^https:\/\/qa-ansel-platform\.joinansel\.com\/enrollment\/\?token=.*/);
+  35 |  // console.log('✅ Enrollment link is valid.');
+  36 |
+  37 |   // Step 8: Navigate to the extracted link
+  38 |   await page.goto(enrollmentLink, { waitUntil: 'domcontentloaded' });
+  39 |   console.log('🎯 Successfully navigated to the generated enrollment link!');
+  40 | });
+```

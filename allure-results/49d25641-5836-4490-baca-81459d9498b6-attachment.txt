@@ -1,0 +1,11 @@
+🌐 Navigating to Roster Member record...
+🔐 Logging into Salesforce...
+⏳ Waiting for page to fully load...
+
+🔎 Extracting section: 🧾 Roster Member Details
+⚠️ No fields found in this section.
+
+🔎 Extracting section: 💼 Employment Section
+⚠️ No fields found in this section.
+
+✅ Extraction complete!

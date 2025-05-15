@@ -1,0 +1,68 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]
+Call log:
+  - waiting for locator('//*[@id="__docusaurus"]/nav/div[1]/div[2]/div[2]/button/span[1]/span')
+    - locator resolved to <span class="DocSearch-Button-Placeholder">Search</span>
+    - fill("playwright")
+  - attempting fill action
+    - waiting for element to be visible, enabled and editable
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:37:100
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://playwright.dev/');
+   5 |   const myText = await page.getByRole('heading', { name: 'Playwright enables reliable' }).locator('span');
+   6 |   const color = await myText.evaluate(el => getComputedStyle(el).color);
+   7 |   console.log('🎨 Color:', color);
+   8 |   const hex = color.replace(/[^\d,]/g, '')  // remove non-digits and non-commas
+   9 |     .split(',')                             // split into R, G, B
+  10 |     .slice(0, 3)                            // just take RGB (ignore alpha)
+  11 |     .map(x => (+x).toString(16).padStart(2, '0'))  // convert to hex
+  12 |     .join('')
+  13 |     .toUpperCase();
+  14 |
+  15 |   console.log('🔷 HEX:', `#${hex}`);
+  16 |
+  17 |   const mytext2 = await page.getByRole('link', { name: 'TypeScript' });
+  18 |   const color2 = await mytext2.evaluate(el => getComputedStyle(el).color);
+  19 |   console.log('🎨 Color:', color2);
+  20 |   const hex2 = color2.replace(/[^\d,]/g, '')  // remove non-digits and non-commas
+  21 |     .split(',')                             // split into R, G, B
+  22 |     .slice(0, 3)                            // just take RGB (ignore alpha)
+  23 |     .map(x => (+x).toString(16).padStart(2, '0'))  // convert to hex
+  24 |     .join('')
+  25 |     .toUpperCase();
+  26 |
+  27 |   console.log('🔷 HEX:', `#${hex2}`);
+  28 |   await page.getByRole('button', { name: 'Search' }).click();
+  29 |   //await page.getByPlaceholder('DocSearch-Button-Placeholder').click();
+  30 |   await page.getByRole('searchbox').click();
+  31 |   await page.getByRole('searchbox').fill('playwright');
+  32 |   await page.waitForTimeout(2000);
+  33 |   await page.getByRole('button', { name: 'Clear the query' }).click();
+  34 |   await page.getByRole('button', { name: 'Search', exact: true }).click();
+  35 |
+  36 |   await page.locator('xpath=//*[@id="__docusaurus_skipToContent_fallback"]/header/div/div/a').click();
+> 37 |   await page.locator('xpath=//*[@id="__docusaurus"]/nav/div[1]/div[2]/div[2]/button/span[1]/span').fill('playwright');
+     |                                                                                                    ^ Error: locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]
+  38 | });
+```

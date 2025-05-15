@@ -1,0 +1,92 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Submit proposal form with dynamic data
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:5:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: /^12$/ })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:49:76
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import { addDays, format } from 'date-fns';
+   4 |
+   5 | test('Submit proposal form with dynamic data', async ({ page }) => {
+   6 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTen0AG/view');
+   7 |
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  10 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  11 |
+  12 |   await page.getByRole('tab', { name: 'Details' }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |
+  15 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  16 |   await proposalLink.scrollIntoViewIfNeeded();
+  17 |
+  18 |   const [newPage] = await Promise.all([
+  19 |     page.context().waitForEvent('page'),
+  20 |     proposalLink.click(),
+  21 |   ]);
+  22 |
+  23 |   await newPage.waitForLoadState();
+  24 |
+  25 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+  26 |   await newPage.getByText('Yes, I accept this proposal').click();
+  27 |
+  28 |   const firstName = faker.person.firstName();
+  29 |   const lastName = faker.person.lastName();
+  30 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  31 |   const ackFirstName = faker.person.firstName();
+  32 |   const ackLastName = faker.person.lastName();
+  33 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  34 |
+  35 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  36 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  37 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  38 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  39 |   await newPage.getByText('Ansel enrollment platform').click();
+  40 |
+  41 |   // --- 🗓️ Pick Start Date ---
+  42 |   const today = new Date();
+  43 |   const threeWeeksLater = addDays(today, 21);
+  44 |   const startDay = format(today, 'd'); // no leading zero
+  45 |   const endDay = format(threeWeeksLater, 'd');
+  46 |
+  47 |   // Open and select start date
+  48 |   await newPage.locator('input[name="enrollmentStartDate"]').click();
+> 49 |   await newPage.getByRole('button', { name: new RegExp(`^${startDay}$`) }).click();
+     |                                                                            ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  50 |
+  51 |   // Open and select end date
+  52 |   await newPage.locator('input[name="enrollmentEndDate"]').click();
+  53 |   await newPage.getByRole('button', { name: new RegExp(`^${endDay}$`) }).click();
+  54 |
+  55 |   // --- Acknowledgment ---
+  56 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  57 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  58 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  59 |
+  60 |   await newPage.getByText('By checking this box, I agree').click();
+  61 |
+  62 |   // Optionally click Submit
+  63 |   // await newPage.getByRole('button', { name: 'Submit' }).click();
+  64 |
+  65 |   console.log('✅ Proposal filled successfully');
+  66 | });
+```

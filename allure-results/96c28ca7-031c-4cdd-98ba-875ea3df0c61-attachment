@@ -1,0 +1,46 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Extract Roster Member Details and log values
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:3:5
+
+# Error details
+
+```
+Error: expect.toBeVisible: Error: strict mode violation: getByText('Related') resolved to 5 elements:
+    1) <span class="slds-truncate">Related Contact</span> aka getByText('Related Contact', { exact: true })
+    2) <span lwc-5o3f90k4elv="" class="slds-assistive-text">Related Contact List</span> aka getByText('Related Contact List')
+    3) <span class="slds-truncate">Related Prospects</span> aka getByText('Related Prospects', { exact: true })
+    4) <span lwc-5o3f90k4elv="" class="slds-assistive-text">Related Prospects List</span> aka getByText('Related Prospects List')
+    5) <a role="tab" tabindex="-1" lwc-72usf2nsemu="" data-label="Related" aria-selected="false" aria-controls="tab-1" href="javascript:void(0)" id="relatedListsTab__item" class="slds-tabs_default__link" data-tab-value="relatedListsTab">Related</a> aka getByRole('tab', { name: 'Related' })
+
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByText('Related')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:12:43
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Extract Roster Member Details and log values', async ({ page }) => {
+   4 |   // Step 1: Navigate and login
+   5 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   6 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   7 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   8 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   9 |
+  10 |   await page.waitForTimeout(2000);
+  11 |   await expect(page.getByRole('button', { name: 'Terminate Employment'})).toBeVisible();
+> 12 |   await expect(page.getByText('Related')).toBeVisible();
+     |                                           ^ Error: expect.toBeVisible: Error: strict mode violation: getByText('Related') resolved to 5 elements:
+  13 | });
+```

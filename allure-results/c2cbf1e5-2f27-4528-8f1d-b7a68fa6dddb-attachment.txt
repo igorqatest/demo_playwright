@@ -1,0 +1,48 @@
+🌐 Navigating to login page...
+📸 Screenshot: Login screen
+🔐 Logging in...
+📸 Screenshot: Login credentials filled
+📇 Opening Contacts tab...
+📸 Screenshot: Contacts tab opened
+🆕 Clicking New to open form...
+📸 Screenshot: Empty contact form
+🔍 Verifying field labels...
+🔹 Checking: Contact Owner
+❌ Label not found or not visible: Contact Owner
+🔹 Checking: Salutation
+📸 Verified label: Salutation
+🔹 Checking: First Name
+📸 Verified label: First Name
+🔹 Checking: Last Name
+❌ Label not found or not visible: Last Name
+🔹 Checking: Phone
+❌ Label not found or not visible: Phone
+🔹 Checking: Home Phone
+📸 Verified label: Home Phone
+🔹 Checking: Mobile
+❌ Label not found or not visible: Mobile
+🔹 Checking: Other Phone
+📸 Verified label: Other Phone
+🔹 Checking: Title
+❌ Label not found or not visible: Title
+🔹 Checking: Department
+📸 Verified label: Department
+🔹 Checking: Email
+❌ Label not found or not visible: Email
+🔹 Checking: Fax
+📸 Verified label: Fax
+🔹 Checking: Birthdate
+📸 Verified label: Birthdate
+🔹 Checking: Reports To
+📸 Verified label: Reports To
+🔹 Checking: Lead Source
+📸 Verified label: Lead Source
+🔹 Checking: Website URL
+📸 Verified label: Website URL
+🔹 Checking: URL Name
+📸 Verified label: URL Name
+🔹 Checking: Assistant
+📸 Verified label: Assistant
+🔹 Checking: Asst. Phone
+📸 Verified label: Asst. Phone
+✅ Field label verification complete!

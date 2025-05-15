@@ -1,0 +1,120 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify all fields and buttons are present in Contacts list view
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:3:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: locator('text=Contact Owner').first()
+Expected: visible
+Received: hidden
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for locator('text=Contact Owner').first()
+    9 × locator resolved to <div lwc-5hhgkpas038="" class="slds-popover__body">Contact Owner Alias isn't searchable. Use filters…</div>
+      - unexpected value "hidden"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:82:27
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Verify all fields and buttons are present in Contacts list view', async ({ page }) => {
+   4 |   // Go to your Salesforce Contacts page
+   5 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD'); // <-- Replace with actual URL
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  10 |
+  11 |   console.log('Clicking Log In...');
+  12 |   await page.getByRole('button', { name: 'Log In' }).click();
+  13 |   // Wait for the page to load
+  14 |  await page.waitForTimeout(1500);
+  15 |
+  16 |   await page.getByRole('link', { name: 'Contacts' }).click();
+  17 |
+  18 |   // 🔍 Table column headers
+  19 |   await expect(page.getByRole('button', { name: 'Sort Name' })).toBeVisible();
+  20 |   await expect(page.getByRole('button', { name: 'Sort Account Name' })).toBeVisible();
+  21 |   await expect(page.getByRole('button', { name: 'Sort Title' })).toBeVisible();
+  22 |   await expect(page.getByRole('button', { name: 'Sort Phone' })).toBeVisible();
+  23 |   await expect(page.getByRole('button', { name: 'Sort Email' })).toBeVisible();
+  24 |   await expect(page.getByRole('button', { name: 'Sort Contact Owner Alias' })).toBeVisible();
+  25 |   await expect(page.getByRole('button', { name: 'Refresh Refresh' })).toBeVisible();
+  26 |   await expect(page.getByRole('button', { name: 'Edit List' })).toBeVisible();
+  27 |  
+  28 |
+  29 |
+  30 |   // 🔘 Top action buttons
+  31 |   await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
+  32 |   await expect(page.getByRole('button', { name: 'Intelligence View' })).toBeVisible();
+  33 |   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
+  34 |   await expect(page.getByRole('button', { name: 'Add to Campaign' })).toBeVisible();
+  35 |   await expect(page.getByRole('button', { name: 'Send List Email' })).toBeVisible();
+  36 |
+  37 |   // 🔍 Search box (inside "Search this list...")
+  38 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+  39 |
+  40 |   // 🛠️ List action icons (grid, filters, etc.)
+  41 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible(); // gear icon
+  42 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible(); // funnel/dropdown
+  43 |   
+  44 |
+  45 |   console.log('Navigating to John Bond contact record...');
+  46 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  47 |   
+  48 |
+  49 |
+  50 |   console.log('Navigating to John Bond contact record...');
+  51 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  52 |
+  53 |   console.log('Switching to Details tab...');
+  54 |   await page.getByRole('tab', { name: 'Details' }).click();
+  55 |
+  56 |   
+  57 |
+  58 |   // Wait for stability (if needed)
+  59 |   await page.waitForTimeout(1500);
+  60 |
+  61 |   // ✅ LEFT COLUMN FIELDS
+  62 |   //await expect(page.getByText('Contact Owner')).toBeVisible();
+  63 |
+  64 |   const fields = [
+  65 |     'Contact Owner',
+  66 |     'Name',
+  67 |     'Account Name',
+  68 |     'Title',
+  69 |     'Phone',
+  70 |     'Mobile',
+  71 |     'Fax',
+  72 |     'Email',
+  73 |     'Mailing Address',
+  74 |     'Languages',
+  75 |     'Level',
+  76 |     'Created By',
+  77 |     'Last Modified By'
+  78 |   ];
+  79 |   
+  80 |   for (const field of fields) {
+  81 |     const locator = page.locator(`text=${field}`).first(); // 🧠 pick the first match
+> 82 |     await expect(locator).toBeVisible();
+     |                           ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+  83 |   }
+  84 |   console.log('✅ All contact detail fields are present!');
+  85 |
+  86 |
+  87 | });
+```

@@ -1,0 +1,69 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify Contract Page Elements with Logging
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-12.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('textbox', { name: 'Username' })
+    - locator resolved to <input value="" type="email" id="username" name="username" aria-describedby="error" class="input r4 wide mb16 mt8 username"/>
+    - fill("qa@joinansel.com.qa")
+  - attempting fill action
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-12.spec.ts:10:57
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Verify Contract Page Elements with Logging', async ({ page }) => {
+   4 |   console.log('🚀 Starting test: Verify Contract Page Elements');
+   5 |
+   6 |   // Step 1: Navigate to Salesforce Login Page
+   7 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000HtrOUYAZ/view');
+   8 |
+   9 |   // Step 2: Log in to Salesforce
+> 10 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+     |                                                         ^ Error: locator.fill: Target page, context or browser has been closed
+  11 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  12 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  13 |
+  14 |   // Step 3: Wait for the page to load
+  15 |   await page.waitForTimeout(7000); // Adjust this if needed
+  16 |
+  17 |   // Step 4: Assertions with Logging
+  18 |   const assertions = [
+  19 |     { locator: page.locator('records-entity-label'), text: 'Contract', description: 'Contract label' },
+  20 |     { locator: page.locator('records-highlights2'), text: 'Automation ER 1740580143 | 2025-02-26 09:30:16', description: 'Contract Title' },
+  21 |     { locator: page.getByLabel('Path Options'), text: 'In Approval Process', description: 'Approval Status' },
+  22 |     { locator: page.locator('records-highlights2'), text: 'Contract Term (months)', description: 'Contract Term' },
+  23 |     { locator: page.locator('c-eligible-r-m-s-l-w-c'), text: 'Eligible Roster Members (7)', description: 'Eligible Roster Members section' },
+  24 |     { locator: page.locator('c-eligible-r-m-s-l-w-c'), text: 'Adriana Adaline', description: 'Roster Member Adriana Adaline' }
+  25 |   ];
+  26 |
+  27 |   for (const { locator, text, description } of assertions) {
+  28 |     try {
+  29 |       await expect(locator).toContainText(text);
+  30 |       console.log(`✅ Passed: "${description}" contains text "${text}"`);
+  31 |     } catch (error) {
+  32 |       console.log(`❌ Failed: "${description}" does not contain expected text "${text}"`);
+  33 |     }
+  34 |   }
+  35 |   await expect(page.getByRole('tab', { name: 'Activity' })).toBeVisible();
+  36 |   await expect(page.locator('button').filter({ hasText: 'Mark Status as Complete' })).toBeVisible();
+  37 |   //await expect(page.locator('button').filter({ hasText: 'In Approval Process' })).toBeVisible();
+  38 |   await expect(page.locator('span.title.slds-path__title').nth(1)).toHaveText('In Approval Process');
+  39 |   console.log('🎯 Test completed!');
+  40 | });
+```

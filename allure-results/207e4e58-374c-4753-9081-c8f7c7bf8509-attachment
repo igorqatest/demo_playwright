@@ -1,0 +1,38 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-31.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('option', { name: 'Contacts' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-31.spec.ts:11:56
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   6 |
+   7 |   await page.getByRole('textbox', { name: 'Password' }).click();
+   8 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   9 |   await page.getByRole('button', { name: 'Log In' }).click();
+  10 |   await page.getByRole('combobox', { name: 'Search Setup' }).click();
+> 11 |   await page.getByRole('option', { name: 'Contacts' }).click();
+     |                                                        ^ Error: locator.click: Test ended.
+  12 | });
+```

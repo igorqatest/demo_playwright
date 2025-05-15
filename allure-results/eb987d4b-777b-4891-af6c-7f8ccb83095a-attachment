@@ -1,0 +1,126 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:20:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for locator('lightning-base-combobox-item').locator('text=Web')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:65:66
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | const screenshotDir = 'test-35';
+   6 |
+   7 | // Clean screenshot folder before test
+   8 | if (fs.existsSync(screenshotDir)) {
+   9 |   fs.readdirSync(screenshotDir).forEach(file => {
+   10 |     fs.unlinkSync(path.join(screenshotDir, file));
+   11 |   });
+   12 | } else {
+   13 |   fs.mkdirSync(screenshotDir);
+   14 | }
+   15 | // Helper to log and screenshot
+   16 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+   17 |   console.log(message);
+   18 |   await page.screenshot({ path: `${dir}/${step}.png` });
+   19 | }
+   20 | test('test', async ({ page }) => {
+   21 |  const screenshotDir = 'test-36';
+   22 |    if (fs.existsSync(screenshotDir)) {
+   23 |      fs.readdirSync(screenshotDir).forEach(file => {
+   24 |        fs.unlinkSync(path.join(screenshotDir, file));
+   25 |      });
+   26 |    } else {
+   27 |      fs.mkdirSync(screenshotDir);
+   28 |    }
+   29 |  
+   30 |    console.log('🌐 Opening login page...');
+   31 |    await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   32 |    await logAndScreenshot(page, screenshotDir, '1-login', '📸 Login page loaded');
+   33 |  
+   34 |    console.log('🔐 Logging in...');
+   35 |    await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   36 |    await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   37 |    await logAndScreenshot(page, screenshotDir, '2-login-filled', '📸 Credentials entered');
+   38 |    await page.getByRole('button', { name: 'Log In' }).click();
+   39 |    await page.waitForTimeout(2000);
+   40 |  
+   41 |    console.log('📇 Navigating to Opportunities tab...');
+   42 |
+   43 | // Click search button (if needed)
+   44 | console.log('📇 Navigating to Opportunities tab...');
+   45 |
+   46 | // Click the search button
+   47 | await page.getByRole('button', { name: 'Search' }).click();
+   48 | await page.waitForTimeout(1000);
+   49 |
+   50 | // Click on the "All Opportunities" entry in the dropdown
+   51 | await page.locator('span:has-text("All Opportunities")').first().click();
+   52 |
+   53 | await page.getByRole('link', { name: 'Opportunities' }).click();
+   54 | await page.waitForTimeout(500);
+   55 | await page.getByRole('button', { name: 'New' }).click();
+   56 |
+   57 | // 🔽 Dropdowns
+   58 | await page.locator('button[aria-label="Stage"]').click();
+   59 | await page.getByText('Prospecting').click();
+   60 |
+   61 | await page.locator('button[aria-label="Type"]').click();
+   62 | await page.getByText('New Customer').click();
+   63 |
+   64 | await page.locator('button[aria-label="Lead Source"]').click();
+>  65 |   await page.locator('lightning-base-combobox-item >> text=Web').click();
+      |                                                                  ^ Error: locator.click: Test ended.
+   66 |
+   67 | await page.locator('button[aria-label="Delivery/Installation Status"]').click();
+   68 | await page.getByText('In progress').click();
+   69 |
+   70 | // 📅 Date picker
+   71 | await page.getByRole('textbox', { name: 'Close Date' }).fill('01/01/2025');
+   72 |
+   73 | // 🔢 Text fields
+   74 | await page.getByRole('textbox', { name: 'Opportunity Name' }).fill('Sample Opportunity');
+   75 | await page.getByRole('textbox', { name: 'Amount' }).fill('50000');
+   76 | await page.getByRole('textbox', { name: 'Next Step' }).fill('Follow up demo');
+   77 | await page.getByRole('textbox', { name: 'Probability (%)' }).fill('75');
+   78 | await page.getByRole('textbox', { name: 'Order Number' }).fill('ORD123456');
+   79 | await page.getByRole('textbox', { name: 'Main Competitor(s)' }).fill('Acme Corp');
+   80 | await page.getByRole('textbox', { name: 'Current Generator(s)' }).fill('Model X');
+   81 | await page.getByRole('textbox', { name: 'Tracking Number' }).fill('TRACK78910');
+   82 | await page.getByRole('textbox', { name: 'Description' }).fill('This opportunity is a sample for Playwright testing.');
+   83 |
+   84 | // 🔍 Search box - Account Name
+   85 | await page.getByRole('combobox', { name: 'Account Name' }).fill('Grand Hotels');
+   86 | await page.getByText('Grand Hotels & Resorts Ltd').click(); // Adjust if needed
+   87 |
+   88 | // 🔍 Search box - Primary Campaign Source
+   89 | await page.getByRole('combobox', { name: 'Primary Campaign Source' }).fill('Test Campaign');
+   90 | await page.getByText('Test Campaign').click(); // Adjust if needed
+   91 |
+   92 | // ☑️ Private checkbox (optional)
+   93 | await page.getByRole('checkbox', { name: 'Private' }).check();
+   94 |
+   95 | // 💾 Save
+   96 | await page.getByRole('button', { name: 'Save' }).click();
+   97 |
+   98 | console.log('✅ New Opportunity created successfully!');
+   99 |
+  100 | });
+```

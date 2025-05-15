@@ -1,0 +1,142 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify all fields and buttons are present in Contacts list view
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByLabel(',').getByText('Contacts', { exact: true })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:16:69
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Verify all fields and buttons are present in Contacts list view', async ({ page }) => {
+   4 |   // Go to your Salesforce Contacts page
+   5 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD'); // <-- Replace with actual URL
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   10 |
+   11 |   console.log('Clicking Log In...');
+   12 |   await page.getByRole('button', { name: 'Log In' }).click();
+   13 |   // Wait for the page to load
+   14 |  await page.waitForTimeout(1500);
+   15 |
+>  16 |   await page.getByLabel(',').getByText('Contacts', { exact: true }).click();
+      |                                                                     ^ Error: locator.click: Test ended.
+   17 |
+   18 |   // 🔍 Table column headers
+   19 |   await expect(page.getByRole('button', { name: 'Sort Name' })).toBeVisible();
+   20 |   await expect(page.getByRole('button', { name: 'Sort Account Name' })).toBeVisible();
+   21 |   await expect(page.getByRole('button', { name: 'Sort Title' })).toBeVisible();
+   22 |   await expect(page.getByRole('button', { name: 'Sort Phone' })).toBeVisible();
+   23 |   await expect(page.getByRole('button', { name: 'Sort Email' })).toBeVisible();
+   24 |   await expect(page.getByRole('button', { name: 'Sort Contact Owner Alias' })).toBeVisible();
+   25 |   await expect(page.getByRole('button', { name: 'Refresh Refresh' })).toBeVisible();
+   26 |   await expect(page.getByRole('button', { name: 'Edit List' })).toBeVisible();
+   27 |  
+   28 |
+   29 |
+   30 |   // 🔘 Top action buttons
+   31 |   await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
+   32 |   await expect(page.getByRole('button', { name: 'Intelligence View' })).toBeVisible();
+   33 |   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
+   34 |   await expect(page.getByRole('button', { name: 'Add to Campaign' })).toBeVisible();
+   35 |   await expect(page.getByRole('button', { name: 'Send List Email' })).toBeVisible();
+   36 |
+   37 |   // 🔍 Search box (inside "Search this list...")
+   38 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+   39 |
+   40 |   // 🛠️ List action icons (grid, filters, etc.)
+   41 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible(); // gear icon
+   42 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible(); // funnel/dropdown
+   43 |   
+   44 |
+   45 |   console.log('Navigating to John Bond contact record...');
+   46 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   47 |   
+   48 |
+   49 |
+   50 |   console.log('Navigating to John Bond contact record...');
+   51 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   52 |
+   53 |   console.log('Switching to Details tab...');
+   54 |   await page.getByRole('tab', { name: 'Details' }).click();
+   55 |
+   56 |   
+   57 |
+   58 |   // Wait for stability (if needed)
+   59 |   await page.waitForTimeout(1500);
+   60 |
+   61 |   // ✅ LEFT COLUMN FIELDS
+   62 |   await expect(page.locator('#tab-5').getByText('Contact Owner')).toBeVisible();
+   63 |
+   64 |   await expect(page.getByText('Name')).toBeVisible();
+   65 |   await expect(page.getByText('Mr. John Bond')).toBeVisible();
+   66 |
+   67 |   await expect(page.getByText('Account Name')).toBeVisible();
+   68 |   await expect(page.getByRole('link', { name: 'Grand Hotels & Resorts Ltd' })).toBeVisible();
+   69 |
+   70 |   await expect(page.getByText('Title')).toBeVisible();
+   71 |   await expect(page.getByText('VP, Facilities')).toBeVisible();
+   72 |
+   73 |   await expect(page.getByText('Department')).toBeVisible();
+   74 |   await expect(page.getByText('Facilities')).toBeVisible();
+   75 |
+   76 |   await expect(page.getByText('Birthdate')).toBeVisible();
+   77 |   await expect(page.getByText('11. 01. 1961.')).toBeVisible();
+   78 |
+   79 |   await expect(page.getByText('Lead Source')).toBeVisible();
+   80 |   await expect(page.getByText('External Referral')).toBeVisible();
+   81 |
+   82 |   await expect(page.getByText('Website URL')).toBeVisible();
+   83 |   await expect(page.getByRole('link', { name: 'https://playwright.dev/' })).toBeVisible();
+   84 |
+   85 |   // ✅ RIGHT COLUMN FIELDS
+   86 |   await expect(page.getByText('Phone')).toBeVisible();
+   87 |   await expect(page.getByText('(312) 596-1000')).toBeVisible();
+   88 |
+   89 |   await expect(page.getByText('Mobile')).toBeVisible();
+   90 |   await expect(page.getByText('(312) 596-1563')).toBeVisible();
+   91 |
+   92 |   await expect(page.getByText('Fax')).toBeVisible();
+   93 |   await expect(page.getByText('(312) 596-1500')).toBeVisible();
+   94 |
+   95 |   await expect(page.getByText('Email')).toBeVisible();
+   96 |   await expect(page.getByText('bond_john@grandhotels.com')).toBeVisible();
+   97 |
+   98 |   await expect(page.getByText('Mailing Address')).toBeVisible();
+   99 |   await expect(page.getByText('2334 N. Michigan Avenue')).toBeVisible(); // partial match might be needed
+  100 |
+  101 |   await expect(page.getByText('Languages')).toBeVisible();
+  102 |   await expect(page.getByText('English')).toBeVisible();
+  103 |
+  104 |   await expect(page.getByText('Level')).toBeVisible();
+  105 |   await expect(page.getByText('Primary')).toBeVisible();
+  106 |
+  107 |   await expect(page.getByText('Created By')).toBeVisible();
+  108 |   await expect(page.getByText('24. 03. 2025.')).toBeVisible();
+  109 |
+  110 |   await expect(page.getByText('Last Modified By')).toBeVisible();
+  111 |   await expect(page.getByText('28. 03. 2025.')).toBeVisible();
+  112 |
+  113 |   console.log('✅ All contact detail fields are present!');
+  114 |
+  115 |
+  116 | });
+```

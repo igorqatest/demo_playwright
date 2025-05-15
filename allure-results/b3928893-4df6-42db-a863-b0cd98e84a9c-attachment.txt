@@ -1,0 +1,20 @@
+Filling in username...
+Clicking Log In...
+Navigating to John Bond contact record...
+Navigating to John Bond contact record...
+Switching to Details tab...
+✅ Field found: Account Name
+✅ Field found: Title
+✅ Field found: Department
+✅ Field found: Birthdate
+✅ Field found: Mobile
+✅ Field found: Fax
+✅ Field found: Email
+✅ Field found: Lead Source
+✅ Field found: Website URL
+✅ Field found: Mailing Address
+✅ Field found: Languages
+✅ Field found: Level
+✅ Field found: Last Modified By
+✅ Field found: Created By
+✅ All contact detail fields are present!

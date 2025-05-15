@@ -1,0 +1,40 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for locator('a.Button-label')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:13:40
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/');
+   5 |   
+   6 |   //await page.getByText('Sign up').first().click();  // works
+   7 |   //await page.locator('//a[contains(text(), "Sign in")]').click(); 
+   8 |   //await page.locator('header').getByText('Sign up').click(); // works
+   9 |   //await page.getByText('Sign up').nth(1).click(); // works
+  10 |   await page.locator('a.HeaderMenu-link--sign-in').click(); // works
+  11 |   //await page.getByText('Sign in with a passkey').click(); // works
+  12 |   //await page.locator('span').getByText('Sign in with a passkey').click(); // works
+> 13 |   await page.locator('a.Button-label').click();
+     |                                        ^ Error: locator.click: Test ended.
+  14 | });
+```

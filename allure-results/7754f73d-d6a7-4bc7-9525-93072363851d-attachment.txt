@@ -1,0 +1,6 @@
+✅ Logged into Salesforce
+🔗 Clicked CS- link
+👤 Clicked first prospective
+🎂 DOB: 04/08/1984, 🔐 SSN: 692-74-5197
+🧷 Clicked "Get The Link"
+🔗 Link extracted from anchor: https://www.google.com/maps?q=Texas

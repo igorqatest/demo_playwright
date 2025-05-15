@@ -1,0 +1,159 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ✅ Verify Contact record UI and detail fields
+- Location: /Users/pejin/Documents/Playwright QA/tests/Contact-sort.spec.ts:7:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: getByRole('button', { name: 'Sort Name' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByRole('button', { name: 'Sort Name' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/Contact-sort.spec.ts:59:54
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 | import { config } from './test.config'; // adjust the path if needed
+   5 |
+   6 |
+   7 | test('✅ Verify Contact record UI and detail fields', async ({ page }) => {
+   8 |   const screenshotDir = 'demo-33';
+   9 |
+   10 |   // ♻️ Clean or create screenshot folder
+   11 |   if (fs.existsSync(screenshotDir)) {
+   12 |     fs.rmSync(screenshotDir, { recursive: true, force: true });
+   13 |   }
+   14 |   fs.mkdirSync(screenshotDir);
+   15 |
+   16 |   console.log('🌐 Navigating to Salesforce Contacts page...');
+   17 |   await page.goto(config.url);
+   18 |   await page.screenshot({ path: `${screenshotDir}/1-login-screen.png` });
+   19 |
+   20 |   console.log('📝 Logging in...');
+   21 |   //await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   22 |     await page.getByRole('textbox', { name: 'Username' }).fill(config.username);
+   23 |
+   24 |   await page.screenshot({ path: `${screenshotDir}/2-username.png` });
+   25 |
+   26 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   27 |   await page.screenshot({ path: `${screenshotDir}/3-password.png` });
+   28 |
+   29 |   await page.getByRole('button', { name: 'Log In' }).click();
+   30 |   await page.waitForTimeout(2000);
+   31 |
+   32 |   console.log('📇 Navigating to Contacts tab...');
+   33 |
+   34 |   await page.getByRole('combobox', { name: 'Search Setup' }).fill('Contacts');
+   35 |   await page.getByRole('combobox', { name: 'Search Setup' }).press('Enter');
+   36 |   await page.waitForTimeout(1000);
+   37 |
+   38 |   
+   39 |   await page.screenshot({ path: `${screenshotDir}/4-contacts-tab.png` });
+   40 |
+   41 |   console.log('🔍 Verifying list view header buttons...');
+   42 |   const headerButtons = [
+   43 |     'Sort Name',
+   44 |     'Sort Account Name',
+   45 |     'Sort Title',
+   46 |     'Sort Phone',
+   47 |     'Sort Email',
+   48 |     'Sort Contact Owner Alias',
+   49 |     'Refresh Refresh',
+   50 |     'Edit List',
+   51 |     'New',
+   52 |     'Intelligence View',
+   53 |     'Import',
+   54 |     'Add to Campaign',
+   55 |     'Send List Email'
+   56 |   ];
+   57 |
+   58 |   for (const name of headerButtons) {
+>  59 |     await expect(page.getByRole('button', { name })).toBeVisible();
+      |                                                      ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+   60 |     console.log(`✅ Button visible: ${name}`);
+   61 |   }
+   62 |
+   63 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+   64 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible();
+   65 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible();
+   66 |
+   67 |   console.log('📁 Opening John Bond contact...');
+   68 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   69 |   await page.waitForTimeout(1500);
+   70 |   await page.screenshot({ path: `${screenshotDir}/5-john-bond-open.png` });
+   71 |
+   72 |   console.log('🧾 Switching to Details tab...');
+   73 |   await page.getByRole('tab', { name: 'Details' }).click();
+   74 |   await page.waitForTimeout(1500);
+   75 |   await page.screenshot({ path: `${screenshotDir}/6-details-tab.png` });
+   76 |  await page.waitForTimeout(2000);
+   77 |   console.log('🔄 Scrolling through the page to ensure lazy-loaded fields render...');
+   78 |   for (let i = 0; i < 10; i++) {
+   79 |     await page.mouse.wheel(0, 300);
+   80 |     await page.waitForTimeout(200);
+   81 |   }
+   82 |  await page.waitForTimeout(2000);
+   83 |   const fields = [
+   84 |     'Contact Owner',
+   85 |     'Name',
+   86 |     'Account Name',
+   87 |     'Title',
+   88 |     'Department',
+   89 |     'Birthdate',
+   90 |     'Phone',
+   91 |     'Mobile',
+   92 |     'Fax',
+   93 |     'Email',
+   94 |     'Lead Source',
+   95 |     'Website URL',
+   96 |     'Mailing Address',
+   97 |     'Languages',
+   98 |     'Level',
+   99 |     'Last Modified By',
+  100 |     'Created By'
+  101 |   ];
+  102 |
+  103 |   //const detailsTab = page.locator('#tab-3');
+  104 |   
+  105 |   const detailsTab = page.locator('.test-id__field-label');
+  106 |   console.log('🧪 Verifying detail fields in Details tab...');
+  107 |
+  108 |   for (const field of fields) {
+  109 |     try {
+  110 |       //const label = detailsTab.locator('.test-id__field-label').filter({ hasText: field });
+  111 |       const label = detailsTab.filter({ hasText: field });
+  112 |       const count = await label.count();
+  113 |
+  114 |       if (count === 0) {
+  115 |         console.log(`❌ Field not found: ${field}`);
+  116 |         await page.screenshot({ path: `${screenshotDir}/missing-${field.replace(/\s+/g, '_')}.png` });
+  117 |       } else {
+  118 |         console.log(`✅ Field found: ${field}`);
+  119 |         await expect(label.first()).toBeVisible();
+  120 |       }
+  121 |     } catch (err) {
+  122 |       console.error(`❌ Error checking field "${field}": ${err.message}`);
+  123 |       await page.screenshot({ path: `${screenshotDir}/error-${field.replace(/\s+/g, '_')}.png` });
+  124 |     }
+  125 |   }
+  126 |
+  127 |   console.log('🎉 Contact detail field verification complete!');
+  128 | });
+```

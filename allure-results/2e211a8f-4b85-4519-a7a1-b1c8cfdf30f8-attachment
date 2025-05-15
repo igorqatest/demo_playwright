@@ -1,0 +1,149 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ✅ Verify Contact record UI and detail fields
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:5:5
+
+# Error details
+
+```
+Error: expect.toBeVisible: Error: strict mode violation: getByRole('button', { name: 'Name' }) resolved to 4 elements:
+    1) <a role="button" href="javascript:void(0);" data-aura-rendered-by="40:746;a" class="toggle slds-th__action slds-text-link--reset ">…</a> aka getByRole('button', { name: 'Sort Name' })
+    2) <button aria-haspopup="true" aria-expanded="false" data-aura-rendered-by="2030:0" class="slds-button slds-button_icon-bare" aria-describedby="salesforce-lightning-tooltip-bubble_6ebc98a8-0501-4c02-dd0c-4759bb8e39fb">…</button> aka getByRole('button', { name: 'Show Name Column Actions' })
+    3) <a role="button" href="javascript:void(0);" data-aura-rendered-by="57:746;a" class="toggle slds-th__action slds-text-link--reset ">…</a> aka getByRole('button', { name: 'Sort Account Name' })
+    4) <button aria-haspopup="true" aria-expanded="false" data-aura-rendered-by="2048:0" class="slds-button slds-button_icon-bare" aria-describedby="salesforce-lightning-tooltip-bubble_6ebc98a8-0501-4c02-dd0c-4759bb8e39fb">…</button> aka getByRole('button', { name: 'Show Account Name Column' })
+
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByRole('button', { name: 'Name' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:51:54
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | test('✅ Verify Contact record UI and detail fields', async ({ page }) => {
+   6 |   const screenshotDir = 'demo-33';
+   7 |
+   8 |   // ♻️ Clean or create screenshot folder
+   9 |   if (fs.existsSync(screenshotDir)) {
+   10 |     fs.rmSync(screenshotDir, { recursive: true, force: true });
+   11 |   }
+   12 |   fs.mkdirSync(screenshotDir);
+   13 |
+   14 |   console.log('🌐 Navigating to Salesforce Contacts page...');
+   15 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   16 |   await page.screenshot({ path: `${screenshotDir}/1-login-screen.png` });
+   17 |   await page.pause();
+   18 |   console.log('📝 Logging in...');
+   19 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   20 |   await page.screenshot({ path: `${screenshotDir}/2-username.png` });
+   21 |
+   22 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   23 |   await page.screenshot({ path: `${screenshotDir}/3-password.png` });
+   24 |
+   25 |   await page.getByRole('button', { name: 'Log In' }).click();
+   26 |   await page.waitForTimeout(2000);
+   27 |
+   28 |   console.log('📇 Navigating to Contacts tab...');
+   29 |   await page.getByRole('link', { name: 'Contacts' }).click();
+   30 |   await page.waitForTimeout(2000);
+   31 |   await page.screenshot({ path: `${screenshotDir}/4-contacts-tab.png` });
+   32 |
+   33 |   console.log('🔍 Verifying list view header buttons...');
+   34 |   const headerButtons = [
+   35 |     'Name',
+   36 |     'Account Name',
+   37 |     'Title',
+   38 |     'Phone',
+   39 |     'Email',
+   40 |     'Contact Owner Alias',
+   41 |     'Refresh Refresh',
+   42 |     'Edit List',
+   43 |     'New',
+   44 |     'Intelligence View',
+   45 |     'Import',
+   46 |     'Add to Campaign',
+   47 |     'Send List Email'
+   48 |   ];
+   49 |
+   50 |   for (const name of headerButtons) {
+>  51 |     await expect(page.getByRole('button', { name })).toBeVisible();
+      |                                                      ^ Error: expect.toBeVisible: Error: strict mode violation: getByRole('button', { name: 'Name' }) resolved to 4 elements:
+   52 |     console.log(`✅ Button visible: ${name}`);
+   53 |   }
+   54 |
+   55 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+   56 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible();
+   57 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible();
+   58 |
+   59 |   console.log('📁 Opening John Bond contact...');
+   60 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   61 |   await page.waitForTimeout(1500);
+   62 |   await page.screenshot({ path: `${screenshotDir}/5-john-bond-open.png` });
+   63 |
+   64 |   console.log('🧾 Switching to Details tab...');
+   65 |   await page.getByRole('tab', { name: 'Details' }).click();
+   66 |   await page.waitForTimeout(1500);
+   67 |   await page.screenshot({ path: `${screenshotDir}/6-details-tab.png` });
+   68 |
+   69 |   console.log('🔄 Scrolling through the page to ensure lazy-loaded fields render...');
+   70 |   for (let i = 0; i < 10; i++) {
+   71 |     await page.mouse.wheel(0, 300);
+   72 |     await page.waitForTimeout(200);
+   73 |   }
+   74 |
+   75 |   const fields = [
+   76 |     'Contact Owner',
+   77 |     'Name',
+   78 |     'Account Name',
+   79 |     'Title',
+   80 |     'Department',
+   81 |     'Birthdate',
+   82 |     'Phone',
+   83 |     'Mobile',
+   84 |     'Fax',
+   85 |     'Email',
+   86 |     'Lead Source',
+   87 |     'Website URL',
+   88 |     'Mailing Address',
+   89 |     'Languages',
+   90 |     'Level',
+   91 |     'Last Modified By',
+   92 |     'Created By'
+   93 |   ];
+   94 |
+   95 |   const detailsTab = page.locator('#tab-3');
+   96 |   console.log('🧪 Verifying detail fields in Details tab...');
+   97 |
+   98 |   for (const field of fields) {
+   99 |     try {
+  100 |       const label = detailsTab.locator('.test-id__field-label').filter({ hasText: field });
+  101 |       const count = await label.count();
+  102 |
+  103 |       if (count === 0) {
+  104 |         console.log(`❌ Field not found: ${field}`);
+  105 |         await page.screenshot({ path: `${screenshotDir}/missing-${field.replace(/\s+/g, '_')}.png` });
+  106 |       } else {
+  107 |         console.log(`✅ Field found: ${field}`);
+  108 |         await expect(label.first()).toBeVisible();
+  109 |       }
+  110 |     } catch (err) {
+  111 |       console.error(`❌ Error checking field "${field}": ${err.message}`);
+  112 |       await page.screenshot({ path: `${screenshotDir}/error-${field.replace(/\s+/g, '_')}.png` });
+  113 |     }
+  114 |   }
+  115 |
+  116 |   console.log('🎉 Contact detail field verification complete!');
+  117 | });
+```

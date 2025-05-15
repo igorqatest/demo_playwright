@@ -1,0 +1,82 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔐 Login and navigate to Dickenson plc Account record
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-40.spec.ts:21:5
+
+# Error details
+
+```
+Error: page.waitForLoadState: Target page, context or browser has been closed
+=========================== logs ===========================
+  "commit" event fired
+  "domcontentloaded" event fired
+  "load" event fired
+============================================================
+    at /Users/pejin/Documents/Playwright QA/tests/test-40.spec.ts:43:16
+    at /Users/pejin/Documents/Playwright QA/tests/test-40.spec.ts:37:3
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Contact/003WU00000KMzEZYA1/view');
+   5 |   await page.getByRole('textbox', { name: 'Username'}).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password'}).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log in'}).click();
+   8 |   await page.waitForTimeout(1000);
+   9 |   await page.getByRole('button', { name: 'App Launcher' }).click();
+  10 |   await page.waitForTimeout(1000);
+  11 |
+  12 |   await page.getByRole('option', { name: 'Service', exact: true }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |
+  15 |   await page.getByRole('link', { name: 'Accounts' }).click();
+  16 |   await page.getByRole('link', { name: 'Dickenson plc', exact: true }).click();
+  17 | }); */
+  18 |
+  19 | import { test, expect } from '@playwright/test';
+  20 |
+  21 | test('🔐 Login and navigate to Dickenson plc Account record', async ({ page }) => {
+  22 |   await test.step('🌐 Navigate to Salesforce login page', async () => {
+  23 |     await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Contact/003WU00000KMzEZYA1/view', {
+  24 |       waitUntil: 'domcontentloaded',
+  25 |     });
+  26 |   });
+  27 |
+  28 |   await test.step('🔑 Log into Salesforce', async () => {
+  29 |     await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  30 |     await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  31 |     await page.getByRole('button', { name: 'Log in' }).click();
+  32 |
+  33 |     // Wait for homepage to load
+  34 |     await expect(page.getByRole('button', { name: 'App Launcher' })).toBeVisible();
+  35 |   });
+  36 |
+  37 |   await test.step('🧭 Open Service App from App Launcher', async () => {
+  38 |     await page.getByRole('button', { name: 'App Launcher' }).click();
+  39 |     await expect(page.getByRole('option', { name: 'Service', exact: true })).toBeVisible();
+  40 |     await page.getByRole('option', { name: 'Service', exact: true }).click();
+  41 |
+  42 |     // Optional: wait for tab to switch
+> 43 |     await page.waitForLoadState('networkidle');
+     |                ^ Error: page.waitForLoadState: Target page, context or browser has been closed
+  44 |   });
+  45 |
+  46 |   await test.step('🏢 Navigate to Accounts > Dickenson plc', async () => {
+  47 |     await page.getByRole('link', { name: 'Accounts' }).click();
+  48 |     await expect(page.getByRole('link', { name: 'Dickenson plc', exact: true })).toBeVisible();
+  49 |     await page.getByRole('link', { name: 'Dickenson plc', exact: true }).click();
+  50 |   });
+  51 |
+  52 |   console.log('✅ Navigation to Dickenson plc complete.');
+  53 | });
+```

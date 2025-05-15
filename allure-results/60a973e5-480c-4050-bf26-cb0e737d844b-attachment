@@ -1,0 +1,90 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:14:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByText('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial') resolved to 11 elements:
+    1) <yt-formatted-string force-default-style="" class="style-scope ytd-watch-metadata" title="Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial">Playwright Tutorial Full Course 2024 | Playwright…</yt-formatted-string> aka getByRole('heading', { name: 'Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', exact: true }).locator('yt-formatted-string')
+    2) <yt-formatted-string force-default-style="" class="style-scope ytd-video-primary-info-renderer">Playwright Tutorial Full Course 2024 | Playwright…</yt-formatted-string> aka locator('#info-contents').getByText('Playwright Tutorial Full')
+    3) <yt-formatted-string class="style-scope ytd-video-description-header-renderer">Playwright Tutorial Full Course 2024 | Playwright…</yt-formatted-string> aka locator('#panels').getByText('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial')
+    4) <span id="video-title" class="style-scope ytd-playlist-panel-video-renderer" title="Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial" aria-label="Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial by Testers Talk 6 hours, 55 minutes">↵          Playwright Tutorial Full Course 2024 |…</span> aka getByRole('link', { name: '▶ Playwright Tutorial Full' })
+    5) <a target="" tabindex="0" force-new-state="true" href="/watch?v=2poXBtifpzA&list=PLUeDIlio4THEgPRVJRqZRS8uw8hhVNQCM" class="yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color">Playwright Tutorial Full Course 2024 | Playwright…</a> aka locator('.yt-content-metadata-view-model-wiz__metadata-row > .yt-core-attributed-string > .yt-core-attributed-string__link').first()
+    6) <a target="" tabindex="0" force-new-state="true" href="/watch?v=2poXBtifpzA&list=PLUeDIlio4THF3rnYZ63qkbHwMTXiG67vz" class="yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color">Playwright Tutorial Full Course 2024 | Playwright…</a> aka locator('yt-lockup-view-model:nth-child(2) > .yt-lockup-view-model-wiz > .yt-lockup-view-model-wiz__metadata > .yt-lockup-metadata-view-model-wiz--horizontal > .yt-lockup-metadata-view-model-wiz__text-container > .yt-lockup-metadata-view-model-wiz__metadata > .yt-content-metadata-view-model-wiz > div:nth-child(4) > .yt-core-attributed-string > .yt-core-attributed-string__link').first()
+    7) <a target="" tabindex="0" force-new-state="true" href="/watch?v=2poXBtifpzA&list=PLUeDIlio4THEvZ6mygfkOwSFncrVtd8Hk" class="yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color">Playwright Tutorial Full Course 2024 | Playwright…</a> aka locator('ytd-item-section-renderer:nth-child(8) > #contents > yt-lockup-view-model > .yt-lockup-view-model-wiz > .yt-lockup-view-model-wiz__metadata > .yt-lockup-metadata-view-model-wiz--horizontal > .yt-lockup-metadata-view-model-wiz__text-container > .yt-lockup-metadata-view-model-wiz__metadata > .yt-content-metadata-view-model-wiz > div:nth-child(4) > .yt-core-attributed-string > .yt-core-attributed-string__link').first()
+    8) <a target="" tabindex="0" force-new-state="true" href="/watch?v=2poXBtifpzA&list=PLUeDIlio4THH26-8TItkmNzAybQ9kBUZ5" class="yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color">Playwright Tutorial Full Course 2024 | Playwright…</a> aka locator('ytd-item-section-renderer:nth-child(8) > #contents > yt-lockup-view-model:nth-child(3) > .yt-lockup-view-model-wiz > .yt-lockup-view-model-wiz__metadata > .yt-lockup-metadata-view-model-wiz--horizontal > .yt-lockup-metadata-view-model-wiz__text-container > .yt-lockup-metadata-view-model-wiz__metadata > .yt-content-metadata-view-model-wiz > div:nth-child(4) > .yt-core-attributed-string > .yt-core-attributed-string__link')
+    9) <yt-formatted-string class="style-scope ytd-video-renderer" aria-label="Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial by Testers Talk 75,385 views 1 year ago 6 hours, 55 minutes">Playwright Tutorial Full Course 2024 | Playwright…</yt-formatted-string> aka locator('ytd-two-column-search-results-renderer').getByText('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', { exact: true })
+    10) <a target="" tabindex="0" force-new-state="true" href="/watch?v=2poXBtifpzA&list=PLUeDIlio4THFSOUcVo_Cfam8I_IO483mV" class="yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color">Playwright Tutorial Full Course 2024 | Playwright…</a> aka locator('yt-lockup-view-model:nth-child(11) > .yt-lockup-view-model-wiz > .yt-lockup-view-model-wiz__metadata > .yt-lockup-metadata-view-model-wiz--horizontal > .yt-lockup-metadata-view-model-wiz__text-container > .yt-lockup-metadata-view-model-wiz__metadata > .yt-content-metadata-view-model-wiz > div:nth-child(3) > .yt-core-attributed-string > .yt-core-attributed-string__link')
+    ...
+
+Call log:
+  - waiting for getByText('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:44:94
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.youtube.com/');
+   4 |    await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+   5 |    await page.getByRole('combobox', { name: 'Search' }).fill('playwright by testers');
+   6 |    await page.waitForTimeout(500);
+   7 |    await page.getByRole('combobox', { name: 'Search' }).press('Enter');
+   8 |    await page.getByRole('link', { name: 'Playwright by Testers Talk☑️' }).click();
+   9 | });
+  10 |  */
+  11 |
+  12 | import { test, expect } from '@playwright/test';
+  13 |
+  14 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+  15 |   await page.goto('https://www.youtube.com/');
+  16 |
+  17 |   // Dismiss cookie banner if present
+  18 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  19 |   if (await rejectCookies.isVisible()) {
+  20 |     await rejectCookies.click();
+  21 |   }
+  22 |
+  23 |   // Search input
+  24 |   const searchInput = page.getByRole('combobox', { name: /Search/i });
+  25 |   await searchInput.waitFor({ state: 'visible' });
+  26 |   await searchInput.fill('playwright by testers');
+  27 |   await page.waitForTimeout(500);
+  28 |   // 🔍 Click the Search button instead of pressing Enter
+  29 |   /* const searchButton = page.getByRole('button', { name: /Search/i });
+  30 |   await searchButton.click(); */
+  31 |   await searchInput.press('Enter');
+  32 |
+  33 |
+  34 |   const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i });
+  35 |   await videoLink.waitFor({ state: 'visible', timeout: 10000 });
+  36 |   await videoLink.click(); 
+  37 |
+  38 |   //await expect(page).toHaveURL(/watch/);
+  39 |   //await expect(page.getByRole('heading', { name: 'Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', exact: true }).locator('yt-formatted-string')).toContainText('Playwright');
+  40 |   //await expect(page).toHaveTitle('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial');
+  41 |   await page.waitForTimeout(1000);
+  42 |   /* const signIn = page.getByRole('link', { name: 'Sign in' });
+  43 |   await signIn.click(); */
+> 44 |   await page.getByText('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial').click();
+     |                                                                                              ^ Error: locator.click: Error: strict mode violation: getByText('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial') resolved to 11 elements:
+  45 |
+  46 |   await  page.goto('https://github.com/');
+  47 |   await page.getByRole('link', { name: 'Sign in' }).click();
+  48 |   await page.waitForTimeout(2000);
+  49 |   await page.getByLabel('Homepage', { exact: true}).click();
+  50 |
+  51 |   console.log('✅ Test passed');
+  52 | });
+```

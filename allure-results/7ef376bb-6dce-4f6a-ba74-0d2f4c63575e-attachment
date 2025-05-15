@@ -1,0 +1,51 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-21.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Error: strict mode violation: getByLabel('Search', { exact: true }) resolved to 3 elements:
+    1) <button title="Search" aria-label="Search" class="ytSearchboxComponentSearchButton">…</button> aka getByRole('button', { name: 'Search' })
+    2) <button id="button" aria-label="Search" class="style-scope yt-icon-button">…</button> aka locator('#search-button-narrow').getByLabel('Search')
+    3) <button title="Search" aria-label="Search" data-tooltip-opaque="false" class="ytp-button ytp-search-button">…</button> aka getByLabel('YouTube Video Player').getByLabel('Search')
+
+Call log:
+  - waiting for getByLabel('Search', { exact: true })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-21.spec.ts:13:52
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 | const testingWeb = [ 'Playwright by Testers Talk', 'Cypress by Testers Talk', 'API Testing by Testers Talk'];
+   5 | for (const name of testingWeb) {
+   6 |   await page.goto('https://www.youtube.com/');
+   7 |
+   8 |   // Dismiss cookie banner if present
+   9 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  10 |   if (await rejectCookies.isVisible()) {
+  11 |     await rejectCookies.click();
+  12 |   }
+> 13 |   await page.getByLabel('Search', { exact: true }).fill(name);
+     |                                                    ^ Error: locator.fill: Error: strict mode violation: getByLabel('Search', { exact: true }) resolved to 3 elements:
+  14 |     await page.getByLabel('Search', { exact: true }).press('Enter');
+  15 |
+  16 |     await page.getByRole('link', { name: name }).first().click();
+  17 |
+  18 | }
+  19 |
+  20 |
+  21 | });
+```

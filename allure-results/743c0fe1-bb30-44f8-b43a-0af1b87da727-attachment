@@ -1,0 +1,62 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Testing
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-20.spec.ts:3:5
+
+# Error details
+
+```
+TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('span.test-id__field-value a').filter({ hasText: 'https' }) to be visible
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-20.spec.ts:17:18
+```
+
+# Test source
+
+```ts
+   1 | import {test, expect} from '@playwright/test';
+   2 |
+   3 | test('Testing', async ({page})=>{
+   4 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view');
+   5 |     // Step 2: Log in to Salesforce
+   6 |     
+   7 |     /* await page.getByRole('textbox', {name: 'Username'}).fill('qa@joinansel.com.qa');
+   8 |     await page.getByRole('textbox', {name: 'Password'}).fill('qa@joinansel.com.qa');
+   9 |     await page.getByRole('button', {name: 'Log In to Sandbox'}).click();
+  10 |     await page.waitForTimeout(5000); */
+  11 |    await page.getByRole('textbox', { name: 'Username'}).fill('qa@joinansel.com.qa');
+  12 |    await page.getByRole('textbox', { name: 'Password'}).fill('q8xPmBoudN1W');
+  13 |    await page.getByRole('button', { name: 'Log In to Sandbox' })
+  14 |
+  15 |     //const linkSpan = page.locator('span.test-id__field-value').filter({ hasText: 'https' });
+  16 |    const linkTag = page.locator('span.test-id__field-value a').filter({ hasText: 'https' });
+> 17 |    await linkTag.waitFor({ state: 'visible', timeout: 10000 });
+     |                  ^ TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+  18 |    let linkText = await linkTag.innerText();
+  19 |    if (!linkText.trim()) {
+  20 |     console.log('⚠️ Link is empty. Clicking "Edit Employee Shopping Link" to reveal it...');
+  21 |     // Click the Edit button
+  22 |     //await page.locator('button[title="Edit Employee Shopping Link"]').click();
+  23 |
+  24 |     // Wait for the field to update
+  25 |     await page.waitForTimeout(2000); // Adjust if needed
+  26 |
+  27 |     // Extract the updated text
+  28 |     linkText = await page.locator('span.test-id__field-value').filter({ hasText: 'https' }).innerText();
+  29 |     console.log(`✅ Found Updated Enrollment Link: ${linkText}`);
+  30 | }
+  31 |
+  32 | // Navigate to the extracted link
+  33 | await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+  34 | });
+  35 |
+  36 |
+```

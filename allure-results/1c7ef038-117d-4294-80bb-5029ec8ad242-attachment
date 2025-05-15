@@ -1,0 +1,59 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Navigate to camrobert profile and click avatar
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:14:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: locator('img[alt="camrobert"]')
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for locator('img[alt="camrobert"]')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:27:54
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/camrobert/SalesforceMarketingCloud/tree/main/SQL/Introduction%20to%20SQL');
+   5 |   await page.waitForTimeout(1000);
+   6 |   //await page.getByRole('link', { name: 'camrobert'}).click();
+   7 |   await page.locator('#repository-container-header').getByRole('link', { name: 'camrobert' })
+   8 |   await page.waitForTimeout(1000);
+   9 |   await page.getByAltText('View camrobert\'s full-sized avatar').click();
+  10 | }); */
+  11 |
+  12 | import { test, expect } from '@playwright/test';
+  13 |
+  14 | test('Navigate to camrobert profile and click avatar', async ({ page }) => {
+  15 |   // Go to the GitHub repo
+  16 |   await page.goto('https://github.com/camrobert/SalesforceMarketingCloud/tree/main/SQL/Introduction%20to%20SQL');
+  17 |   await page.waitForTimeout(1000);
+  18 |
+  19 |   // Click on the username link inside the repo header
+  20 |   await page.locator('#repository-container-header').getByRole('link', { name: 'camrobert' }).click();
+  21 |   await page.waitForTimeout(1000);
+  22 |
+  23 |   // Click the avatar
+  24 |   await page.getByAltText("View camrobert's full-sized avatar").click();
+  25 |
+  26 |   // Optional: Validate avatar popup appears
+> 27 |   await expect(page.locator('img[alt="camrobert"]')).toBeVisible();
+     |                                                      ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+  28 | });
+```

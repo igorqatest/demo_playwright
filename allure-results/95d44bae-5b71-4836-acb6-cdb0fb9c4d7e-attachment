@@ -1,0 +1,150 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: ✅ Verify Contact record UI and detail fields
+- Location: /Users/pejin/Documents/Playwright QA/tests/Contact-sort.spec.ts:7:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('link', { name: 'Contacts' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/Contact-sort.spec.ts:33:54
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 | import { config } from './test.config'; // adjust the path if needed
+   5 |
+   6 |
+   7 | test('✅ Verify Contact record UI and detail fields', async ({ page }) => {
+   8 |   const screenshotDir = 'demo-33';
+   9 |
+   10 |   // ♻️ Clean or create screenshot folder
+   11 |   if (fs.existsSync(screenshotDir)) {
+   12 |     fs.rmSync(screenshotDir, { recursive: true, force: true });
+   13 |   }
+   14 |   fs.mkdirSync(screenshotDir);
+   15 |
+   16 |   console.log('🌐 Navigating to Salesforce Contacts page...');
+   17 |   await page.goto(config.url);
+   18 |   await page.screenshot({ path: `${screenshotDir}/1-login-screen.png` });
+   19 |
+   20 |   console.log('📝 Logging in...');
+   21 |   //await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   22 |     await page.getByRole('textbox', { name: 'Username' }).fill(config.username);
+   23 |
+   24 |   await page.screenshot({ path: `${screenshotDir}/2-username.png` });
+   25 |
+   26 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   27 |   await page.screenshot({ path: `${screenshotDir}/3-password.png` });
+   28 |
+   29 |   await page.getByRole('button', { name: 'Log In' }).click();
+   30 |   await page.waitForTimeout(2000);
+   31 |
+   32 |   console.log('📇 Navigating to Contacts tab...');
+>  33 |   await page.getByRole('link', { name: 'Contacts' }).click();
+      |                                                      ^ Error: locator.click: Target page, context or browser has been closed
+   34 |   await page.waitForTimeout(2000);
+   35 |   await page.screenshot({ path: `${screenshotDir}/4-contacts-tab.png` });
+   36 |
+   37 |   console.log('🔍 Verifying list view header buttons...');
+   38 |   const headerButtons = [
+   39 |     'Sort Name',
+   40 |     'Sort Account Name',
+   41 |     'Sort Title',
+   42 |     'Sort Phone',
+   43 |     'Sort Email',
+   44 |     'Sort Contact Owner Alias',
+   45 |     'Refresh Refresh',
+   46 |     'Edit List',
+   47 |     'New',
+   48 |     'Intelligence View',
+   49 |     'Import',
+   50 |     'Add to Campaign',
+   51 |     'Send List Email'
+   52 |   ];
+   53 |
+   54 |   for (const name of headerButtons) {
+   55 |     await expect(page.getByRole('button', { name })).toBeVisible();
+   56 |     console.log(`✅ Button visible: ${name}`);
+   57 |   }
+   58 |
+   59 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+   60 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible();
+   61 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible();
+   62 |
+   63 |   console.log('📁 Opening John Bond contact...');
+   64 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   65 |   await page.waitForTimeout(1500);
+   66 |   await page.screenshot({ path: `${screenshotDir}/5-john-bond-open.png` });
+   67 |
+   68 |   console.log('🧾 Switching to Details tab...');
+   69 |   await page.getByRole('tab', { name: 'Details' }).click();
+   70 |   await page.waitForTimeout(1500);
+   71 |   await page.screenshot({ path: `${screenshotDir}/6-details-tab.png` });
+   72 |  await page.waitForTimeout(2000);
+   73 |   console.log('🔄 Scrolling through the page to ensure lazy-loaded fields render...');
+   74 |   for (let i = 0; i < 10; i++) {
+   75 |     await page.mouse.wheel(0, 300);
+   76 |     await page.waitForTimeout(200);
+   77 |   }
+   78 |  await page.waitForTimeout(2000);
+   79 |   const fields = [
+   80 |     'Contact Owner',
+   81 |     'Name',
+   82 |     'Account Name',
+   83 |     'Title',
+   84 |     'Department',
+   85 |     'Birthdate',
+   86 |     'Phone',
+   87 |     'Mobile',
+   88 |     'Fax',
+   89 |     'Email',
+   90 |     'Lead Source',
+   91 |     'Website URL',
+   92 |     'Mailing Address',
+   93 |     'Languages',
+   94 |     'Level',
+   95 |     'Last Modified By',
+   96 |     'Created By'
+   97 |   ];
+   98 |
+   99 |   //const detailsTab = page.locator('#tab-3');
+  100 |   
+  101 |   const detailsTab = page.locator('.test-id__field-label');
+  102 |   console.log('🧪 Verifying detail fields in Details tab...');
+  103 |
+  104 |   for (const field of fields) {
+  105 |     try {
+  106 |       //const label = detailsTab.locator('.test-id__field-label').filter({ hasText: field });
+  107 |       const label = detailsTab.filter({ hasText: field });
+  108 |       const count = await label.count();
+  109 |
+  110 |       if (count === 0) {
+  111 |         console.log(`❌ Field not found: ${field}`);
+  112 |         await page.screenshot({ path: `${screenshotDir}/missing-${field.replace(/\s+/g, '_')}.png` });
+  113 |       } else {
+  114 |         console.log(`✅ Field found: ${field}`);
+  115 |         await expect(label.first()).toBeVisible();
+  116 |       }
+  117 |     } catch (err) {
+  118 |       console.error(`❌ Error checking field "${field}": ${err.message}`);
+  119 |       await page.screenshot({ path: `${screenshotDir}/error-${field.replace(/\s+/g, '_')}.png` });
+  120 |     }
+  121 |   }
+  122 |
+  123 |   console.log('🎉 Contact detail field verification complete!');
+  124 | });
+```

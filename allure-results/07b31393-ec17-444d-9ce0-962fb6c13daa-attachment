@@ -1,0 +1,83 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-41.spec.ts:20:5
+
+# Error details
+
+```
+Error: expect(locator).toBeVisible()
+
+Locator: getByRole('link', { name: 'Accounts' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByRole('link', { name: 'Accounts' })
+    - waiting for navigation to finish...
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-41.spec.ts:44:22
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 | import { config} from './test.config'; // adjust the path if needed
+   5 |
+   6 | const screenshotDir = 'test-41';
+   7 |
+   8 | if (fs.existsSync(screenshotDir)) {
+   9 |   fs.readdirSync(screenshotDir).forEach(file => {
+  10 |     fs.unlinkSync(path.join(screenshotDir, file));
+  11 |   });
+  12 | } else {
+  13 |   fs.mkdirSync(screenshotDir);
+  14 | }
+  15 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+  16 |   console.log(message);
+  17 |   await page.screenshot({ path: `${dir}/${step}.png` });
+  18 | }
+  19 |
+  20 | test('test', async ({ page }) => {
+  21 |   await page.goto(config.url);
+  22 |   await page.pause();
+  23 |
+  24 |   await page.getByRole('textbox', { name: 'Username' }).fill(config.username);
+  25 |
+  26 |   await page.getByRole('textbox', { name: 'Password' }).fill(config.password);
+  27 |   await logAndScreenshot(page, screenshotDir, '1-login', 'Login page loaded');
+  28 |  /*  function getByConfiguredRole(page, locatorConfig) {
+  29 |     return page.getByRole(locatorConfig.role, { name: locatorConfig.name });
+  30 |   }
+  31 |   
+  32 |   // usage:
+  33 |   await getByConfiguredRole(page, config.roles.loginButton).click();   */
+  34 |   await page.getByRole('button', { name: config.loginButtonName }).click();
+  35 |   const launcher = page.getByRole('button', { name: 'App Launcher' })
+  36 |   await expect(launcher).toBeVisible();
+  37 |   await launcher.click();
+  38 |   await page.waitForTimeout(1000);
+  39 |   await logAndScreenshot(page, screenshotDir, '2-launcher', 'App Launcher loaded');
+  40 |   await page.waitForTimeout(1000);
+  41 |
+  42 |   await page.getByRole('option', { name: 'Service', exact: true }).click();
+  43 |   const test = page.getByRole('link', { name: 'Accounts' });
+> 44 |   await expect(test).toBeVisible();
+     |                      ^ Error: expect(locator).toBeVisible()
+  45 |
+  46 |   await test.click();
+  47 |   await page.getByRole('link', { name: 'Dickenson plc' }).click();
+  48 |   await page.waitForTimeout(3000);
+  49 |   await logAndScreenshot(page, screenshotDir, '3-accounts', 'Accounts loaded');  
+  50 |     await page.locator("button[name='Global.NewContact']").click();  
+  51 | });
+```

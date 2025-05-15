@@ -1,0 +1,55 @@
+🌐 Navigating to account...
+🔐 Logging into Salesforce...
+⏳ Waiting for page content...
+
+🔍 Found 47 fields. Extracting values...
+
+📄 Account Owner: Partner BrellaOpen Partner Brella PreviewOpen Partner Brella PreviewChange Owner
+📄 Account Record Type: EmployerChange Record Type
+📄 Account Name: Automation ER 1741176898
+📄 Probability: [No Value]
+📄 Parent Account: [No Value]
+📄 Phone: (123) 456-7890
+📄 Account Number: [No Value]
+📄 Fax: [No Value]
+📄 Account Site: [No Value]
+📄 Website: [No Value]
+📄 Type: [No Value]
+📄 Ticker Symbol: [No Value]
+📄 Industry: [No Value]
+📄 Ownership: [No Value]
+📄 Annual Revenue: [No Value]
+📄 Employees: [No Value]
+📄 Broker Account: [No Value]
+📄 SIC Code: 1799
+📄 Health Insurance Sponsor: No
+📄 TaxId: 23-5345353
+📄 Legal Entity Name: Automation ER 1741176898
+📄 Screening Trigger: Screening Trigger
+📄 Affiliates Subsidiaries: [No Value]
+📄 Proposal Affiliates Subsidiaries: [No Value]
+📄 Suppress New Invoice Emails: Suppress New Invoice Emails
+📄 Suppress Past Due Emails: Suppress Past Due Emails
+📄 DBA Name: [No Value]
+📄 Time zone: America/Indiana/Indianapolis
+📄 Auto-charge Authorized: Auto-charge Authorized
+📄 Strategic Partner Name: Brella
+📄 Test: Test
+📄 MCI Enabled?: No
+📄 Date MCI Enabled: [No Value]
+📄 Account Status: Current
+📄 Proration Method: Daily (Month)
+📄 Billing Frequency: Monthly
+📄 Wash Threshold: 15
+📄 Billing Method: Employer
+📄 Account Balance: $140.66
+📄 Preferred Payment Method: [No Value]
+📄 Self-Bill Threshold: [No Value]
+📄 Billing Address: Ocean view 123RandomCity, TX 71676US
+📄 Shipping Address: [No Value]
+📄 Created By: Partner BrellaOpen Partner Brella PreviewOpen Partner Brella Preview, 3/5/2025, 9:27 AM
+📄 Last Modified By: Brella QAOpen Brella QA PreviewOpen Brella QA Preview, 4/5/2025, 5:40 PM
+📄 Description: [No Value]
+📄 Supplemental health: [No Value]
+
+✅ Extraction complete!

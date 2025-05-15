@@ -1,0 +1,116 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Extract and open shopping link with fresh session
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('link', { name: /^CS-/ })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:17:16
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Extract and open shopping link with fresh session', async ({ page, context }) => {
+   4 |   test.setTimeout(120_000);
+   5 |
+   6 |   // Step 1: Login to Salesforce
+   7 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  10 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  11 |   console.log('✅ Logged into Salesforce');
+  12 |
+  13 |   // Step 2: Navigate to Prospective
+  14 |   await page.getByRole('tab', { name: 'Related' }).click();
+  15 |   await page.waitForTimeout(1000);
+  16 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+> 17 |   await csLink.click();
+     |                ^ Error: locator.click: Test ended.
+  18 |   console.log('🔗 Clicked CS- link');
+  19 |   await page.waitForTimeout(1000);
+  20 |   await page.getByRole('tab', { name: 'Related' }).click();
+  21 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+  22 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  23 |   await page.locator('a.slds-truncate >> visible=true').first().click({ force: true });
+  24 |   console.log('👤 Clicked first prospective');
+  25 |
+  26 |   // Step 3: Extract DOB and SSN
+  27 |   await page.getByRole('tab', { name: 'Details' }).click();
+  28 |   await page.mouse.wheel(0, 500);
+  29 |   const ssn = await page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first().innerText();
+  30 |
+  31 |   const dobRaw = await page.locator('lightning-formatted-text')
+  32 |     .locator('xpath=../../..')
+  33 |     .filter({ hasText: 'Date of Birth' })
+  34 |     .locator('lightning-formatted-text')
+  35 |     .innerText();
+  36 |
+  37 |   let [month, day, year] = dobRaw.split('/');
+  38 |   const dob = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+  39 |   console.log(`🎂 DOB: ${dob}, 🔐 SSN: ${ssn}`);
+  40 |
+  41 |   // Step 4: Click and extract shopping link
+  42 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  43 |   console.log('🧷 Clicked "Get The Link"');
+  44 |
+  45 |   let link = '';
+  46 |   const anchors = await page.locator('span.test-id__field-value a[href^="https://"]').elementHandles();
+  47 |
+  48 |   if (anchors.length > 0) {
+  49 |     link = await anchors[0].getAttribute('href') || '';
+  50 |     console.log(`🔗 Link extracted from anchor: ${link}`);
+  51 |   }
+  52 |
+  53 |   if (!link) {
+  54 |     const span = page.locator('span.test-id__field-value').filter({ hasText: /^https:\/\// });
+  55 |     link = (await span.first().innerText()).trim();
+  56 |     console.log(`🧾 Link extracted from span fallback: ${link}`);
+  57 |   }
+  58 |
+  59 |   if (!link || !link.startsWith('https://')) {
+  60 |     throw new Error('❌ Shopping link not found or invalid.');
+  61 |   }
+  62 |
+  63 |   // Step 5: Open in a fresh tab with storage cleared
+  64 |   const newPage = await context.newPage();
+  65 |   await newPage.goto('about:blank');
+  66 |   await newPage.evaluate(() => {
+  67 |     localStorage.clear();
+  68 |     sessionStorage.clear();
+  69 |     console.log('🧼 Storage cleared');
+  70 |   });
+  71 |
+  72 |   await newPage.goto(link, { waitUntil: 'domcontentloaded' });
+  73 |   console.log(`🚀 Navigated to shopping link: ${link}`);
+  74 |
+  75 |   // Step 6: Verification
+  76 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  77 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  78 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  79 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  80 |   console.log('✅ Completed verification');
+  81 |
+  82 |   // Optional: Prevent "last remembered page" resume
+  83 |   // Check if you land at the beginning
+  84 |   const verifyStep = newPage.getByText('Are you married?');
+  85 |   if (await verifyStep.isVisible({ timeout: 5000 })) {
+  86 |     console.log('✅ Verified fresh start after verification');
+  87 |   } else {
+  88 |     console.warn('⚠️ May have resumed from last session. Consider deeper localStorage keys');
+  89 |   }
+  90 | });
+```

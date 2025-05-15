@@ -1,0 +1,4 @@
+🎨 Color: rgb(69, 186, 75)
+🔷 HEX: #45BA4B
+🎨 Color: rgb(26, 126, 31)
+🔷 HEX: #1A7E1F

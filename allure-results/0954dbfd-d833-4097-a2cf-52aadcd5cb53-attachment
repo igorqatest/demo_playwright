@@ -1,0 +1,77 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:14:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+
+Locator: locator(':root')
+Expected pattern: /results/
+Received string:  "https://www.youtube.com/"
+Call log:
+  - expect.toHaveURL with timeout 5000ms
+  - waiting for locator(':root')
+    9 × locator resolved to <html lang="en" refresh="" typography="" system-icons="" darker-dark-theme="" typography-spacing="" darker-dark-theme-deprecate="">…</html>
+      - unexpected value "https://www.youtube.com/"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:32:22
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.youtube.com/');
+   4 |    await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+   5 |    await page.getByRole('combobox', { name: 'Search' }).fill('playwright by testers');
+   6 |    await page.waitForTimeout(500);
+   7 |    await page.getByRole('combobox', { name: 'Search' }).press('Enter');
+   8 |    await page.getByRole('link', { name: 'Playwright by Testers Talk☑️' }).click();
+   9 | });
+  10 |  */
+  11 |
+  12 | import { test, expect } from '@playwright/test';
+  13 |
+  14 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+  15 |   // Navigate to YouTube
+  16 |   await page.goto('https://www.youtube.com/');
+  17 |
+  18 |   // Handle cookie rejection if visible
+  19 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  20 |   if (await rejectCookies.isVisible()) {
+  21 |     await rejectCookies.click();
+  22 |     console.log('🛑 Rejected cookies');
+  23 |   }
+  24 |
+  25 |   // Interact with the search input
+  26 |   const searchInput = page.getByRole('combobox', { name: /Search/i });
+  27 |   await searchInput.waitFor({ state: 'visible' }); // smart wait
+  28 |   await searchInput.fill('playwright by testers');
+  29 |   await searchInput.press('Enter');
+  30 |
+  31 |   // Expect navigation to search results page
+> 32 |   await expect(page).toHaveURL(/results/);
+     |                      ^ Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+  33 |   console.log('🔍 Search submitted');
+  34 |
+  35 |   // Wait for the desired video link to appear
+  36 |   const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i });
+  37 |   await videoLink.waitFor({ state: 'visible', timeout: 10000 });
+  38 |   await videoLink.click();
+  39 |   console.log('▶️ Video clicked');
+  40 |
+  41 |   // Optional: Assert video page loaded
+  42 |   await expect(page).toHaveURL(/watch/);
+  43 |   await expect(page.locator('h1')).toContainText('Playwright');
+  44 | });
+```

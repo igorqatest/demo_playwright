@@ -1,0 +1,73 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: testing web
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-21.spec.ts:26:5
+
+# Error details
+
+```
+Error: page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://www.youtube.com/", waiting until "load"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-21.spec.ts:30:16
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 | const testingWeb = [ 'Playwright by Testers Talk', 'Cypress by Testers Talk', 'API Testing by Testers Talk'];
+   5 | for (const name of testingWeb) {
+   6 |   await page.goto('https://www.youtube.com/');
+   7 |
+   8 |   // Dismiss cookie banner if present
+   9 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  10 |   if (await rejectCookies.isVisible()) {
+  11 |     await rejectCookies.click();
+  12 |   }
+  13 |   await page.waitForTimeout(1500);
+  14 |   await page.getByPlaceholder('Search', { exact: true }).fill(name);
+  15 |     await page.getByPlaceholder('Search', { exact: true }).press('Enter');
+  16 |
+  17 |     await page.getByPlaceholder('Search').press('Enter');
+  18 |
+  19 |     
+  20 |
+  21 | }
+  22 | }); */
+  23 |
+  24 | import { test, expect } from '@playwright/test';
+  25 |
+  26 | test ( 'testing web', async ({ page })=> {
+  27 |
+  28 |    const testWeb = [ 'Playwright by Testers Talk', 'Cypress by Testers Talk', 'API TestingTestersTalksafs'];
+  29 |    for ( const myTest of testWeb){
+> 30 |     await page.goto('https://www.youtube.com/');
+     |                ^ Error: page.goto: Target page, context or browser has been closed
+  31 |
+  32 |     const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  33 |     if ( await rejectCookies.isVisible()){
+  34 |       rejectCookies.click();
+  35 |     }
+  36 |     const waiting = page.waitForTimeout(1500);
+  37 |     const mySearch = page.getByPlaceholder('Search', { exact: true});
+  38 |     await mySearch.isVisible();
+  39 |     await waiting;
+  40 |     await mySearch.fill(myTest);
+  41 |     await waiting;
+  42 |     await mySearch.press('Enter');
+  43 |      
+  44 |
+  45 |     
+  46 |    }
+  47 | });
+```

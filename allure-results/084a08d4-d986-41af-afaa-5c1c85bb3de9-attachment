@@ -1,0 +1,244 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-41.spec.ts:19:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('option', { name: 'Service', exact: true })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-41.spec.ts:34:68
+```
+
+# Page snapshot
+
+```yaml
+- link "Skip to Navigation"
+- link "Skip to Main Content"
+- text: Service
+- button "Search": Search...
+- navigation "Global Header":
+  - list:
+    - listitem:
+      - group:
+        - button "Favorite this item":
+          - tooltip "Add favorite"
+        - button "Favorites list":
+          - tooltip "Favorites list"
+    - listitem:
+      - button "Global Actions":
+        - tooltip "Global Actions"
+    - listitem:
+      - button "Guidance Center"
+      - tooltip "Guidance Center"
+    - listitem:
+      - button "Salesforce Help":
+        - tooltip "Salesforce Help"
+    - listitem:
+      - button "Setup":
+        - tooltip "Setup"
+    - listitem:
+      - button "Notifications":
+        - tooltip "Notifications"
+    - listitem:
+      - button "View profile":
+        - tooltip "View profile"
+- navigation "App":
+  - button "App Launcher"
+- heading "Service" [level=1]
+- navigation "Global":
+  - list:
+    - listitem:
+      - link "Home"
+    - listitem:
+      - link "Chatter"
+    - listitem:
+      - link "Accounts"
+      - button "Accounts List"
+    - listitem:
+      - link "Contacts"
+      - button "Contacts List"
+    - listitem:
+      - link "Cases"
+      - button "Cases List"
+    - listitem:
+      - link "Reports"
+      - button "Reports List"
+    - listitem:
+      - link "Dashboards"
+      - button "Dashboards List"
+    - listitem:
+      - button "Help Ask your admin to upgrade this app to Lightning Experience so you can personalize it"
+- main:
+  - img "Account"
+  - heading "Account Dickenson plc" [level=1]
+  - button "View Account Hierarchy"
+  - button "Follow"
+  - button "New Contact"
+  - button "New Case"
+  - button "New Note"
+  - button "Show more actions"
+  - listitem:
+    - paragraph: Type
+    - paragraph: Customer - Channel
+  - listitem:
+    - paragraph: Phone
+    - paragraph:
+      - link "(785) 241-6200"
+  - listitem:
+    - paragraph: Website
+    - paragraph:
+      - link "dickenson-consulting.com"
+  - listitem:
+    - paragraph: Account Owner
+    - paragraph:
+      - link "Igor Pejin"
+      - button "Open Igor Pejin Preview Open Igor Pejin Preview"
+      - button "Change Owner"
+  - listitem:
+    - paragraph: Account Site
+    - paragraph
+  - listitem:
+    - paragraph: Industry
+    - paragraph: Consulting
+  - heading "Tabs" [level=2]
+  - tablist "Tabs":
+    - tab "Related" [selected]
+    - tab "Details"
+  - tabpanel "Related":
+    - article:
+      - text: Merge record
+      - heading "We found no potential duplicates of this Account." [level=2]
+    - article "Contacts":
+      - heading "Contacts (1)" [level=2]:
+        - link "Contacts (1)"
+      - button "New"
+      - article "Andy Young":
+        - heading "Andy Young Open Andy Young Preview Open Andy Young Preview" [level=3]:
+          - link "Andy Young"
+          - button "Open Andy Young Preview Open Andy Young Preview"
+        - term: "Title:"
+        - definition: SVP, Operations
+        - term: "Email:"
+        - definition:
+          - link "a_young@dickenson.com"
+        - term: "Phone:"
+        - definition:
+          - link "(785) 241-6200"
+        - button "Show Actions"
+      - link "View All Contacts"
+    - article "Opportunities":
+      - heading "Opportunities (1)" [level=2]:
+        - link "Opportunities (1)"
+      - button "New"
+      - article "Dickenson Mobile Generators":
+        - heading "Dickenson Mobile Generators Open Dickenson Mobile Generators Preview Open Dickenson Mobile Generators Preview" [level=3]:
+          - link "Dickenson Mobile Generators"
+          - button "Open Dickenson Mobile Generators Preview Open Dickenson Mobile Generators Preview"
+        - term: "Stage:"
+        - definition: Qualification
+        - term: "Amount:"
+        - definition: 15.000,00 EUR
+        - term: "Close Date:"
+        - definition: 31. 01. 2025.
+        - button "Show Actions"
+      - link "View All Opportunities"
+    - article:
+      - heading "Cases" [level=2]
+    - article:
+      - heading "Notes & Attachments" [level=2]
+    - article:
+      - heading "Partners" [level=2]
+  - heading "Tabs" [level=2]
+  - tablist "Tabs":
+    - tab "Activity" [selected]
+    - tab "Chatter"
+  - tabpanel "Activity":
+    - heading "Activity Publisher" [level=2]
+    - group:
+      - button "New Task": New Task New Task
+      - button "No Additional New Task Actions" [disabled]
+    - group:
+      - button "Log a Call": Log a Call Log a Call
+      - button "More Log a Call Actions"
+    - group:
+      - button "New Event": New Event New Event
+      - button "More New Event Actions"
+    - group:
+      - button "Email": Email Email
+      - button "More Email Actions"
+    - heading "Activity Timeline" [level=2]
+    - link "Skip to the bottom of the activity timeline"
+    - text: "Filters: All time • All activities • All types"
+    - button "Timeline Settings"
+    - button "Refresh"
+    - text: •
+    - button "Expand All"
+    - text: •
+    - link "View All"
+    - heading "Upcoming & Overdue" [level=3]:
+      - button "Upcoming & Overdue" [expanded]
+    - list
+    - text: No activities to show. Get started by sending an email, scheduling a task, and more.
+    - status: No past activity. Past meetings and tasks marked as done show up here.
+    - link "Skip to the top of the activity timeline"
+- status
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | const screenshotDir = 'test-41';
+   6 |
+   7 | if (fs.existsSync(screenshotDir)) {
+   8 |   fs.readdirSync(screenshotDir).forEach(file => {
+   9 |     fs.unlinkSync(path.join(screenshotDir, file));
+  10 |   });
+  11 | } else {
+  12 |   fs.mkdirSync(screenshotDir);
+  13 | }
+  14 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+  15 |   console.log(message);
+  16 |   await page.screenshot({ path: `${dir}/${step}.png` });
+  17 | }
+  18 |
+  19 | test('test', async ({ page }) => {
+  20 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Account/001WU00000pLtH7YAK/view');
+  21 |
+  22 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  23 |
+  24 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  25 |   await logAndScreenshot(page, screenshotDir, '1-login', 'Login page loaded');
+  26 |   await page.getByRole('button', { name: 'Log In' }).click();
+  27 |   
+  28 |   const launcher = page.getByRole('button', { name: 'App Launcher' })
+  29 |   await expect(launcher).toBeVisible();
+  30 |   await launcher.click();
+  31 |   await page.waitForTimeout(1000);
+  32 |   await logAndScreenshot(page, screenshotDir, '2-launcher', 'App Launcher loaded');
+  33 |
+> 34 |   await page.getByRole('option', { name: 'Service', exact: true }).click();
+     |                                                                    ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  35 |   const test = page.getByRole('link', { name: 'Accounts' });
+  36 |   await expect(test).toBeVisible();
+  37 |
+  38 |   await test.click();
+  39 |   await page.getByRole('link', { name: 'Dickenson plc' }).click();
+  40 |   await page.waitForTimeout(3000);
+  41 |   await logAndScreenshot(page, screenshotDir, '3-accounts', 'Accounts loaded');  
+  42 |
+  43 | });
+```

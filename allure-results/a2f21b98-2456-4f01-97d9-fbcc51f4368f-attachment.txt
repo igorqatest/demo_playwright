@@ -1,0 +1,30 @@
+🌐 Opening login page...
+📸 Login page loaded
+🔐 Logging in...
+📸 Credentials entered
+📇 Navigating to Contacts tab...
+📸 Contacts tab
+🆕 Opening New Contact form...
+📸 New Contact form opened
+🔍 Verifying field labels...
+✅ Label visible: Contact Owner
+✅ Label visible: Salutation
+✅ Label visible: First Name
+✅ Label visible: Last Name
+✅ Label visible: Phone
+✅ Label visible: Home Phone
+✅ Label visible: Mobile
+✅ Label visible: Other Phone
+✅ Label visible: Title
+✅ Label visible: Department
+✅ Label visible: Email
+✅ Label visible: Fax
+✅ Label visible: Birthdate
+✅ Label visible: Reports To
+✅ Label visible: Lead Source
+✅ Label visible: Website URL
+✅ Label visible: URL Name
+✅ Label visible: Assistant
+✅ Label visible: Asst. Phone
+✅ All label checks completed.
+📸 Scrolled inside container

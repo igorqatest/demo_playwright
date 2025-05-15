@@ -1,0 +1,68 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-23.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('link', { name: 'Opportunities' })
+    - waiting for" https://ansel2-dev-ed.develop.lightning.force.com/visualforce/recsession?sid=00DWU00000KtgPh%21AQEAQEtNVqn9waBVy2johJmid8Y.i83vsY9r0KIi8W8QzjcsTHwdtaWrMI6FTOV0EZ3SCgRXyd4bsU9qhSPE2_eCwJ71MIAD&inst=WU…" navigation to finish...
+    - navigated to "https://ansel2-dev-ed.develop.lightning.force.com/lightning"
+    - locator resolved to <a title="Opportunities" data-aura-rendered-by="326:0;p" href="/lightning/o/Opportunity/list?filterName=__Recent" class="slds-context-bar__label-action slds-p-left--xx-small">…</a>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-23.spec.ts:11:59
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).click();
+   6 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   7 |   await page.getByRole('textbox', { name: 'Password' }).click();
+   8 |   await page.getByRole('textbox', { name: 'Password' }).click();
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  10 |   await page.getByRole('button', { name: 'Log In' }).click();
+> 11 |   await page.getByRole('link', { name: 'Opportunities' }).click();
+     |                                                           ^ Error: locator.click: Target page, context or browser has been closed
+  12 |   await page.waitForTimeout(500);
+  13 |   await page.getByRole('button', { name: 'New' }).click();
+  14 |   await page.getByRole('textbox', { name: 'Amount' }).fill('');
+  15 |   await page.getByRole('textbox', { name: '*Opportunity Name' }).click();
+  16 |   await page.getByRole('textbox', { name: '*Opportunity Name' }).fill('Testing');
+  17 |   await page.getByRole('combobox', { name: 'Account Name' }).click();
+  18 |   await page.getByText('Edge Communications').click();
+  19 |   await page.getByRole('combobox', { name: 'Type' }).click();
+  20 |   await page.getByRole('option', { name: 'New Customer' }).locator('span').nth(1).click();
+  21 |   await page.getByRole('combobox', { name: 'Lead Source' }).click();
+  22 |   await page.getByRole('textbox', { name: 'Order Number' }).click();
+  23 |   await page.getByRole('textbox', { name: 'Order Number' }).fill('12345678');
+  24 |   await page.getByRole('textbox', { name: 'Tracking Number' }).click();
+  25 |   await page.getByRole('textbox', { name: 'Tracking Number' }).fill('1234');
+  26 |   await page.getByRole('textbox', { name: 'Amount' }).click();
+  27 |   await page.getByRole('textbox', { name: 'Amount' }).fill('10000');
+  28 |   await page.getByRole('textbox', { name: '*Close Date' }).click();
+  29 |   await page.getByRole('button', { name: 'Today' }).click();
+  30 |   await page.getByRole('textbox', { name: 'Next Step' }).click();
+  31 |   await page.getByRole('textbox', { name: 'Next Step' }).fill('demo');
+  32 |   await page.getByRole('combobox', { name: 'Stage' }).click();
+  33 |   await page.getByText('Prospecting').click();
+  34 |   await page.getByRole('combobox', { name: 'Delivery/Installation Status' }).click();
+  35 |   await page.getByRole('option', { name: 'In progress' }).locator('span').nth(1).click();
+  36 |   await page.getByRole('button', { name: 'Save', exact: true }).click();
+  37 | });
+```

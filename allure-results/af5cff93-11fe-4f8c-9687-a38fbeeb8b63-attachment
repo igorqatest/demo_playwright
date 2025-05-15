@@ -1,0 +1,131 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test with dynamic Employer name and State
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:70:5
+
+# Error details
+
+```
+Error: locator.fill: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('textbox', { name: 'Add another email address...' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:152:75
+```
+
+# Test source
+
+```ts
+   52 |   await page.keyboard.press('ArrowDown');
+   53 |   await page.waitForTimeout(100); // small pause
+   54 | }
+   55 |
+   56 | // Select
+   57 | await page.keyboard.press('Enter');
+   58 | await page.getByRole('button', { name: 'Next step' }).click();
+   59 |
+   60 | await page.getByRole('button', { name: 'Next step' }).click();
+   61 |
+   62 |
+   63 | }); */
+   64 |
+   65 | import { test, expect } from '@playwright/test';
+   66 | import { faker } from '@faker-js/faker';
+   67 |
+   68 | import createCSV from './utils/generate-csv'; // ✅ Import the CSV generator
+   69 |
+   70 | test('test with dynamic Employer name and State', async ({ page }) => {
+   71 |   // Step 1: Generate the CSV
+   72 |   const csvPath = await createCSV(10); // 🔄 10 fake rows, path returned
+   73 |
+   74 |   // 🌐 Navigate to login
+   75 |   await page.goto('https://qa-ansel-platform.joinansel.com/partner/login');
+   76 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('damianp+damianp@joinansel.com');
+   77 |   await page.locator('input[name="password"]').fill('Demo123456');
+   78 |   await page.getByRole('button', { name: 'Login' }).click();
+   79 |
+   80 |   // 🧭 Navigate through setup steps
+   81 |   await page.getByRole('button', { name: 'Request a quote' }).click();
+   82 |   await page.locator('label').filter({ hasText: 'damian test6360' }).click();
+   83 |   await page.getByRole('button', { name: 'Next step' }).click();
+   84 |   await page.getByRole('button', { name: '+ Add employer' }).click();
+   85 |
+   86 |   // 🎲 Generate dynamic data
+   87 |   // 🎲 Generate dynamic data (safe states only)
+   88 | const allowedStates = [
+   89 |   'Texas', 'California', 'Alabama', 'Florida', 'Illinois', 'Alaska', 'Colorado', 'District of Columbia', 
+   90 |   'Delaware', 'Florida', 'Georgia', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+   91 |   'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Nebraska', 'Nevada', 
+   92 |   'Ohio', 'Oklahoma', 'Oregon', 'Pensylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Georgia', 'Virginia', 
+   93 |   'West Virginia', 
+   94 |   'Wisconsin', 'Wyoming',  'Tennessee', 'Utah', 'Arkansas', 'Pennsylvania', 'Arizona'
+   95 | ];
+   96 |
+   97 | const randomCompanyName = faker.company.name();
+   98 | const randomCity = faker.address.city();
+   99 | const randomState = faker.helpers.arrayElement(allowedStates);
+  100 |
+  101 | // 🏢 Fill Employer details with dynamic values
+  102 | await page.locator('input[name="companyName"]').fill(randomCompanyName);
+  103 | await page.locator('input[name="sicCode"]').fill('1');
+  104 | await page.getByText('- Rice').click();
+  105 | await page.locator('input[name="city"]').fill(randomCity);
+  106 |
+  107 | await page.getByRole('combobox').getByRole('textbox').fill(randomState);
+  108 |
+  109 | await page.getByRole('option', { name: randomState }).waitFor({ state: 'visible' });
+  110 | await page.getByRole('option', { name: randomState }).click();
+  111 | await page.locator('input[name="eligibleEmployees"]').fill('20');
+  112 |   await page.getByRole('button', { name: 'Next step' }).click();
+  113 |
+  114 |   await page.getByRole('listbox').filter({ hasText: 'May 1, 2025Jun 1, 2025Jul 1,' }).click();
+  115 |   await page.getByRole('option', { name: 'Jun 1,' }).click();
+  116 |   await page.getByRole('textbox', { name: 'Ex. All full-time employees' }).fill('Class A');
+  117 |   await page.getByRole('button', { name: 'Next step' }).click();
+  118 |
+  119 |   // Step 4: Upload the CSV file
+  120 |   const fileInput = page.locator('input[type="file"]');
+  121 |   await fileInput.setInputFiles(csvPath);
+  122 |   console.log(`📂 Uploaded file: ${csvPath}`);
+  123 |
+  124 |   // Optionally wait or verify something here (success toast, table shows rows, etc.)
+  125 |   await page.getByRole('button', { name: 'Next step' }).click();
+  126 |   //await page.getByRole('row', { name: 'Date of birth*' }).getByRole('listbox').click();
+  127 |   // 1. Open the "Date of birth*" dropdown
+  128 |
+  129 | /// 1. Click the dropdown under "Date of birth"
+  130 | // Open the dropdown
+  131 | // Focus dropdown
+  132 | const listbox = page.getByRole('row', { name: /Date of birth/i }).getByRole('listbox');
+  133 | await listbox.click();
+  134 |
+  135 | // Press ↓ 5 times to reach "BirthDate"
+  136 | for (let i = 0; i < 5; i++) {
+  137 |   await page.keyboard.press('ArrowDown');
+  138 |   await page.waitForTimeout(100); // small pause
+  139 | }
+  140 |
+  141 | // Select
+  142 | await page.keyboard.press('Enter');
+  143 | await page.getByRole('button', { name: 'Next step' }).click();
+  144 |
+  145 | await page.getByRole('button', { name: 'Next step' }).click();
+  146 | await page.getByText('Yes').click();
+  147 | await page.getByText('Accident').click();
+  148 | await page.getByText('Hospital Indemnity').click();
+  149 | await page.getByText('Other').click();
+  150 | await page.getByRole('button', { name: 'Next step' }).click();
+  151 | await page.getByRole('button', { name: 'Submit' }).click();
+> 152 | await page.getByRole('textbox', { name: 'Add another email address...' }).fill('igor.pejin+anselquotetest@joinansel.com');
+      |                                                                           ^ Error: locator.fill: Test timeout of 30000ms exceeded.
+  153 | await page.getByRole('button', { name: 'Send' })
+  154 |
+  155 | await page.getByRole('button', { name: 'Back to quotes dashboard' }).click();
+  156 | });
+```

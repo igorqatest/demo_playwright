@@ -1,0 +1,161 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Employer onboarding with link extraction and verification
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:86:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: locator('span.test-id__field-value').filter({ hasText: 'https://' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for locator('span.test-id__field-value').filter({ hasText: 'https://' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:142:26
+```
+
+# Test source
+
+```ts
+   42 |   }
+   43 |   // 🧠 Extract SSN and DOB (pick the first match)
+   44 | const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+   45 | const dobElement = page.locator('lightning-formatted-text').filter({ hasText: /\d{1,2}\/\d{1,2}\/\d{4}/ }).first();
+   46 |
+   47 | const ssn = await ssnElement.innerText();
+   48 | const dob = await dobElement.innerText();
+   49 |
+   50 | console.log(`🔐 Extracted SSN: ${ssn}`);
+   51 | console.log(`🎂 Extracted DOB: ${dob}`);
+   52 |
+   53 |   // 💡 Save for future use if needed
+   54 |   // Click the "Get The Link" button
+   55 | await page.getByRole('button', { name: 'Get The Link' }).click();
+   56 | console.log('🔘 Clicked "Get The Link"');
+   57 |
+   58 | // Wait for one of the textareas to populate (optional timeout buffer)
+   59 | await page.waitForTimeout(1000);
+   60 |
+   61 | // Grab the specific <textarea> by ID or other unique selector
+   62 | const textArea = page.locator('#input-1762'); // adjust if dynamic
+   63 |
+   64 | // Wait until the field contains a valid link
+   65 | await expect(async () => {
+   66 |   const value = await textArea.inputValue();
+   67 |   console.log('📋 Raw extracted value:', value);
+   68 |   expect(value).toMatch(/^https:\/\/.+/);
+   69 | }).toPass({ timeout: 10000 });
+   70 |
+   71 | // Extract and log
+   72 | const link = await textArea.inputValue();
+   73 | console.log(`🔗 Extracted standalone link: ${link}`);
+   74 |
+   75 | // Navigate to the link
+   76 | try {
+   77 |   await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+   78 |   console.log('🚀 Navigated to extracted link successfully!');
+   79 | } catch (err) {
+   80 |   console.error('❌ Failed to navigate to extracted link:', err);
+   81 | }
+   82 | }); */
+   83 |
+   84 | import { test, expect } from '@playwright/test';
+   85 |
+   86 | test('Employer onboarding with link extraction and verification', async ({ page }) => {
+   87 |   console.log('🌐 Opening Salesforce Contract page...');
+   88 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   89 |
+   90 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   91 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   92 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   93 |
+   94 |   console.log('✅ Logged in. Opening Related tab...');
+   95 |   await page.getByRole('tab', { name: 'Related' }).click();
+   96 |
+   97 |   for (let i = 0; i < 10; i++) {
+   98 |     await page.mouse.wheel(0, 50);
+   99 |   }
+  100 |
+  101 |   console.log('🔗 Clicking CS- link...');
+  102 |   await page.getByRole('link', { name: /^CS-/ }).click();
+  103 |   await page.waitForTimeout(1500);
+  104 |
+  105 |   await page.getByRole('tab', { name: 'Related' }).click();
+  106 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+  107 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  108 |
+  109 |   console.log('👤 Opening first prospect...');
+  110 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+  111 |   await firstNameLink.click({ force: true });
+  112 |
+  113 |   await page.waitForTimeout(800);
+  114 |   await page.getByRole('tab', { name: 'Details' }).click();
+  115 |
+  116 |   for (let i = 0; i < 5; i++) {
+  117 |     await page.mouse.wheel(0, 80);
+  118 |   }
+  119 |
+  120 |   // 🧠 Extract SSN and DOB
+  121 |   const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+  122 |   const dobElement = page.locator('lightning-formatted-text')
+  123 |     .locator('xpath=../../..')
+  124 |     .filter({ hasText: 'Date of Birth' })
+  125 |     .locator('lightning-formatted-text');
+  126 |
+  127 |   const ssn = await ssnElement.innerText();
+  128 |   const dobRaw = await dobElement.innerText();
+  129 |
+  130 |   // Normalize DOB format
+  131 |   let [month, day, year] = dobRaw.split('/');
+  132 |   const dob = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+  133 |
+  134 |   console.log(`🧠 Extracted SSN: ${ssn} | DOB: ${dob}`);
+  135 |
+  136 |   // 🔗 Get The Link
+  137 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  138 |   console.log('🧷 Clicked Get The Link');
+  139 |
+  140 |   // 🧐 Wait and extract link from a visible <span> with HTTPS
+  141 |   const linkSpan = page.locator('span.test-id__field-value').filter({ hasText: 'https://' });
+> 142 |   await expect(linkSpan).toBeVisible({ timeout: 5000 });
+      |                          ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+  143 |
+  144 |   let link = await linkSpan.innerText();
+  145 |   link = link.trim();
+  146 |
+  147 |   if (!link.startsWith('https://')) {
+  148 |     throw new Error(`❌ Failed to extract valid link. Got: "${link}"`);
+  149 |   }
+  150 |
+  151 |   console.log(`✅ Extracted Shopping Link: ${link}`);
+  152 |
+  153 |   // 🧹 Open new tab and clear session
+  154 |   const newPage = await page.context().newPage();
+  155 |   await newPage.goto('about:blank');
+  156 |   await newPage.evaluate(() => {
+  157 |     sessionStorage.clear();
+  158 |     localStorage.clear();
+  159 |   });
+  160 |
+  161 |   console.log('🚀 Navigating to extracted shopping link...');
+  162 |   await newPage.goto(link, { waitUntil: 'domcontentloaded' });
+  163 |
+  164 |   // 🧾 Complete verification
+  165 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  166 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  167 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  168 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  169 |
+  170 |   console.log('🔒 Verification completed successfully!');
+  171 | });
+```

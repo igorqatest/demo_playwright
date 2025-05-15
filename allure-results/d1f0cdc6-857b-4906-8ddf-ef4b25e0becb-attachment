@@ -1,0 +1,44 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Extract Roster Member Details and log values
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:3:5
+
+# Error details
+
+```
+Error: expect.toBeVisible: Error: strict mode violation: getByText('Roster Member Name') resolved to 2 elements:
+    1) <span lwc-618vdk5svck="" class="test-id__field-label">Roster Member Name</span> aka getByText('Roster Member Name', { exact: true })
+    2) <span lwc-618vdk5svck="" class="slds-assistive-text">Edit Roster Member Name</span> aka getByRole('button', { name: 'Edit Roster Member Name' })
+
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByText('Roster Member Name')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:13:54
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Extract Roster Member Details and log values', async ({ page }) => {
+   4 |   // Step 1: Navigate and login
+   5 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   6 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   7 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   8 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   9 |
+  10 |   await page.waitForTimeout(2000);
+  11 |   await expect(page.getByRole('button', { name: 'Terminate Employment'})).toBeVisible();
+  12 |   await expect(page.getByRole('tab', { name: 'Related'})).toBeVisible();
+> 13 |   await expect(page.getByText('Roster Member Name')).toBeVisible();
+     |                                                      ^ Error: expect.toBeVisible: Error: strict mode violation: getByText('Roster Member Name') resolved to 2 elements:
+  14 | });
+```

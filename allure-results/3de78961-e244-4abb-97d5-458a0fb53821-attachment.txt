@@ -1,0 +1,29 @@
+🌐 Opening login page...
+📸 Login page loaded
+🔐 Logging in...
+📸 Credentials entered
+📇 Navigating to Contacts tab...
+📸 Contacts tab
+🆕 Opening New Contact form...
+📸 New Contact form opened
+🔍 Verifying field labels...
+✅ Label found: Contact Owner
+✅ Label found: Salutation
+✅ Label found: First Name
+✅ Label found: Last Name
+✅ Label found: Phone
+✅ Label found: Home Phone
+✅ Label found: Mobile
+✅ Label found: Other Phone
+✅ Label found: Title
+✅ Label found: Department
+✅ Label found: Email
+✅ Label found: Fax
+✅ Label found: Birthdate
+✅ Label found: Reports To
+✅ Label found: Lead Source
+✅ Label found: Website URL
+✅ Label found: URL Name
+✅ Label found: Assistant
+✅ Label found: Asst. Phone
+✅ All label checks completed.

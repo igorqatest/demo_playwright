@@ -1,0 +1,11 @@
+⚠️ Placeholder check failed: Timed out 5000ms waiting for expect(locator).toHaveAttribute(expected)
+
+Locator: getByPlaceholder('Search', { exact: true }).first()
+Expected string: "Searching"
+Received string: "Search"
+Call log:
+  - expect.toHaveAttribute with timeout 5000ms
+  - waiting for getByPlaceholder('Search', { exact: true }).first()
+    9 × locator resolved to <input type="text" role="combobox" autocorrect="off" aria-controls="i0" autocomplete="off" name="search_query" aria-expanded="true" placeholder="Search" aria-autocomplete="list" class="ytSearchboxComponentInput yt-searchbox-input title"/>
+      - unexpected value "Search"
+

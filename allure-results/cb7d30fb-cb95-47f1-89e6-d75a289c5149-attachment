@@ -1,0 +1,68 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-9.spec.ts:3:5
+
+# Error details
+
+```
+Error: page.goto: net::ERR_ABORTED at https://brella--qa.sandbox.lightning.force.com/lightning/r/Lead/00QQL00000G25aT2AR/view
+Call log:
+  - navigating to "https://brella--qa.sandbox.lightning.force.com/lightning/r/Lead/00QQL00000G25aT2AR/view", waiting until "load"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-9.spec.ts:10:14
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://brella--qa.sandbox.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fbrella--qa.sandbox.lightning.force.com%252Flightning%252Fr%252FLead%252F00QQL00000G25aT2AR%252Fview');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).click();
+   6 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   7 |   await page.getByRole('textbox', { name: 'Password' }).click();
+   8 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   9 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+> 10 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Lead/00QQL00000G25aT2AR/view');
+     |              ^ Error: page.goto: net::ERR_ABORTED at https://brella--qa.sandbox.lightning.force.com/lightning/r/Lead/00QQL00000G25aT2AR/view
+  11 |   await page.getByRole('tab', { name: 'Details' }).click();
+  12 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  13 |
+  14 |     // Step 3: Extract the link or click it directly
+  15 |     const linkElement = page.getByText('https://qa-aig-platform.joinansel.com/enrollment');
+  16 |
+  17 |     if (await linkElement.isVisible()) {
+  18 |         const linkText = await linkElement.innerText();
+  19 |         await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+  20 |     } else {
+  21 |         console.log('⚠️ Link not found, trying alternative methods...');
+  22 |
+  23 |         await page.getByRole('button', { name: 'Get The Link' }).click();
+  24 |         // Shadow DOM Handling
+  25 |         const shadowLink = await page.evaluate(() => {
+  26 |             const shadowHost = document.querySelector('#sectionContent-174');
+  27 |             return shadowHost?.shadowRoot?.querySelector('a')?.getAttribute('href') ?? null;
+  28 |         });
+  29 |
+  30 |         if (shadowLink) {
+  31 |             await page.goto(shadowLink, { waitUntil: 'domcontentloaded' });
+  32 |         } else {
+  33 |             console.log('⚠️ Trying XPath method...');
+  34 |             const xpathLink = page.locator('//a[contains(text(), "https://qa-aig-platform.joinansel.com/enrollment")]');
+  35 |             if (await xpathLink.isVisible()) {
+  36 |                 await xpathLink.click({ force: true });
+  37 |             } else {
+  38 |                 console.log('❌ Could not find the enrollment link.');
+  39 |             }
+  40 |         }
+  41 |     }
+  42 | });
+```

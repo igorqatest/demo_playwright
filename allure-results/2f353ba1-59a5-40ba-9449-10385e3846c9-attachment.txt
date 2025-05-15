@@ -1,0 +1,10 @@
+⚠️ "Sign in to GitHub" element not found or not visible: expect.toBeVisible: Error: strict mode violation: getByText('Sign in') resolved to 4 elements:
+    1) <h1>Sign in to GitHub</h1> aka getByRole('heading', { name: 'Sign in to GitHub' })
+    2) <input type="submit" name="commit" value="Sign in" development="false" disable-emu-sso="false" data-signin-label="Sign in" data-disable-with="Signing in…" class="btn btn-primary btn-block js-sign-in-button" data-sso-label="Sign in with your identity provider"/> aka getByRole('button', { name: 'Sign in', exact: true })
+    3) <span data-target="webauthn-get.buttonText">Sign in with a passkey</span> aka locator('webauthn-get').getByText('Sign in with a passkey')
+    4) <span class="Button-label">Sign in with a passkey</span> aka getByRole('button', { name: 'Sign in with a passkey' })
+
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByText('Sign in')
+

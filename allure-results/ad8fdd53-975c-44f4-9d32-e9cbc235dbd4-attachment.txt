@@ -1,0 +1,8 @@
+🚀 Starting test: Verify Contract Page Elements
+✅ Passed: "Contract label" contains text "Contract"
+✅ Passed: "Contract Title" contains text "Automation ER 1740580143 | 2025-02-26 09:30:16"
+✅ Passed: "Approval Status" contains text "In Approval Process"
+✅ Passed: "Contract Term" contains text "Contract Term (months)"
+❌ Failed: "Eligible Roster Members section" does not contain expected text "Eligible Roster Members (7)"
+✅ Passed: "Roster Member Adriana Adaline" contains text "Adriana Adaline"
+🎯 Test completed!

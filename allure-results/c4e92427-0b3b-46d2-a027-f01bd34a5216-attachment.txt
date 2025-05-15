@@ -1,0 +1,4 @@
+✅ CSV generated: generated/roster-1744482627002.csv
+📄 CSV created at: generated/roster-1744482627002.csv
+✅ Clicked quote row for: Kub, Dicki and Rosenbaum
+✅ Proposal filled successfully

@@ -1,0 +1,66 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:3:5
+
+# Error details
+
+```
+Error: Timed out 10000ms waiting for expect(locator).toHaveCSS(expected)
+
+Locator: getByRole('link', { name: 'TypeScript' })
+Expected string: "rgb(26, 126, 31)"
+Received: <element(s) not found>
+Call log:
+  - expect.toHaveCSS with timeout 10000ms
+  - waiting for getByRole('link', { name: 'TypeScript' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:32:32
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   console.log('Navigating to Salesforce login URL...');
+   5 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).click();
+   9 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  10 |
+  11 |   console.log('Filling in password...');
+  12 |   await page.getByRole('textbox', { name: 'Password' }).click();
+  13 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  14 |
+  15 |   console.log('Clicking Log In...');
+  16 |   await page.getByRole('button', { name: 'Log In' }).click();
+  17 |
+  18 |   console.log('Navigating to John Bond contact record...');
+  19 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  20 |
+  21 |   console.log('Switching to Details tab...');
+  22 |   await page.getByRole('tab', { name: 'Details' }).click();
+  23 |
+  24 |   console.log('Waiting for half a second to ensure page stability...');
+  25 |   await page.waitForTimeout(500);
+  26 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+  27 |
+  28 |   console.log('Verifying that Playwright site loaded and heading is visible...');
+  29 |   await page.waitForTimeout(500);
+  30 |
+  31 |   const typeScriptLink = page.getByRole('link', { name: 'TypeScript' });
+> 32 |   await expect(typeScriptLink).toHaveCSS('color', 'rgb(26, 126, 31)', { timeout: 10000 });
+     |                                ^ Error: Timed out 10000ms waiting for expect(locator).toHaveCSS(expected)
+  33 | const actualColor = await typeScriptLink.evaluate(el => getComputedStyle(el).color);
+  34 | console.log('🎨 Actual CSS color:', actualColor);
+  35 | });
+```

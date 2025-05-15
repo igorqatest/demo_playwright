@@ -1,0 +1,77 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:14:5
+
+# Error details
+
+```
+TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: /Playwright by Testers Talk/i }) to be visible
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:35:19
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.youtube.com/');
+   4 |    await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+   5 |    await page.getByRole('combobox', { name: 'Search' }).fill('playwright by testers');
+   6 |    await page.waitForTimeout(500);
+   7 |    await page.getByRole('combobox', { name: 'Search' }).press('Enter');
+   8 |    await page.getByRole('link', { name: 'Playwright by Testers Talk☑️' }).click();
+   9 | });
+  10 |  */
+  11 |
+  12 | import { test, expect } from '@playwright/test';
+  13 |
+  14 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+  15 |   await page.goto('https://www.youtube.com/');
+  16 |
+  17 |   // Dismiss cookie banner if present
+  18 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  19 |   if (await rejectCookies.isVisible()) {
+  20 |     await rejectCookies.click();
+  21 |   }
+  22 |
+  23 |   // Search input
+  24 |   const searchInput = page.getByRole('combobox', { name: /Search/i });
+  25 |   await searchInput.waitFor({ state: 'visible' });
+  26 |   await searchInput.fill('playwright by testers');
+  27 |   await page.waitForTimeout(500);
+  28 |   // 🔍 Click the Search button instead of pressing Enter
+  29 |   /* const searchButton = page.getByRole('button', { name: /Search/i });
+  30 |   await searchButton.click(); */
+  31 |   await searchInput.press('Enter');
+  32 |
+  33 |
+  34 |   const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i });
+> 35 |   await videoLink.waitFor({ state: 'visible', timeout: 10000 });
+     |                   ^ TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+  36 |   await videoLink.click(); 
+  37 |
+  38 |   //await expect(page).toHaveURL(/watch/);
+  39 |   //await expect(page.getByRole('heading', { name: 'Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', exact: true }).locator('yt-formatted-string')).toContainText('Playwright');
+  40 |   //await expect(page).toHaveTitle('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial');
+  41 |   await page.waitForTimeout(1000);
+  42 |   /* const signIn = page.getByRole('link', { name: 'Sign in' });
+  43 |   await signIn.click(); */
+  44 |
+  45 |   await  page.goto('https://github.com/');
+  46 |   await page.getByRole('link', { name: 'Sign in' }).click();
+  47 |   await page.waitForTimeout(2000);
+  48 |   await page.getByLabel('Homepage', { exact: true}).click();
+  49 |
+  50 |   console.log('✅ Test passed');
+  51 | });
+```

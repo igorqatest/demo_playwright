@@ -1,0 +1,150 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify all fields and buttons are present in Contacts list view
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:3:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: getByRole('button', { name: 'Sort Name' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByRole('button', { name: 'Sort Name' })
+    - waiting for" https://ansel2-dev-ed.develop.lightning.force.com/visualforce/recsession?sid=00DWU00000KtgPh%21AQEAQLOSQHdVs8lqF9HnfKKlbWO39xsx.Bzs1ynYujESKR8jVJeGcwYyUYgmjI0uzbHegietBYxsLHaJkFpXQkj71o_KbD6k&inst=WU…" navigation to finish...
+    - navigated to "https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:17:65
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Verify all fields and buttons are present in Contacts list view', async ({ page }) => {
+   4 |   // Go to your Salesforce Contacts page
+   5 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD'); // <-- Replace with actual URL
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   10 |
+   11 |   console.log('Clicking Log In...');
+   12 |   await page.getByRole('button', { name: 'Log In' }).click();
+   13 |   // Wait for the page to load
+   14 |   await page.waitForLoadState('domcontentloaded');
+   15 |  await page.waitForTimeout(500);
+   16 |   // 🔍 Table column headers
+>  17 |   await expect(page.getByRole('button', { name: 'Sort Name' })).toBeVisible();
+      |                                                                 ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+   18 |   await expect(page.getByRole('button', { name: 'Sort Account Name' })).toBeVisible();
+   19 |   await expect(page.getByRole('button', { name: 'Sort Title' })).toBeVisible();
+   20 |   await expect(page.getByRole('button', { name: 'Sort Phone' })).toBeVisible();
+   21 |   await expect(page.getByRole('button', { name: 'Sort Email' })).toBeVisible();
+   22 |   await expect(page.getByRole('button', { name: 'Sort Contact Owner Alias' })).toBeVisible();
+   23 |   await expect(page.getByRole('button', { name: 'Refresh Refresh' })).toBeVisible();
+   24 |   await expect(page.getByRole('button', { name: 'Edit List' })).toBeVisible();
+   25 |  
+   26 |
+   27 |
+   28 |   // 🔘 Top action buttons
+   29 |   await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
+   30 |   await expect(page.getByRole('button', { name: 'Intelligence View' })).toBeVisible();
+   31 |   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
+   32 |   await expect(page.getByRole('button', { name: 'Add to Campaign' })).toBeVisible();
+   33 |   await expect(page.getByRole('button', { name: 'Send List Email' })).toBeVisible();
+   34 |
+   35 |   // 🔍 Search box (inside "Search this list...")
+   36 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+   37 |
+   38 |   // 🛠️ List action icons (grid, filters, etc.)
+   39 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible(); // gear icon
+   40 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible(); // funnel/dropdown
+   41 |   
+   42 |
+   43 |   await page.getByRole('button', { name: 'Search' }).click();
+   44 |   await page.getByRole('searchbox', { name: 'Search Contacts and more' }).fill('Contacts');
+   45 |   
+   46 |
+   47 |
+   48 |   console.log('Navigating to John Bond contact record...');
+   49 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   50 |   
+   51 |
+   52 |
+   53 |   console.log('Navigating to John Bond contact record...');
+   54 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   55 |
+   56 |   console.log('Switching to Details tab...');
+   57 |   await page.getByRole('tab', { name: 'Details' }).click();
+   58 |
+   59 |   
+   60 |
+   61 |   // Wait for stability (if needed)
+   62 |   await page.waitForTimeout(1500);
+   63 |
+   64 |   // ✅ LEFT COLUMN FIELDS
+   65 |   await expect(page.getByText('Contact Owner')).toBeVisible();
+   66 |   await expect(page.getByRole('link', { name: 'Igor Pejin' })).toBeVisible();
+   67 |
+   68 |   await expect(page.getByText('Name')).toBeVisible();
+   69 |   await expect(page.getByText('Mr. John Bond')).toBeVisible();
+   70 |
+   71 |   await expect(page.getByText('Account Name')).toBeVisible();
+   72 |   await expect(page.getByRole('link', { name: 'Grand Hotels & Resorts Ltd' })).toBeVisible();
+   73 |
+   74 |   await expect(page.getByText('Title')).toBeVisible();
+   75 |   await expect(page.getByText('VP, Facilities')).toBeVisible();
+   76 |
+   77 |   await expect(page.getByText('Department')).toBeVisible();
+   78 |   await expect(page.getByText('Facilities')).toBeVisible();
+   79 |
+   80 |   await expect(page.getByText('Birthdate')).toBeVisible();
+   81 |   await expect(page.getByText('11. 01. 1961.')).toBeVisible();
+   82 |
+   83 |   await expect(page.getByText('Lead Source')).toBeVisible();
+   84 |   await expect(page.getByText('External Referral')).toBeVisible();
+   85 |
+   86 |   await expect(page.getByText('Website URL')).toBeVisible();
+   87 |   await expect(page.getByRole('link', { name: 'https://playwright.dev/' })).toBeVisible();
+   88 |
+   89 |   // ✅ RIGHT COLUMN FIELDS
+   90 |   await expect(page.getByText('Phone')).toBeVisible();
+   91 |   await expect(page.getByText('(312) 596-1000')).toBeVisible();
+   92 |
+   93 |   await expect(page.getByText('Mobile')).toBeVisible();
+   94 |   await expect(page.getByText('(312) 596-1563')).toBeVisible();
+   95 |
+   96 |   await expect(page.getByText('Fax')).toBeVisible();
+   97 |   await expect(page.getByText('(312) 596-1500')).toBeVisible();
+   98 |
+   99 |   await expect(page.getByText('Email')).toBeVisible();
+  100 |   await expect(page.getByText('bond_john@grandhotels.com')).toBeVisible();
+  101 |
+  102 |   await expect(page.getByText('Mailing Address')).toBeVisible();
+  103 |   await expect(page.getByText('2334 N. Michigan Avenue')).toBeVisible(); // partial match might be needed
+  104 |
+  105 |   await expect(page.getByText('Languages')).toBeVisible();
+  106 |   await expect(page.getByText('English')).toBeVisible();
+  107 |
+  108 |   await expect(page.getByText('Level')).toBeVisible();
+  109 |   await expect(page.getByText('Primary')).toBeVisible();
+  110 |
+  111 |   await expect(page.getByText('Created By')).toBeVisible();
+  112 |   await expect(page.getByText('24. 03. 2025.')).toBeVisible();
+  113 |
+  114 |   await expect(page.getByText('Last Modified By')).toBeVisible();
+  115 |   await expect(page.getByText('28. 03. 2025.')).toBeVisible();
+  116 |
+  117 |   console.log('✅ All contact detail fields are present!');
+```

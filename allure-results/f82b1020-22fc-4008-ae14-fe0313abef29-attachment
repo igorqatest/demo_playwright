@@ -1,0 +1,79 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByPlaceholder('Website URL')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:39:46
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log In' }).click();
+   8 |   await page.waitForTimeout(1500);  
+   9 |   console.log('📇 Opening Contacts tab...');
+  10 |   await page.getByRole('link', { name: 'Contacts' }).click();
+  11 |   await page.waitForTimeout(2000);
+  12 |   await page.getByRole('button', { name: 'New' }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |   // Fill basic fields
+  15 |   await page.locator('button[aria-label="Salutation"]').click();
+  16 | await page.locator('lightning-base-combobox-item >> text=Mr.').click();
+  17 | // Click the "Mr" option from the dropdown list
+  18 |   await page.getByPlaceholder('First Name').fill('John');
+  19 |   await page.getByPlaceholder('Last Name').fill('Doe');
+  20 |   await page.getByRole('textbox', { name: 'Phone', exact: true }).fill('(123) 456-7890');
+  21 |   await page.getByRole('textbox', { name: 'Home Phone', exact: true }).fill('(321) 654-0987');
+  22 |   await page.getByRole('textbox', { name: 'Mobile', exact: true }).fill('(111) 222-3333');
+  23 |   await page.getByRole('textbox', { name: 'Other Phone', exact: true }).fill('(444) 555-6666');
+  24 |   await page.getByRole('textbox', { name: 'Title' }).fill('QA Engineer');
+  25 |   await page.getByRole('textbox', { name: 'Department' }).fill('Quality Assurance');
+  26 |   await page.getByRole('textbox', { name: 'Email' }).fill('john.doe@example.com');
+  27 |   await page.getByRole('textbox', { name: 'Fax' }).fill('(777) 888-9999');
+  28 |   await page.getByRole('textbox', { name: 'Birthdate' }).fill('01. 01. 1990.');
+  29 |
+  30 |   // Focus and type into the input field
+  31 | await page.getByPlaceholder('Search Contacts...').click();
+  32 | await page.getByPlaceholder('Search Contacts...').fill('John Bond');
+  33 |
+  34 |   
+  35 |   // Dropdown selections
+  36 |   await page.locator('button[aria-label="Lead Source"]').click();
+  37 |   await page.locator('lightning-base-combobox-item >> text=Web').click();
+  38 |   // Website + URL fields
+> 39 |   await page.getByPlaceholder('Website URL').fill('https://playwright.dev');
+     |                                              ^ Error: locator.fill: Test timeout of 30000ms exceeded.
+  40 |   await page.getByPlaceholder('URL Name').fill('Playwright Official');
+  41 |
+  42 |   // Assistant-related
+  43 |   await page.getByPlaceholder('Assistant').fill('Jane Smith');
+  44 |   await page.getByPlaceholder('Asst. Phone').fill('(101) 202-3030');
+  45 |
+  46 |   // Submit form
+  47 |   await page.getByRole('button', { name: 'Save' }).click();
+  48 |
+  49 |   // Optional: wait for confirmation or navigate forward
+  50 |   await page.waitForLoadState('networkidle');
+  51 |
+  52 |   console.log('✅ Contact created successfully!');
+  53 | });
+```

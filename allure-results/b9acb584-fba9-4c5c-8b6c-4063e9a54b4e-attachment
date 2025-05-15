@@ -1,0 +1,144 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify all fields and buttons are present in Contacts list view
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Test ended.
+Call log:
+  - waiting for getByRole('searchbox', { name: 'Search Contacts and more' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:18:75
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Verify all fields and buttons are present in Contacts list view', async ({ page }) => {
+   4 |   // Go to your Salesforce Contacts page
+   5 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD'); // <-- Replace with actual URL
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   10 |
+   11 |   console.log('Clicking Log In...');
+   12 |   await page.getByRole('button', { name: 'Log In' }).click();
+   13 |   // Wait for the page to load
+   14 |  await page.waitForTimeout(1500);
+   15 |
+   16 |   // 🔍 Table column headers
+   17 |   await page.getByRole('button', { name: 'Search' }).click();
+>  18 |   await page.getByRole('searchbox', { name: 'Search Contacts and more' }).fill('Contacts');
+      |                                                                           ^ Error: locator.fill: Test ended.
+   19 |   await page.getByLabel(',').getByText('Contacts', { exact: true }).click();
+   20 |
+   21 |   // 🔍 Table column headers
+   22 |   await expect(page.getByRole('button', { name: 'Sort Name' })).toBeVisible();
+   23 |   await expect(page.getByRole('button', { name: 'Sort Account Name' })).toBeVisible();
+   24 |   await expect(page.getByRole('button', { name: 'Sort Title' })).toBeVisible();
+   25 |   await expect(page.getByRole('button', { name: 'Sort Phone' })).toBeVisible();
+   26 |   await expect(page.getByRole('button', { name: 'Sort Email' })).toBeVisible();
+   27 |   await expect(page.getByRole('button', { name: 'Sort Contact Owner Alias' })).toBeVisible();
+   28 |   await expect(page.getByRole('button', { name: 'Refresh Refresh' })).toBeVisible();
+   29 |   await expect(page.getByRole('button', { name: 'Edit List' })).toBeVisible();
+   30 |  
+   31 |
+   32 |
+   33 |   // 🔘 Top action buttons
+   34 |   await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
+   35 |   await expect(page.getByRole('button', { name: 'Intelligence View' })).toBeVisible();
+   36 |   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
+   37 |   await expect(page.getByRole('button', { name: 'Add to Campaign' })).toBeVisible();
+   38 |   await expect(page.getByRole('button', { name: 'Send List Email' })).toBeVisible();
+   39 |
+   40 |   // 🔍 Search box (inside "Search this list...")
+   41 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+   42 |
+   43 |   // 🛠️ List action icons (grid, filters, etc.)
+   44 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible(); // gear icon
+   45 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible(); // funnel/dropdown
+   46 |   
+   47 |
+   48 |   
+   49 |   
+   50 |
+   51 |
+   52 |   console.log('Navigating to John Bond contact record...');
+   53 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   54 |   
+   55 |
+   56 |
+   57 |   console.log('Navigating to John Bond contact record...');
+   58 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   59 |
+   60 |   console.log('Switching to Details tab...');
+   61 |   await page.getByRole('tab', { name: 'Details' }).click();
+   62 |
+   63 |   
+   64 |
+   65 |   // Wait for stability (if needed)
+   66 |   await page.waitForTimeout(1500);
+   67 |
+   68 |   // ✅ LEFT COLUMN FIELDS
+   69 |   await expect(page.locator('#tab-5').getByText('Contact Owner')).toBeVisible();
+   70 |
+   71 |   await expect(page.getByText('Name')).toBeVisible();
+   72 |   await expect(page.getByText('Mr. John Bond')).toBeVisible();
+   73 |
+   74 |   await expect(page.getByText('Account Name')).toBeVisible();
+   75 |   await expect(page.getByRole('link', { name: 'Grand Hotels & Resorts Ltd' })).toBeVisible();
+   76 |
+   77 |   await expect(page.getByText('Title')).toBeVisible();
+   78 |   await expect(page.getByText('VP, Facilities')).toBeVisible();
+   79 |
+   80 |   await expect(page.getByText('Department')).toBeVisible();
+   81 |   await expect(page.getByText('Facilities')).toBeVisible();
+   82 |
+   83 |   await expect(page.getByText('Birthdate')).toBeVisible();
+   84 |   await expect(page.getByText('11. 01. 1961.')).toBeVisible();
+   85 |
+   86 |   await expect(page.getByText('Lead Source')).toBeVisible();
+   87 |   await expect(page.getByText('External Referral')).toBeVisible();
+   88 |
+   89 |   await expect(page.getByText('Website URL')).toBeVisible();
+   90 |   await expect(page.getByRole('link', { name: 'https://playwright.dev/' })).toBeVisible();
+   91 |
+   92 |   // ✅ RIGHT COLUMN FIELDS
+   93 |   await expect(page.getByText('Phone')).toBeVisible();
+   94 |   await expect(page.getByText('(312) 596-1000')).toBeVisible();
+   95 |
+   96 |   await expect(page.getByText('Mobile')).toBeVisible();
+   97 |   await expect(page.getByText('(312) 596-1563')).toBeVisible();
+   98 |
+   99 |   await expect(page.getByText('Fax')).toBeVisible();
+  100 |   await expect(page.getByText('(312) 596-1500')).toBeVisible();
+  101 |
+  102 |   await expect(page.getByText('Email')).toBeVisible();
+  103 |   await expect(page.getByText('bond_john@grandhotels.com')).toBeVisible();
+  104 |
+  105 |   await expect(page.getByText('Mailing Address')).toBeVisible();
+  106 |   await expect(page.getByText('2334 N. Michigan Avenue')).toBeVisible(); // partial match might be needed
+  107 |
+  108 |   await expect(page.getByText('Languages')).toBeVisible();
+  109 |   await expect(page.getByText('English')).toBeVisible();
+  110 |
+  111 |   await expect(page.getByText('Level')).toBeVisible();
+  112 |   await expect(page.getByText('Primary')).toBeVisible();
+  113 |
+  114 |   await expect(page.getByText('Created By')).toBeVisible();
+  115 |   await expect(page.getByText('24. 03. 2025.')).toBeVisible();
+  116 |
+  117 |   await expect(page.getByText('Last Modified By')).toBeVisible();
+  118 |   await expect(page.getByText('28. 03. 2025.')).toBeVisible();
+```

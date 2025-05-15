@@ -1,0 +1,48 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for locator('h3[data-cms2-content-element="title"]').filter({ hasText: 'Marin Čilić Bravo! Odličan' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:15:106
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://dnevnik.hr/');
+   5 |   await page.getByRole('button', { name: 'Prihvati i zatvori:' }).click();
+   6 |   //await page.getByRole('link', { name: 'Dinamo Financije pod' }).click();
+   7 |   const headline = page.locator('h3[data-cms2-content-element="title"]');
+   8 |   //await headline.first().click();
+   9 |   //await page.locator('span.subtitle', { hasText: 'Bravo!'}).click();
+  10 |   //await page.locator('span:has-text("Bravo!")').click();
+  11 |   //await page.getByText('Bravo!').click();
+  12 |   //await page.locator('a:has-text("bravo!")').click();
+  13 |   //await page.getByRole('link', { name: 'Marin Čilić Bravo!' }).click();
+  14 |   //await page.locator('h3[data-cms2-content-element="title"]').click();
+> 15 |   await page.locator('h3[data-cms2-content-element="title"]', { hasText: 'Marin Čilić Bravo! Odličan' }).click();
+     |                                                                                                          ^ Error: locator.click: Test ended.
+  16 |   //await page.locator('a span:has-text("Bravo!")').first().click();  //await page.locator('.subtitle span:has-text("Bravo!")').click();
+  17 |   //await page.getByText('trenutci užasa').click();
+  18 |   //await page.locator('span.subtitle', { hasText: 'trenutci užasa' }).click();
+  19 |   //await page.locator('span.subtitle span', { hasText: 'trenutci užasa' }).click();
+  20 |   //await page.locator('a:has-text("trenutci užasa")').click();
+  21 |
+  22 | });
+```

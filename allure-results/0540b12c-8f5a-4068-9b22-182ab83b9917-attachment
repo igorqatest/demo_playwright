@@ -1,0 +1,99 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Submit proposal form with dynamic data
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:5:5
+
+# Error details
+
+```
+Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('text=Yes, I accept this proposal')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:26:61
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import { addDays, format } from 'date-fns';
+   4 |
+   5 | test('Submit proposal form with dynamic data', async ({ page }) => {
+   6 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KU2z0AG/view');
+   7 |
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  10 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  11 |
+  12 |   await page.getByRole('tab', { name: 'Details' }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |
+  15 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  16 |   await proposalLink.scrollIntoViewIfNeeded();
+  17 |
+  18 |   const [newPage] = await Promise.all([
+  19 |     page.context().waitForEvent('page'),
+  20 |     proposalLink.click(),
+  21 |   ]);
+  22 |   const context = await newPage.context();
+  23 |
+  24 |   await newPage.waitForLoadState();
+  25 |
+> 26 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+     |                                                             ^ Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+  27 |   await newPage.getByText('Yes, I accept this proposal').click();
+  28 |
+  29 |   const firstName = faker.person.firstName();
+  30 |   const lastName = faker.person.lastName();
+  31 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  32 |   const ackFirstName = faker.person.firstName();
+  33 |   const ackLastName = faker.person.lastName();
+  34 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  35 |
+  36 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  37 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  38 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  39 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  40 |   await newPage.getByText('Ansel enrollment platform').click();
+  41 |
+  42 |   // --- 🗓️ Pick Start Date ---
+  43 |   const today = format(new Date(), 'MM/dd/yyyy');
+  44 |   const threeWeeksLater = format(addDays(new Date(), 21), 'MM/dd/yyyy');
+  45 |   
+  46 |   // 2. Remove readonly and type for Start Date
+  47 |   await newPage.evaluate(() => {
+  48 |     const input = document.querySelector('input[name="enrollmentStartDate"]');
+  49 |     if (input) input.removeAttribute('readonly');
+  50 |   });
+  51 |   await newPage.locator('input[name="enrollmentStartDate"]').fill(today);
+  52 |   
+  53 |   // 3. Remove readonly and type for End Date
+  54 |   await newPage.evaluate(() => {
+  55 |     const input = document.querySelector('input[name="enrollmentEndDate"]');
+  56 |     if (input) input.removeAttribute('readonly');
+  57 |   });
+  58 |   await newPage.locator('input[name="enrollmentEndDate"]').fill(threeWeeksLater);
+  59 |
+  60 |   // --- Acknowledgment ---
+  61 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  62 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  63 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  64 |
+  65 |   await newPage.getByText('By checking this box, I agree').click();
+  66 |
+  67 |   console.log('✅ Proposal filled successfully');
+  68 |   /* const acceptButton = newPage.locator('button:has-text("Accept"):not([disabled])');
+  69 | await acceptButton.waitFor({ state: 'visible' });
+  70 |
+  71 | // Then click it
+  72 | await acceptButton.click(); */
+  73 | });
+```

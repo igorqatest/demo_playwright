@@ -1,0 +1,132 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-40.spec.ts:25:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('option', { name: 'Service', exact: true })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-40.spec.ts:36:68
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | const screenshotDir = '40-test';
+   6 |
+   7 | if ( fs.existsSync(screenshotDir)) {
+   8 |   fs.readdirSync(screenshotDir).forEach(file => {
+   9 |     fs.unlinkSync(path.join(screenshotDir, file));
+   10 |   });
+   11 | }else {
+   12 |   fs.mkdirSync(screenshotDir);
+   13 | }
+   14 | /* async function logAndScreenshot(page, dir: string, step: string, message: string) {
+   15 |   console.log(message);
+   16 |   await page.screenshot({ path: `${dir}/${step}.png`});
+   17 | } */
+   18 |  async function logAndScreenshot(page, dir: string, step: string, message: string) {
+   19 |   console.log(message);
+   20 |   await page.screenshot({ path: `${dir}/${step}.png`});
+   21 |  }
+   22 |
+   23 |
+   24 |
+   25 | test('test', async ({ page }) => {
+   26 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Contact/003WU00000KMzEZYA1/view');
+   27 |   await page.getByRole('textbox', { name: 'Username'}).fill('pejinigor@gmail.com');
+   28 |   await page.getByRole('textbox', { name: 'Password'}).fill('Test123456');
+   29 |   await logAndScreenshot(page, screenshotDir, '40-test', 'Login page loaded');
+   30 |   await page.getByRole('button', { name: 'Log in'}).click();
+   31 |   await page.waitForTimeout(1000);
+   32 |   await page.getByRole('button', { name: 'App Launcher' }).click();
+   33 |   await page.waitForTimeout(1000);
+   34 |   await logAndScreenshot(page, screenshotDir, '40-test', 'App Launcher loaded');
+   35 |
+>  36 |   await page.getByRole('option', { name: 'Service', exact: true }).click();
+      |                                                                    ^ Error: locator.click: Test timeout of 30000ms exceeded.
+   37 |   await page.waitForTimeout(3000);
+   38 |
+   39 |   await page.getByRole('link', { name: 'Accounts' }).click();
+   40 |   await page.getByRole('link', { name: 'Dickenson plc', exact: true }).click();
+   41 |   await page.waitForTimeout(2000);
+   42 |   await logAndScreenshot(page, screenshotDir, '40-test', 'Dickenson plc loaded');
+   43 | }); 
+   44 |
+   45 |
+   46 |
+   47 | /* import fs from 'fs';
+   48 | import path from 'path';
+   49 |
+   50 | import { test, expect } from '@playwright/test';
+   51 |
+   52 | const screenshotDir = 'test-40';
+   53 |
+   54 |
+   55 | if ( fs.existsSync(screenshotDir)) {
+   56 |   fs.readdirSync(screenshotDir).forEach(test => {
+   57 |     fs.unlinkSync(path.join(screenshotDir, test));
+   58 |   });
+   59 | }else {
+   60 |   fs.mkdirSync(screenshotDir);
+   61 | }
+   62 |
+   63 |
+   64 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+   65 |   console.log(message);
+   66 |   await page.screenshot({ path: `${dir}/${step}.png`});
+   67 | }
+   68 |
+   69 | test('🔐 Login and navigate to Dickenson plc Account record', async ({ page }) => {
+   70 |   await test.step('🌐 Navigate to Salesforce login page', async () => {
+   71 |     await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Contact/003WU00000KMzEZYA1/view');
+   72 |   });
+   73 |
+   74 |   await test.step('🔑 Log into Salesforce', async () => {
+   75 |     await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   76 |     await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   77 |     //  await logAndScreenshot(page, screenshotDir, '1-login', '📸 Login page loaded');
+   78 | await logAndScreenshot(page, screenshotDir, '40-login', ' Login page loaded');
+   79 |     await page.getByRole('button', { name: 'Log in' }).click();
+   80 |
+   81 |     // Wait for homepage to load
+   82 |     await expect(page.getByRole('button', { name: 'App Launcher' })).toBeVisible();
+   83 |   });
+   84 |   await test.step('🧭 Open Service App from App Launcher', async () => {
+   85 |     await page.getByRole('button', { name: 'App Launcher' }).click();
+   86 |
+   87 |     const service = page.getByRole('option', { name: 'Service', exact: true });
+   88 |     
+   89 |     await expect(service).toBeVisible();   await logAndScreenshot(page, screenshotDir, '40-Service', ' Service loaded');
+   90 |
+   91 |     await service.click();
+   92 |
+   93 |     });
+   94 |
+   95 |   await test.step('🏢 Navigate to Accounts > Dickenson plc', async () => {
+   96 |     await page.getByRole('link', { name: 'Accounts' }).click();
+   97 |     await logAndScreenshot(page, screenshotDir, '40-Accounts', 'Accounts loaded');
+   98 |     await page.waitForTimeout(3000);
+   99 |
+  100 |     const dickenson = page.getByRole('link', { name: 'Dickenson plc', exact: true });
+  101 |     await expect(dickenson).toBeVisible();
+  102 |     await dickenson.click();
+  103 |   });
+  104 |
+  105 |   console.log('✅ Navigation to Dickenson plc complete.');
+  106 | }); */
+```

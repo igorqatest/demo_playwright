@@ -1,0 +1,43 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: locator('span').filter({ hasText: 'Sign in with a passkey' }) resolved to 2 elements:
+    1) <span class="Button-content">…</span> aka locator('span').filter({ hasText: 'Sign in with a passkey' }).first()
+    2) <span class="Button-label">Sign in with a passkey</span> aka getByText('Sign in with a passkey')
+
+Call log:
+  - waiting for locator('span').filter({ hasText: 'Sign in with a passkey' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:13:69
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/');
+   5 |   
+   6 |   //await page.getByText('Sign up').first().click();  // works
+   7 |   //await page.locator('//a[contains(text(), "Sign in")]').click(); 
+   8 |   //await page.locator('header').getByText('Sign up').click(); // works
+   9 |   //await page.getByText('Sign up').nth(1).click(); // works
+  10 |   await page.locator('a.HeaderMenu-link--sign-in').click(); // works
+  11 |   //await page.getByText('Sign in with a passkey').click(); // works
+  12 |   //await page.locator('span').getByText('Sign in with a passkey').click(); // works
+> 13 |   await page.locator('span', { hasText: 'Sign in with a passkey' }).click();
+     |                                                                     ^ Error: locator.click: Error: strict mode violation: locator('span').filter({ hasText: 'Sign in with a passkey' }) resolved to 2 elements:
+  14 | });
+```

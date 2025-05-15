@@ -1,0 +1,81 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:20:5
+
+# Error details
+
+```
+Error: locator.fill: Error: strict mode violation: getByRole('searchbox') resolved to 2 elements:
+    1) <input part="input" id="input-91" type="search" lwc-enmikoh2qu="" class="slds-input" name="Contact-search-input" aria-label="Search this list..." placeholder="Search this list..." aria-describedby="listviewSearchTooltip-83 help-message-91"/> aka getByRole('searchbox', { name: 'Search this list...' })
+    2) <input part="input" id="input-63" type="search" maxlength="100" lwc-enmikoh2qu="" class="slds-input" autocomplete="off" aria-describedby="help-message-63" aria-controls="suggestionsList-58" placeholder="Search Contacts and more..."/> aka getByRole('searchbox', { name: 'Search Contacts and more' })
+
+Call log:
+  - waiting for getByRole('searchbox')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:47:35
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | const screenshotDir = 'test-35';
+   6 |
+   7 | // Clean screenshot folder before test
+   8 | if (fs.existsSync(screenshotDir)) {
+   9 |   fs.readdirSync(screenshotDir).forEach(file => {
+  10 |     fs.unlinkSync(path.join(screenshotDir, file));
+  11 |   });
+  12 | } else {
+  13 |   fs.mkdirSync(screenshotDir);
+  14 | }
+  15 | // Helper to log and screenshot
+  16 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+  17 |   console.log(message);
+  18 |   await page.screenshot({ path: `${dir}/${step}.png` });
+  19 | }
+  20 | test('test', async ({ page }) => {
+  21 |  const screenshotDir = 'test-36';
+  22 |    if (fs.existsSync(screenshotDir)) {
+  23 |      fs.readdirSync(screenshotDir).forEach(file => {
+  24 |        fs.unlinkSync(path.join(screenshotDir, file));
+  25 |      });
+  26 |    } else {
+  27 |      fs.mkdirSync(screenshotDir);
+  28 |    }
+  29 |  
+  30 |    console.log('🌐 Opening login page...');
+  31 |    await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+  32 |    await logAndScreenshot(page, screenshotDir, '1-login', '📸 Login page loaded');
+  33 |  
+  34 |    console.log('🔐 Logging in...');
+  35 |    await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  36 |    await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  37 |    await logAndScreenshot(page, screenshotDir, '2-login-filled', '📸 Credentials entered');
+  38 |    await page.getByRole('button', { name: 'Log In' }).click();
+  39 |    await page.waitForTimeout(2000);
+  40 |  
+  41 |    console.log('📇 Navigating to Opportunities tab...');
+  42 |
+  43 | // Click search button (if needed)
+  44 | await page.getByRole('button', { name: 'Search' }).click();
+  45 |
+  46 | // Fill the search box (e.g., "Opportunities")
+> 47 | await page.getByRole('searchbox').fill('Opportunities');
+     |                                   ^ Error: locator.fill: Error: strict mode violation: getByRole('searchbox') resolved to 2 elements:
+  48 | await page.waitForTimeout(1000); // Wait for dropdown to populate
+  49 |
+  50 | // Click "All Opportunities" from dropdown results
+  51 | await page.locator('span').getByText('All Opportunities', { exact: true }).click();
+  52 | });
+```

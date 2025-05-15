@@ -1,0 +1,80 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Save' }) resolved to 2 elements:
+    1) <button type="button" part="button" kx-type="ripple" name="SaveAndNew" lwc-40a585din3p="" aria-disabled="false" kx-scope="button-neutral" class="slds-button slds-button_neutral">Save & New</button> aka getByRole('button', { name: 'Save & New' })
+    2) <button type="button" part="button" name="SaveEdit" kx-type="ripple" lwc-40a585din3p="" aria-disabled="false" kx-scope="button-brand" class="slds-button slds-button_brand">Save</button> aka getByRole('button', { name: 'Save', exact: true })
+
+Call log:
+  - waiting for getByRole('button', { name: 'Save' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:45:52
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log In' }).click();
+   8 |   await page.waitForTimeout(1500);  
+   9 |   console.log('📇 Opening Contacts tab...');
+  10 |   await page.getByRole('link', { name: 'Contacts' }).click();
+  11 |   await page.waitForTimeout(2000);
+  12 |   await page.getByRole('button', { name: 'New' }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |   // Fill basic fields
+  15 |   await page.locator('button[aria-label="Salutation"]').click();
+  16 | await page.locator('lightning-base-combobox-item >> text=Mr.').click();
+  17 | // Click the "Mr" option from the dropdown list
+  18 |   await page.getByPlaceholder('First Name').fill('John');
+  19 |   await page.getByPlaceholder('Last Name').fill('Doe');
+  20 |   await page.getByRole('textbox', { name: 'Phone', exact: true }).fill('(123) 456-7890');
+  21 |   await page.getByRole('textbox', { name: 'Home Phone', exact: true }).fill('(321) 654-0987');
+  22 |   await page.getByRole('textbox', { name: 'Mobile', exact: true }).fill('(111) 222-3333');
+  23 |   await page.getByRole('textbox', { name: 'Other Phone', exact: true }).fill('(444) 555-6666');
+  24 |   await page.getByRole('textbox', { name: 'Title' }).fill('QA Engineer');
+  25 |   await page.getByRole('textbox', { name: 'Department' }).fill('Quality Assurance');
+  26 |   await page.getByRole('textbox', { name: 'Email' }).fill('john.doe@example.com');
+  27 |   await page.getByRole('textbox', { name: 'Fax' }).fill('(777) 888-9999');
+  28 |   await page.getByRole('textbox', { name: 'Birthdate' }).fill('01. 01. 1990.');
+  29 |
+  30 |
+  31 |
+  32 |   
+  33 |   // Dropdown selections
+  34 |   await page.locator('button[aria-label="Lead Source"]').click();
+  35 |   await page.locator('lightning-base-combobox-item >> text=Web').click();
+  36 |   // Website + URL fields
+  37 |   await page.getByRole('textbox', { name: 'URL Name' }).fill('https://playwright.dev');
+  38 |   await page.getByRole('textbox', { name: 'Website' }).fill('Playwright Official');
+  39 |
+  40 |   // Assistant-related
+  41 |   await page.getByRole('textbox', { name: 'Assistant' }).fill('Jane Smith');
+  42 |   await page.getByRole('textbox', { name: 'Asst. Phone' }).fill('(101) 202-3030');
+  43 |
+  44 |   // Submit form
+> 45 |   await page.getByRole('button', { name: 'Save' }).click();
+     |                                                    ^ Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Save' }) resolved to 2 elements:
+  46 |
+  47 |   // Optional: wait for confirmation or navigate forward
+  48 |   await page.waitForLoadState('networkidle');
+  49 |
+  50 |   console.log('✅ Contact created successfully!');
+  51 | });
+```

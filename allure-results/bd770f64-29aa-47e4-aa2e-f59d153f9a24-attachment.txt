@@ -1,0 +1,26 @@
+🚀 Starting test...
+✅ Logged into Salesforce
+📂 Opened Related tab
+🔗 Clicked CS- link
+✅ Opened first prospective record
+🔐 Extracted SSN: 757-08-7933
+🎂 Extracted and formatted DOB: 12/27/1936
+🎯 Clicked "Get The Link"
+🔗 Extracted shopping link
+🆕 Navigated to shopping link in new tab
+🔐 Verification started
+🔓 Verification passed
+👪 Household questions
+➡️ Page 3 complete
+➡️ Page 4 complete
+➡️ Page 5 complete
+➡️ Page 6 complete
+➡️ Page 7 complete
+➡️ Page 8 complete
+➡️ Page 9 complete
+➡️ Page 10 complete
+💰 Medical expenses questions
+✅ Purchasing what I want
+✅ Select ansel benefits
+📱 Filled formatted phone number: (129) 530-730
+🎯 Will try to select gender: Male

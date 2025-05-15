@@ -1,0 +1,41 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByText('Sales Console') resolved to 3 elements:
+    1) <span class="slds-assistive-text" data-aura-rendered-by="147:0;p">Sales Console</span> aka getByText('Sales Console').first()
+    2) <span class="slds-assistive-text" data-aura-rendered-by="162:0;p">Sales Console</span> aka getByLabel('Global Header').getByText('Sales Console')
+    3) <span title="Sales Console" class="slds-truncate" data-aura-rendered-by="321:0;p">Sales Console</span> aka getByTitle('Sales Console')
+
+Call log:
+  - waiting for getByText('Sales Console')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:10:41
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username'}).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password'}).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log in'}).click();
+   8 |   await page.waitForTimeout(2000);
+   9 |   
+> 10 |   await page.getByText('Sales Console').click();
+     |                                         ^ Error: locator.click: Error: strict mode violation: getByText('Sales Console') resolved to 3 elements:
+  11 | });
+```

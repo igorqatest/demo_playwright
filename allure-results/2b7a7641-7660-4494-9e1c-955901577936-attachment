@@ -1,0 +1,43 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Test 3
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-22.spec.ts:15:5
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: false
+Received: true
+    at /Users/pejin/Documents/Playwright QA/tests/test-22.spec.ts:16:16
+```
+
+# Test source
+
+```ts
+   1 | // Import playwright module
+   2 | import { test, expect } from '@playwright/test'
+   3 |
+   4 | // Write a test
+   5 | test('Test 1', async ({ page }) => {
+   6 |   // Your test logic here
+   7 | })
+   8 |
+   9 | // Write a test
+  10 | test('Test 2', async ({ page }) => {
+  11 |   expect(true).toBe(false);
+  12 | })
+  13 |
+  14 | // Write a test
+  15 | test('Test 3', async ({ page }) => {
+> 16 |   expect(true).toBe(false);
+     |                ^ Error: expect(received).toBe(expected) // Object.is equality
+  17 | })
+```

@@ -1,0 +1,41 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-31.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Error: strict mode violation: locator('.input_error.form_input') resolved to 2 elements:
+    1) <input value="" type="text" id="user-name" name="user-name" autocorrect="off" data-test="username" autocapitalize="none" placeholder="Username" class="input_error form_input"/> aka locator('[data-test="username"]')
+    2) <input value="" id="password" type="password" name="password" autocorrect="off" data-test="password" autocapitalize="none" placeholder="Password" class="input_error form_input"/> aka locator('[data-test="password"]')
+
+Call log:
+  - waiting for locator('.input_error.form_input')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-31.spec.ts:11:50
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://www.saucedemo.com/');
+   5 |   //await page.getByRole('button', {name: 'Search'}).click();
+   6 |   //await page.getByRole('searchbox').fill('playwright testing');
+   7 |   //await page.locator('[data-test="username"]').fill('standard_user');
+   8 |   //await page.locator('id=user-name').fill('standard_user');
+   9 |   //await page.getByPlaceholder('Username').fill('testing');
+  10 |    //await page.getByPlaceholder('Password').fill('demo');
+> 11 |    await page.locator('.input_error.form_input').fill('testing demo');
+     |                                                  ^ Error: locator.fill: Error: strict mode violation: locator('.input_error.form_input') resolved to 2 elements:
+  12 | });
+```

@@ -1,0 +1,167 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping link extraction and flow with fresh start
+- Location: /Users/pejin/Documents/Playwright QA/tests/shopping_ansel.spec.ts:87:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+
+Locator: locator(':root')
+Expected pattern: /learnAboutCoverage/
+Received string:  "https://qa-ansel-platform.joinansel.com/enrollment/verify"
+Call log:
+  - expect.toHaveURL with timeout 5000ms
+  - waiting for locator(':root')
+    9 × locator resolved to <html lang="en">…</html>
+      - unexpected value "https://qa-ansel-platform.joinansel.com/enrollment/verify"
+
+    at /Users/pejin/Documents/Playwright QA/tests/shopping_ansel.spec.ts:156:25
+```
+
+# Test source
+
+```ts
+   56 | console.log('🔘 Clicked "Get The Link"');
+   57 |
+   58 | // Wait for one of the textareas to populate (optional timeout buffer)
+   59 | await page.waitForTimeout(1000);
+   60 |
+   61 | // Grab the specific <textarea> by ID or other unique selector
+   62 | const textArea = page.locator('#input-1762'); // adjust if dynamic
+   63 |
+   64 | // Wait until the field contains a valid link
+   65 | await expect(async () => {
+   66 |   const value = await textArea.inputValue();
+   67 |   console.log('📋 Raw extracted value:', value);
+   68 |   expect(value).toMatch(/^https:\/\/.+/);
+   69 | }).toPass({ timeout: 10000 });
+   70 |
+   71 | // Extract and log
+   72 | const link = await textArea.inputValue();
+   73 | console.log(`🔗 Extracted standalone link: ${link}`);
+   74 |
+   75 | // Navigate to the link
+   76 | try {
+   77 |   await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+   78 |   console.log('🚀 Navigated to extracted link successfully!');
+   79 | } catch (err) {
+   80 |   console.error('❌ Failed to navigate to extracted link:', err);
+   81 | }
+   82 | }); */
+   83 |
+   84 | import { test, expect } from '@playwright/test';
+   85 | import { te } from 'date-fns/locale';
+   86 |
+   87 | test('Shopping link extraction and flow with fresh start', async ({ page, context }) => {
+   88 |   test.setTimeout(120_000);
+   89 |   console.log('🚀 Starting test...');
+   90 |
+   91 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   92 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   93 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   94 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   95 |   console.log('✅ Logged into Salesforce');
+   96 |
+   97 |   await page.getByRole('tab', { name: 'Related' }).click();
+   98 |   console.log('📂 Opened Related tab');
+   99 |
+  100 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+  101 |
+  102 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+  103 |   await page.waitForTimeout(2000);
+  104 |   await csLink.click();
+  105 |   console.log('🔗 Clicked CS- link');
+  106 |
+  107 |   await page.waitForTimeout(1000);
+  108 |   await page.getByRole('tab', { name: 'Related' }).click();
+  109 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+  110 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  111 |
+  112 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+  113 |   await firstNameLink.click({ force: true });
+  114 |   console.log('✅ Opened first prospective record');
+  115 |
+  116 |   await page.waitForTimeout(1000);
+  117 |   await page.getByRole('tab', { name: 'Details' }).click();
+  118 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 100);
+  119 |
+  120 |   // Extract SSN
+  121 |   const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+  122 |   const ssn = await ssnElement.innerText();
+  123 |   console.log(`🔐 Extracted SSN: ${ssn}`);
+  124 |
+  125 |   // Extract and format DOB
+  126 |   const dobElement = page.locator('lightning-formatted-text')
+  127 |     .locator('xpath=../../..')
+  128 |     .filter({ hasText: 'Date of Birth' })
+  129 |     .locator('lightning-formatted-text');
+  130 |
+  131 |   const dobRaw = await dobElement.innerText();
+  132 |   let [month, day, year] = dobRaw.split('/');
+  133 |   month = month.padStart(2, '0');
+  134 |   day = day.padStart(2, '0');
+  135 |   const dob = `${month}/${day}/${year}`;
+  136 |   console.log(`🎂 Extracted and formatted DOB: ${dob}`);
+  137 |
+  138 |   // Click Get The Link
+  139 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  140 |   console.log('🎯 Clicked "Get The Link"');
+  141 |
+  142 |   const validTextarea = page.locator('textarea').filter({ hasText: /^https:\/\/.+/ }).first();
+  143 |   await expect(validTextarea).toBeVisible({ timeout: 10000 });
+  144 |
+  145 |   const shoppingLink = await validTextarea.inputValue();
+  146 |   console.log(`🔗 Extracted shopping link: ${shoppingLink}`);
+  147 |
+  148 |   // Open in a new tab (ensures fresh state and skips remembering old flow)
+  149 |   const newPage = await context.newPage();
+  150 |   await newPage.goto(shoppingLink, { waitUntil: 'domcontentloaded' });
+  151 |   console.log('🆕 Navigated to shopping link in new tab');
+  152 |
+  153 |   // Proceed with verify step
+  154 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  155 |   console.log('🔐 Verification started');
+> 156 |   await expect(newPage).toHaveURL(/learnAboutCoverage/);
+      |                         ^ Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+  157 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  158 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  159 |
+  160 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  161 |   console.log('🔓 Verification passed');
+  162 |
+  163 |   // ✅ Ensure fresh continuation from the correct start page
+  164 | const expectedUrl = 'https://qa-ansel-platform.joinansel.com/enrollment/learnAboutCoverage';
+  165 | const currentUrl = newPage.url();
+  166 | if (!currentUrl.includes('/learnAboutCoverage')) {
+  167 |   console.warn(`⚠️ Redirecting to fresh start page. Current was: ${currentUrl}`);
+  168 |   await newPage.goto(expectedUrl, { waitUntil: 'domcontentloaded' });
+  169 |   console.log('🔄 Redirected to learnAboutCoverage to bypass resume');
+  170 | }
+  171 |   /* // Select "No" for married, and "I'm not a parent"
+  172 |   const marriedNo = newPage.getByRole('radio', { name: 'No' });
+  173 |   const parentNone = newPage.getByRole('radio', { name: "I'm not a parent" });
+  174 |
+  175 |   if (!(await marriedNo.isChecked())) await marriedNo.click();
+  176 |   if (!(await parentNone.isChecked())) await parentNone.click();
+  177 |   console.log('✅ Marital and parental status set');
+  178 |
+  179 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  180 |   console.log('➡️ Moved to next page after questions');
+  181 |
+  182 |   // Optionally: continue remaining steps as needed with logs
+  183 |   // Example:
+  184 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  185 |   console.log('📦 Continued onboarding flow');
+  186 |
+  187 |   // Done!
+  188 |   console.log('✅ Flow completed to this point.'); */
+  189 | });
+```

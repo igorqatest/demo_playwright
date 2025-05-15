@@ -1,0 +1,193 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:86:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Next step' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:173:60
+```
+
+# Test source
+
+```ts
+   73 | console.log(`🔗 Extracted standalone link: ${link}`);
+   74 |
+   75 | // Navigate to the link
+   76 | try {
+   77 |   await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+   78 |   console.log('🚀 Navigated to extracted link successfully!');
+   79 | } catch (err) {
+   80 |   console.error('❌ Failed to navigate to extracted link:', err);
+   81 | }
+   82 | }); */
+   83 |
+   84 | import { test, expect } from '@playwright/test';
+   85 |
+   86 | test('test', async ({ page }) => {
+   87 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   88 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   89 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   90 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   91 |
+   92 |   console.log('🧭 Logged in and navigating to Contract page');
+   93 |
+   94 |   await page.getByRole('tab', { name: 'Related' }).click();
+   95 |   console.log('📂 Opened Related tab');
+   96 |
+   97 |   for (let i = 0; i < 10; i++) {
+   98 |     await page.mouse.wheel(0, 30);
+   99 |   }
+  100 |
+  101 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+  102 |   await page.waitForTimeout(3000);
+  103 |   await csLink.click();
+  104 |   console.log('🔗 Clicked CS- link');
+  105 |
+  106 |   await page.waitForTimeout(1000);
+  107 |   await page.getByRole('tab', { name: 'Related' }).click();
+  108 |
+  109 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+  110 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  111 |
+  112 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+  113 |   await firstNameLink.click({ force: true });
+  114 |   console.log('✅ Clicked on the first name link in the list');
+  115 |
+  116 |   await page.waitForTimeout(1000);
+  117 |   await page.getByRole('tab', { name: 'Details' }).click();
+  118 |
+  119 |   for (let i = 0; i < 10; i++) {
+  120 |     await page.mouse.wheel(0, 100);
+  121 |   }
+  122 |
+  123 |   // SSN extraction
+  124 |   const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+  125 |   const ssn = await ssnElement.innerText();
+  126 |   console.log(`🔐 Extracted SSN: ${ssn}`);
+  127 |
+  128 |   // DOB extraction with formatting
+  129 |   const dobElement = page.locator('lightning-formatted-text')
+  130 |     .locator('xpath=../../..')
+  131 |     .filter({ hasText: 'Date of Birth' })
+  132 |     .locator('lightning-formatted-text');
+  133 |
+  134 |   const dobRaw = await dobElement.innerText();
+  135 |   let [month, day, year] = dobRaw.split('/');
+  136 |   month = month.padStart(2, '0');
+  137 |   day = day.padStart(2, '0');
+  138 |   const dob = `${month}/${day}/${year}`;
+  139 |   console.log(`🎂 Extracted and formatted DOB: ${dob}`);
+  140 |
+  141 |   // 💡 Click "Get The Link"
+  142 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  143 |   console.log('🎯 Clicked "Get The Link"');
+  144 |
+  145 |   let link = '';
+  146 |
+  147 | try {
+  148 |   // Try anchor-based extraction
+  149 |   const anchor = page.locator('span.test-id__field-value a[href^="https://"]');
+  150 |   await expect(anchor).toBeVisible({ timeout: 5000 });
+  151 |   link = await anchor.getAttribute('href') || '';
+  152 |   console.log('🔗 Extracted from anchor tag.');
+  153 | } catch {
+  154 |   // Fallback to span text extraction
+  155 |   const span = page.locator('span.test-id__field-value').filter({ hasText: /^https:\/\// });
+  156 |   await expect(span).toBeVisible({ timeout: 5000 });
+  157 |   link = (await span.innerText()).trim();
+  158 |   console.log('🔗 Extracted from span fallback.');
+  159 | }
+  160 |
+  161 | if (!link || !link.startsWith('https://')) {
+  162 |   throw new Error(`❌ No valid link found. Got: "${link}"`);
+  163 | }
+  164 |
+  165 | console.log(`✅ Shopping link: ${link}`);
+  166 |
+  167 |   // 🌐 Open the link in a new tab
+  168 |   const newPage = await page.context().newPage();
+  169 |   await newPage.goto(link, { waitUntil: 'domcontentloaded' });
+  170 |   console.log('🆕 Opened in new tab.');
+  171 |   await newPage.waitForTimeout(4000);
+  172 |   // Proceed with verification step
+> 173 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+      |                                                            ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  174 |
+  175 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  176 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  177 |
+  178 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  179 |   
+  180 |  /*  if (!(await newPage.getByRole('button', { name: 'Next step' }).isVisible())) {
+  181 |     console.warn('⚠️ Still waiting for verification page to finish...');
+  182 |   }  */
+  183 |  // await newPage.getByRole('button', { name: 'Next step' }).click();
+  184 |   await newPage.waitForTimeout(1000);
+  185 |  // ⛔ Don't read aria-checked on plain text. Target the outer radio control
+  186 | // 🔘 Check if "No" is selected
+  187 |
+  188 |
+  189 | // 🔘 Check if "No" is selected
+  190 |
+  191 |
+  192 |    await newPage.getByRole('radio', { name: 'No' }).click();
+  193 |
+  194 |    await newPage.getByText('I\'m not a parent').click();
+  195 |    await newPage.getByRole('button', { name: 'Next step' }).click();
+  196 |
+  197 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  198 |
+  199 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  200 |
+  201 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  202 |
+  203 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  204 |
+  205 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  206 |
+  207 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  208 |
+  209 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  210 |
+  211 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  212 |
+  213 |   await newPage.getByRole('link', { name: 'Skip this' }).click();
+  214 |
+  215 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  216 |
+  217 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  218 |   await newPage.waitForTimeout(2000);
+  219 |   await newPage.getByRole('listbox').filter({ hasText: 'FemaleMale' }).click();
+  220 |
+  221 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  222 |   await newPage.getByRole('listbox').filter({ hasText: 'MobileStandard' }).click();
+  223 |   await newPage.locator('input[name="SET_STREET_ADDRESS"]').fill('123 Main St');
+  224 |   await newPage.locator('input[name="SET_ZIP_CODE"]').fill('12345');
+  225 |   await newPage.locator('input[name="SET_CITY"]').fill('Random City');
+  226 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  227 |   await newPage.waitForTimeout(2000);
+  228 |
+  229 |
+  230 |   for (let i = 0; i < 10; i++) {
+  231 |     await page.mouse.wheel(0, 100);
+  232 |   }
+  233 |
+  234 |   await newPage.locator('input[name="password"]').fill('Demo123456');
+  235 |   await newPage.locator('input[name="confirmPassword"]').fill('Demo123456');
+  236 |   await page.evaluate(() => {
+  237 |     (document.querySelector('input[name="agreeToTerms"]') as HTMLInputElement)?.click();
+  238 |   }); 
+  239 | });
+```

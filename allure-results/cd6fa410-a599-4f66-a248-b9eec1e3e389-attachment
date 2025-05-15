@@ -1,0 +1,82 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.selectOption: Error: strict mode violation: locator('.slds-combobox__input,slds-input_faux fix-slds-input_faux slds-combobox__input-value') resolved to 5 elements:
+    1) <button type="button" role="combobox" name="salutation" lwc-4kb6kaqheak="" part="input-button" aria-expanded="false" data-value="--None--" aria-disabled="false" aria-required="false" aria-haspopup="listbox" aria-label="Salutation" id="combobox-button-307" aria-controls="dropdown-element-307" class="slds-combobox__input slds-input_faux fix-slds-input_faux slds-combobox__input-value">…</button> aka getByRole('combobox', { name: 'Salutation' })
+    2) <input type="text" part="input" data-value="" role="combobox" maxlength="255" lwc-4kb6kaqheak="" autocomplete="off" aria-expanded="false" aria-disabled="false" id="combobox-input-429" aria-haspopup="listbox" aria-autocomplete="list" placeholder="Search Accounts..." aria-controls="dropdown-element-429" class="slds-combobox__input slds-input"/> aka getByRole('combobox', { name: 'Account Name' })
+    3) <input type="text" part="input" data-value="" role="combobox" maxlength="255" lwc-4kb6kaqheak="" autocomplete="off" aria-expanded="false" aria-disabled="false" id="combobox-input-437" aria-haspopup="listbox" aria-autocomplete="list" placeholder="Search Contacts..." aria-controls="dropdown-element-437" class="slds-combobox__input slds-input"/> aka getByRole('combobox', { name: 'Reports To' })
+    4) <button type="button" role="combobox" lwc-4kb6kaqheak="" part="input-button" aria-expanded="false" data-value="--None--" aria-disabled="false" aria-required="false" aria-haspopup="listbox" id="combobox-button-361" aria-label="Lead Source" aria-controls="dropdown-element-361" class="slds-combobox__input slds-input_faux fix-slds-input_faux slds-combobox__input-value">…</button> aka getByRole('combobox', { name: 'Lead Source' })
+    5) <button type="button" role="combobox" lwc-4kb6kaqheak="" aria-label="Level" part="input-button" aria-expanded="false" data-value="--None--" aria-disabled="false" aria-required="false" aria-haspopup="listbox" id="combobox-button-414" aria-controls="dropdown-element-414" class="slds-combobox__input slds-input_faux fix-slds-input_faux slds-combobox__input-value">…</button> aka getByRole('combobox', { name: 'Level' })
+
+Call log:
+  - waiting for locator('.slds-combobox__input,slds-input_faux fix-slds-input_faux slds-combobox__input-value')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:15:110
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log In' }).click();
+   8 |   await page.waitForTimeout(1500);  
+   9 |   console.log('📇 Opening Contacts tab...');
+  10 |   await page.getByRole('link', { name: 'Contacts' }).click();
+  11 |   await page.waitForTimeout(2000);
+  12 |   await page.getByRole('button', { name: 'New' }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |   // Fill basic fields
+> 15 |   await page.locator('.slds-combobox__input,slds-input_faux fix-slds-input_faux slds-combobox__input-value').selectOption({ label: 'Mr' }); // or 'Mr.', 'Mrs.', etc.
+     |                                                                                                              ^ Error: locator.selectOption: Error: strict mode violation: locator('.slds-combobox__input,slds-input_faux fix-slds-input_faux slds-combobox__input-value') resolved to 5 elements:
+  16 |   await page.getByPlaceholder('First Name').fill('John');
+  17 |   await page.getByPlaceholder('Last Name').fill('Doe');
+  18 |   await page.getByPlaceholder('Phone').fill('(123) 456-7890');
+  19 |   await page.getByPlaceholder('Home Phone').fill('(321) 654-0987');
+  20 |   await page.getByPlaceholder('Mobile').fill('(111) 222-3333');
+  21 |   await page.getByPlaceholder('Other Phone').fill('(444) 555-6666');
+  22 |   await page.getByPlaceholder('Title').fill('QA Engineer');
+  23 |   await page.getByPlaceholder('Department').fill('Quality Assurance');
+  24 |   await page.getByPlaceholder('Email').fill('john.doe@example.com');
+  25 |   await page.getByPlaceholder('Fax').fill('(777) 888-9999');
+  26 |   await page.getByLabel('Birthdate').fill('01/01/1990');
+  27 |
+  28 |   // Searchable lookup fields (may need more advanced handling in Salesforce)
+  29 |   await page.getByPlaceholder('Search Accounts...').fill('Test Account');
+  30 |   await page.getByPlaceholder('Search Contacts...').fill('Manager Name');
+  31 |
+  32 |   // Dropdown selections
+  33 |   await page.getByLabel('Lead Source').selectOption('--None--');
+  34 |
+  35 |   // Website + URL fields
+  36 |   await page.getByPlaceholder('Website URL').fill('https://playwright.dev');
+  37 |   await page.getByPlaceholder('URL Name').fill('Playwright Official');
+  38 |
+  39 |   // Assistant-related
+  40 |   await page.getByPlaceholder('Assistant').fill('Jane Smith');
+  41 |   await page.getByPlaceholder('Asst. Phone').fill('(101) 202-3030');
+  42 |
+  43 |   // Submit form
+  44 |   await page.getByRole('button', { name: 'Save' }).click();
+  45 |
+  46 |   // Optional: wait for confirmation or navigate forward
+  47 |   await page.waitForLoadState('networkidle');
+  48 |
+  49 |   console.log('✅ Contact created successfully!');
+  50 | });
+```

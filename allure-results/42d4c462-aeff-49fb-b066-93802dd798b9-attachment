@@ -1,0 +1,154 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Click on Irene Smith and open dropdown menu
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-17.spec.ts:53:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Yes' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-17.spec.ts:96:53
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Click on Irene Smith and open dropdown menu', async ({ page }) => {
+   4 |     // Navigate to the Salesforce page
+   5 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contact/003QL00000YnP8VYAV/view', { waitUntil: 'domcontentloaded' });
+   6 |
+   7 |     // Log in to Salesforce
+   8 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   10 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   11 |
+   12 |     // Click on "Irene Smith" link
+   13 |     await page.getByRole('link', { name: 'Irene Smith' }).click();
+   14 |     await page.waitForTimeout(3000);
+   15 |     await page.getByRole('button', { name: 'Show more actions' }).click();
+   16 |     await page.waitForTimeout(1000);
+   17 |     await page.getByRole('menuitem', { name: 'Add Birth/Adoption' }).click();
+   18 |     await page.getByRole('textbox', { name: 'QLE Received Date' }).click();
+   19 |     //await page.waitForTimeout(7000);
+   20 |
+   21 |     await page.getByRole('button', { name: '19' }).click();
+   22 |     await page.getByRole('button', { name: 'Next' }).click();
+   23 |     await page.getByRole('textbox', { name: '*First Name' }).click();
+   24 |     await page.getByRole('textbox', { name: '*First Name' }).fill('Baby');
+   25 |     await page.getByRole('textbox', { name: '*Last Name' }).click();
+   26 |     await page.getByRole('textbox', { name: '*Last Name' }).fill('Demo');
+   27 |     await page.getByRole('textbox', { name: '*Date of Birth' }).click();
+   28 |     await page.getByLabel('-03-01').getByRole('button', { name: '1' }).click();
+   29 |     await page.getByRole('combobox', { name: 'Gender' }).click();
+   30 |     await page.getByRole('option', { name: 'Male', exact: true }).locator('span').nth(1).click();
+   31 |     await page.getByRole('button', { name: 'Next' }).click();
+   32 |     await page.getByRole('button', { name: 'Yes' }).click();
+   33 |     await page.getByText('Add a spouse with this child').click();
+   34 |     await page.getByRole('button', { name: 'Next' }).click();
+   35 |     await page.getByRole('textbox', { name: '*First Name' }).click();
+   36 |     await page.getByRole('textbox', { name: '*First Name' }).fill('Mark');
+   37 |     await page.getByRole('textbox', { name: '*Last Name' }).click();
+   38 |     await page.getByRole('textbox', { name: '*Last Name' }).fill('Demo');
+   39 |     await page.getByRole('textbox', { name: '*Date of Birth' }).click();
+   40 |     await page.getByLabel('Pick a Year').selectOption('2002');
+   41 |     await page.getByRole('button', { name: '11' }).click();
+   42 |     await page.getByRole('combobox', { name: 'Role' }).click();
+   43 |     await page.getByRole('option', { name: 'Spouse' }).locator('span').nth(1).click();
+   44 |     await page.getByRole('combobox', { name: 'Gender' }).click();
+   45 |     await page.getByRole('option', { name: 'Male', exact: true }).locator('span').nth(1).click();
+   46 |     await page.getByRole('button', { name: 'Next' }).click();
+   47 |     await page.getByRole('button', { name: 'Next' }).click();
+   48 |         console.log('✅ Successfully clicked on Irene Smith and opened the dropdown menu.');
+   49 | }); */
+   50 |
+   51 | import { test, expect } from '@playwright/test';
+   52 |
+   53 | test('Click on Irene Smith and open dropdown menu', async ({ page }) => {
+   54 |     console.log('🚀 Starting Test: Click on Irene Smith and open dropdown menu');
+   55 |
+   56 |     // Navigate and log in
+   57 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL0000005tn92AA/view', { waitUntil: 'domcontentloaded' });
+   58 |     console.log('🔍 Navigated to Salesforce login page.');
+   59 |
+   60 |     // Login Process
+   61 |     await page.fill('input[name="username"]', 'qa@joinansel.com.qa');
+   62 |     await page.fill('input[name="pw"]', 'q8xPmBoudN1W');
+   63 |     await page.click('input[name="Login"]');
+   64 |
+   65 |     // Open the dropdown menu
+   66 |     await page.getByRole('button', { name: 'Show more actions' }).click();
+   67 |     console.log('📌 Opened the dropdown menu.');
+   68 |
+   69 |     // Click "Add Birth/Adoption"
+   70 |     await page.waitForSelector('text="Add Birth/Adoption"', { timeout: 5000 });
+   71 |     await page.click('text="Add Birth/Adoption"');
+   72 |     console.log('🍼 Selected "Add Birth/Adoption".');
+   73 |
+   74 |     // Select QLE Received Date
+   75 |     await page.getByRole('textbox', { name: 'QLE Received Date' }).click();
+   76 |     await page.getByRole('button', { name: '19' }).click();
+   77 |
+   78 |     console.log('📅 Selected QLE Received Date.');
+   79 |
+   80 |     // Proceed to next step
+   81 |     await page.click('button:text("Next")');
+   82 |
+   83 |     // Fill in baby details
+   84 |     await page.getByRole('textbox', { name: '*First Name' }).fill('Baby');
+   85 |     await page.getByRole('textbox', { name: '*Last Name'}).fill('Demo');
+   86 |     // Select Date of Birth
+   87 | await page.getByRole('textbox', { name: '*Date of Birth' }).click();
+   88 | await page.getByLabel('-03-01').getByRole('button', { name: '1' }).click();
+   89 |
+   90 | // Select Gender
+   91 | await page.getByRole('combobox', { name: 'Gender' }).click();
+   92 |     await page.getByRole('option', { name: 'Male', exact: true }).locator('span').nth(1).click();
+   93 | await page.getByRole('button', { name: 'Next' }).click();
+   94 |     console.log('📅 Selected Baby Date of Birth.');
+   95 |
+>  96 |     await page.getByRole('button', { name: 'Yes' }).click();
+      |                                                     ^ Error: locator.click: Test timeout of 30000ms exceeded.
+   97 |     console.log('👶 Successfully added baby details.');
+   98 |
+   99 |     // Add spouse option
+  100 |     await page.waitForSelector('text="Add a spouse with this child"', { timeout: 2000 });
+  101 |     await page.click('text="Add a spouse with this child"');
+  102 |     await page.click('button:text("Next")');
+  103 |     console.log('💑 Adding spouse details.');
+  104 |
+  105 |    // Fill in First Name and Last Name
+  106 | await page.getByRole('textbox', { name: '*First Name' }).fill('Mark');
+  107 | await page.getByRole('textbox', { name: '*Last Name' }).fill('Demo');
+  108 |
+  109 | // Select Date of Birth
+  110 | await page.getByRole('textbox', { name: '*Date of Birth' }).click();
+  111 | await page.getByLabel('Pick a Year').selectOption('2002');
+  112 | await page.getByRole('button', { name: '11' }).click();
+  113 |
+  114 | // Select Role and Gender
+  115 | await page.getByRole('combobox', { name: 'Gender' }).click();
+  116 |     await page.getByRole('option', { name: 'Male', exact: true }).locator('span').nth(1).click();
+  117 |
+  118 |     await page.getByRole('combobox', { name: 'Role' }).click();
+  119 |     await page.getByRole('option', { name: 'Spouse' }).locator('span').nth(1).click();
+  120 | // Click Next twice to proceed
+  121 | await page.getByRole('button', { name: 'Next' }).click();
+  122 |     console.log('🚹 Selected spouse role and gender.');
+  123 |
+  124 |     await page.click('button:text("Next")');
+  125 |     //await page.click('button:text("Next")');
+  126 |     console.log('🎉 Successfully completed the process!');
+  127 |
+  128 | });
+```

@@ -1,0 +1,157 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping only Primary
+- Location: /Users/pejin/Documents/Playwright new/tests/ansel_shopping/ansel_spouse.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByRole('link', { name: 'Prospectives' }) resolved to 2 elements:
+    1) <a lwc-bbqdsgjtbq="" class="slds-card__header-link baseCard__header-title-container" href="/lightning/r/Census__c/a88QL000000HRF7YAO/related/Leads__r/view">…</a> aka getByRole('link', { name: 'Prospectives (5)' })
+    2) <a lwc-38b9tp4cnq4="" class="slds-card__footer" href="/lightning/r/Census__c/a88QL000000HRF7YAO/related/Leads__r/view">…</a> aka getByRole('link', { name: 'View All Prospectives' })
+
+Call log:
+  - waiting for getByRole('link', { name: 'Prospectives' })
+
+    at /Users/pejin/Documents/Playwright new/tests/ansel_shopping/ansel_spouse.spec.ts:28:56
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { te } from 'date-fns/locale';
+   3 |
+   4 | test('Shopping only Primary', async ({ page, context }) => {
+   5 |   test.setTimeout(120_000);
+   6 |   console.log('🚀 Starting test...');
+   7 |
+   8 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JkpXdYAJ/view');
+   9 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   10 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   11 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   12 |   console.log('✅ Logged into Salesforce');
+   13 |
+   14 |   await page.getByRole('tab', { name: 'Related' }).click();
+   15 |   console.log('📂 Opened Related tab');
+   16 |
+   17 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+   18 |
+   19 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+   20 |   await page.waitForTimeout(2000);
+   21 |   await csLink.click();
+   22 |   console.log('🔗 Clicked CS- link');
+   23 |
+   24 |   await page.waitForTimeout(1000);
+   25 |   await page.getByRole('tab', { name: 'Related' }).click();
+   26 |   await page.waitForTimeout(1000);
+   27 | // Wait until the link is visible and stable before clicking
+>  28 | await page.getByRole('link', { name: 'Prospectives' }).click();
+      |                                                        ^ Error: locator.click: Error: strict mode violation: getByRole('link', { name: 'Prospectives' }) resolved to 2 elements:
+   29 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+   30 |   await firstNameLink.click({ force: true });
+   31 |   console.log('✅ Opened first prospective record');
+   32 |
+   33 |   await page.waitForTimeout(1000);
+   34 |   await page.getByRole('tab', { name: 'Details' }).click();
+   35 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 100);
+   36 |
+   37 |   // Extract SSN
+   38 |   const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+   39 |   const ssn = await ssnElement.innerText();
+   40 |   console.log(`🔐 Extracted SSN: ${ssn}`);
+   41 |
+   42 |   // Extract and format DOB
+   43 |   const dobElement = page.locator('lightning-formatted-text')
+   44 |     .locator('xpath=../../..')
+   45 |     .filter({ hasText: 'Date of Birth' })
+   46 |     .locator('lightning-formatted-text');
+   47 |
+   48 |   const dobRaw = await dobElement.innerText();
+   49 |   let [month, day, year] = dobRaw.split('/');
+   50 |   month = month.padStart(2, '0');
+   51 |   day = day.padStart(2, '0');
+   52 |   const dob = `${month}/${day}/${year}`;
+   53 |   console.log(`🎂 Extracted and formatted DOB: ${dob}`);
+   54 |
+   55 |   // Click Get The Link
+   56 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+   57 |   console.log('🎯 Clicked "Get The Link"');
+   58 |
+   59 |   const validTextarea = page.locator('textarea').filter({ hasText: /^https:\/\/.+/ }).first();
+   60 |   await expect(validTextarea).toBeVisible({ timeout: 10000 });
+   61 |
+   62 |   const shoppingLink = await validTextarea.inputValue();
+   63 |   console.log(`🔗 Extracted shopping link`);
+   64 |
+   65 |   // Open in a new tab (ensures fresh state and skips remembering old flow)
+   66 |   const newPage = await context.newPage();
+   67 |   await newPage.goto(shoppingLink, { waitUntil: 'domcontentloaded' });
+   68 |   console.log('🆕 Navigated to shopping link in new tab');
+   69 |
+   70 |   // Proceed with verify step
+   71 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   72 |   console.log('🔐 Verification started');
+   73 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+   74 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+   75 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   76 |   console.log('🔓 Verification passed');
+   77 |
+   78 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   79 |
+   80 |   // ✅ Ensure fresh continuation from the correct start page
+   81 |
+   82 |    // Select "No" for married, and "I'm not a parent"
+   83 |    await newPage.getByText('Yes', { exact: true }).click();
+   84 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+   85 |
+   86 |   await newPage.getByText('I\'m not a parent').click();
+   87 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   88 |   console.log('👪 Household questions');
+   89 |
+   90 |   // ⏭ Continue steps
+   91 |   for (let i = 1; i <= 8; i++) {
+   92 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+   93 |     console.log(`➡️ Page ${i + 2} complete`);
+   94 |   }
+   95 |    // Let's talk about medical expenses
+   96 |   await newPage.getByText('Yes').click();
+   97 |   await newPage.getByText('I typically pay the full cost').click();
+   98 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   99 |   console.log('💰 Medical expenses questions');
+  100 |
+  101 |   // We'll keep your budget in mind
+  102 |   await newPage.getByText('I can purchase what I want').click();
+  103 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+  104 |     console.log('✅ Purchasing what I want');
+  105 |
+  106 |
+  107 | // Select Ansel benefits
+  108 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  109 |
+  110 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+  111 |
+  112 | await newPage.getByText('My spouse and me').click();
+  113 |
+  114 | console.log('✅ Select ansel benefits');
+  115 | await newPage.waitForTimeout(1000);
+  116 |
+  117 |
+  118 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  119 |   await newPage.waitForTimeout(1000);
+  120 |
+  121 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  122 |
+  123 |   
+  124 |   for (let i = 0; i < 10; i++) {
+  125 |     await page.mouse.wheel(0, 400);
+  126 |     await page.waitForTimeout(100);
+  127 |   }
+  128 |   await newPage.waitForTimeout(5000);
+```

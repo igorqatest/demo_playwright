@@ -1,0 +1,9 @@
+✅ It is visible!
+✅ It is editable!
+✅ It is enabled!
+✅ It has "Search" placeholder!
+✅ It has "playwright by testers" value!
+🎬 Title: Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial
+✅ Title became visible
+✅ Video title is visible!
+✅ Test passed

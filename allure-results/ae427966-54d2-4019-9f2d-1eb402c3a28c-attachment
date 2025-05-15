@@ -1,0 +1,45 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 🔍 Extract Roster Member Name
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.innerText: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('.custom-truncate').first()
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:16:42
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('🔍 Extract Roster Member Name', async ({ page }) => {
+   4 |   console.log('🌐 Navigating to Roster Member record...');
+   5 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   6 |
+   7 |   console.log('🔐 Logging into Salesforce...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  10 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  11 |
+  12 |   await page.waitForTimeout(4000); // wait for the page to load
+  13 |
+  14 |   console.log('🔎 Extracting Roster Member Name...');
+  15 |   const nameLocator = page.locator('.custom-truncate'); // typical class for record names in Lightning
+> 16 |   const name = await nameLocator.first().innerText();
+     |                                          ^ Error: locator.innerText: Test timeout of 30000ms exceeded.
+  17 |
+  18 |   console.log(`🧾 Roster Member Name: ${name.trim()}`);
+  19 | });
+```

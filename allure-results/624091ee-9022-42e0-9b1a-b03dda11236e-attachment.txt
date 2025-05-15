@@ -1,0 +1,6 @@
+🚀 Starting Test
+✅ Logged in to Salesforce.
+🔍 Looking for the Enrollment Link inside the span...
+✅ Found Enrollment Link: CT-212921
+✅ Successfully navigated to the Enrollment Link.
+📝 Filling out form details...

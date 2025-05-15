@@ -1,0 +1,139 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: My first test
+- Location: /Users/pejin/Documents/Playwright new/tests/claim_symetra.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('label').first()
+    - locator resolved to <label>…</label>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - <div>New claim for Paul Trussel</div> from <div class="ui pointing secondary top fixed member-menuContainer menu">…</div> subtree intercepts pointer events
+  - retrying click action
+    - waiting for element to be visible, enabled and stable
+
+    at /Users/pejin/Documents/Playwright new/tests/claim_symetra.spec.ts:87:38
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { config } from './reusable.ts';
+   3 |
+   4 | test('My first test', async ({ page }) => {
+   5 |   console.log('✅ Navigating to Member Portal...');
+   6 |   await page.goto(config.urlMemberSymetra, { waitUntil: 'domcontentloaded' });
+   7 |
+   8 |   console.log('✅ Filling in Login form...');
+   9 |   const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+   10 |   await emailInput.type(config.userMemberSymetra, { delay: 10 });
+   11 |
+   12 |   const passwordInput = page.locator('input[name="password"]');
+   13 |   await passwordInput.type(config.passwordMemberSymetra, { delay: 10 });
+   14 |
+   15 |   await page.getByRole('button', { name: 'Sign in' }).click();
+   16 |
+   17 |   console.log('✅ Waiting for Dashboard to load...');
+   18 |   await page.waitForTimeout(15000); // Adjust the timeout as needed
+   19 |
+   20 |    // 1. Click "File new claim"
+   21 | await page.getByRole('button', { name: 'File new claim' }).click();
+   22 | console.log('✅ Clicked "File new claim"');
+   23 |
+   24 | // 2. Wait until the dropdown menu with options becomes visible
+   25 | const dropdownMenu = page.locator('div.menu.transition.visible');
+   26 | await dropdownMenu.waitFor({ state: 'visible' });
+   27 | console.log('✅ Dropdown menu is now visible');
+   28 |
+   29 | // 3. Locate the option containing "Primary"
+   30 | const primaryOption = dropdownMenu.getByRole('option', { name: /Primary/i });
+   31 |
+   32 | // 4. Wait for the option to be visible
+   33 | await expect(primaryOption).toBeVisible();
+   34 | console.log('✅ Primary member option is visible');
+   35 |
+   36 | // 5. Click on the "Primary" option
+   37 | await primaryOption.click();
+   38 | console.log('✅ Successfully clicked "Primary" member');
+   39 |
+   40 |
+   41 |   await page.getByRole('button', { name: 'Next step' }).click();
+   42 |
+   43 |   await page.locator('textarea[name="symptoms"]').fill('test');
+   44 |   await page.locator('textarea[name="providerDiagnosis"]').fill('test');
+   45 |   await page.locator('textarea[name="treatment"]').fill('test');
+   46 |   await page.locator('textarea[name="additionalInfo"]').fill('test');
+   47 |   await page.waitForTimeout(1000);
+   48 |   await page.getByRole('button', { name: 'Next step' }).click();
+   49 |
+   50 |
+   51 |   await page.getByText('Emergency room').click();
+   52 |   for (let i = 0; i < 10; i++) {
+   53 |     await page.mouse.wheel(0, 200);
+   54 |     await page.waitForTimeout(100);
+   55 |   }
+   56 | // 1. Type into the hospital field
+   57 | await page.locator('input.prompt').fill('Hospital');
+   58 |
+   59 | // 2. Wait for the suggestions to appear
+   60 | await page.waitForSelector('.results.visible .result');
+   61 |
+   62 | // 3. Click the first suggestion
+   63 | await page.locator('.results.visible .result').first().click();
+   64 |
+   65 | console.log('✅ Successfully clicked the first hospital!');
+   66 | //Tell us where you were treated
+   67 | await page.getByRole('button', { name: 'Next step' }).click();
+   68 | //Let´s prepare your documents
+   69 | await page.getByRole('button', { name: 'Next step' }).click();
+   70 | // Upload your pictures
+   71 | await page.getByRole('button', { name: 'Next step' }).click();
+   72 | // Confirm uploads
+   73 | await page.getByRole('button', { name: 'Next step' }).click();
+   74 | // Payment preference
+   75 | await page.getByRole('button', { name: '+Add payment method' }).click();
+   76 | await page.getByRole('row', { name: 'PayPal payout method Configure' }).getByRole('button').click();
+   77 | await page.locator('input[name="username"]').fill('igor.pejin+anselquotetest@joinansel.com');
+   78 | await page.locator('input[name="confirmUsername"]').fill('igor.pejin+anselquotetest@joinansel.com');
+   79 | await page.getByRole('button', { name: 'Submit' }).click();
+   80 | await page.waitForTimeout(4000);
+   81 | await page.getByRole('button', { name: 'Next step' }).click();
+   82 |
+   83 | for (let i = 0; i < 10; i++) {
+   84 |     await page.mouse.wheel(0, 400);
+   85 |     await page.waitForTimeout(100);
+   86 |   }
+>  87 |  await page.locator('label').first().click();
+      |                                      ^ Error: locator.click: Test timeout of 30000ms exceeded.
+   88 |
+   89 |  // Click Submit
+   90 | await page.getByRole('button', { name: 'Submit' }).click();
+   91 | console.log('✅ Clicked Submit button');
+   92 |
+   93 | // Wait for either page navigation or any success element
+   94 | await Promise.race([
+   95 |   page.waitForNavigation({ timeout: 20000 }), // if there is a navigation
+   96 |   page.locator('text="All done"').waitFor({ state: 'visible', timeout: 20000 }) // or if the text appears
+   97 | ]);
+   98 | console.log('✅ Navigation or "All done" appeared');
+   99 |
+  100 | // Now click All done
+  101 | await page.getByRole('button', { name: 'All done' }).click();
+  102 | console.log('✅ Clicked All done button');
+  103 |  
+  104 | });
+```

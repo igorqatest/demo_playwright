@@ -1,0 +1,86 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'New' }) resolved to 4 elements:
+    1) <button value="NewTask" title="New Task" lwc-75psssksh3b="" aria-label="New Task" variant="border-filled" class="slds-button slds-button_neutral">…</button> aka getByRole('button', { name: 'New Task', exact: true })
+    2) <button disabled value="" type="button" lwc-1df1eblanv8="" aria-haspopup="true" aria-expanded="false" part="button button-icon" title="No Additional New Task Actions" class="slds-button slds-button_icon-border-filled fix-slds-button_icon-border-filled slds-button_last">…</button> aka getByRole('button', { name: 'No Additional New Task Actions' })
+    3) <button value="NewEvent" title="New Event" lwc-75psssksh3b="" aria-label="New Event" variant="border-filled" class="slds-button slds-button_neutral">…</button> aka getByRole('button', { name: 'New Event', exact: true })
+    4) <button value="" type="button" lwc-1df1eblanv8="" aria-haspopup="true" aria-expanded="false" part="button button-icon" title="More New Event Actions" class="slds-button slds-button_icon-border-filled fix-slds-button_icon-border-filled slds-button_last">…</button> aka getByRole('button', { name: 'More New Event Actions' })
+
+Call log:
+  - waiting for getByRole('button', { name: 'New' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:12:51
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log In' }).click();
+   8 |   await page.waitForTimeout(1500);  
+   9 |   console.log('📇 Opening Contacts tab...');
+  10 |   await page.getByRole('link', { name: 'Contacts' }).click();
+  11 |   await page.waitForTimeout(2000);
+> 12 |   await page.getByRole('button', { name: 'New' }).click();
+     |                                                   ^ Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'New' }) resolved to 4 elements:
+  13 |   await page.waitForTimeout(1000);
+  14 |   // Fill basic fields
+  15 |   await page.locator('button[aria-label="Salutation"]').click();
+  16 | await page.locator('lightning-base-combobox-item >> text=Mr.').click();
+  17 | // Click the "Mr" option from the dropdown list
+  18 |   await page.getByPlaceholder('First Name').fill('John');
+  19 |   await page.getByPlaceholder('Last Name').fill('Doe');
+  20 |   await page.getByRole('textbox', { name: 'Phone', exact: true }).fill('(123) 456-7890');
+  21 |   await page.getByRole('textbox', { name: 'Home Phone', exact: true }).fill('(321) 654-0987');
+  22 |   await page.getByRole('textbox', { name: 'Mobile', exact: true }).fill('(111) 222-3333');
+  23 |   await page.getByRole('textbox', { name: 'Other Phone', exact: true }).fill('(444) 555-6666');
+  24 |   await page.getByRole('textbox', { name: 'Title' }).fill('QA Engineer');
+  25 |   await page.getByRole('textbox', { name: 'Department' }).fill('Quality Assurance');
+  26 |   await page.getByRole('textbox', { name: 'Email' }).fill('john.doe@example.com');
+  27 |   await page.getByRole('textbox', { name: 'Fax' }).fill('(777) 888-9999');
+  28 |   await page.getByRole('textbox', { name: 'Birthdate' }).fill('01. 01. 1990.');
+  29 |
+  30 |   // Searchable lookup fields (may need more advanced handling in Salesforce)
+  31 |   //await page.locator('button[aria-label="Account Name"]').click();
+  32 |   
+  33 | await page.locator('lightning-base-combobox-item >> text=Grand Hotels & Resorts Ltd').click();
+  34 |   await page.getByPlaceholder('Search Contacts...').fill('Manager Name');
+  35 |
+  36 |   
+  37 |   // Dropdown selections
+  38 |   await page.locator('button[aria-label="Lead Source"]').click();
+  39 |   await page.locator('lightning-base-combobox-item >> text=Web').click();
+  40 |   // Website + URL fields
+  41 |   await page.getByPlaceholder('Website URL').fill('https://playwright.dev');
+  42 |   await page.getByPlaceholder('URL Name').fill('Playwright Official');
+  43 |
+  44 |   // Assistant-related
+  45 |   await page.getByPlaceholder('Assistant').fill('Jane Smith');
+  46 |   await page.getByPlaceholder('Asst. Phone').fill('(101) 202-3030');
+  47 |
+  48 |   // Submit form
+  49 |   await page.getByRole('button', { name: 'Save' }).click();
+  50 |
+  51 |   // Optional: wait for confirmation or navigate forward
+  52 |   await page.waitForLoadState('networkidle');
+  53 |
+  54 |   console.log('✅ Contact created successfully!');
+  55 | });
+```

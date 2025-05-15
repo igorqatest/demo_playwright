@@ -1,0 +1,135 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:20:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByLabel('Lead Source') resolved to 2 elements:
+    1) <button type="button" role="combobox" lwc-4kb6kaqheak="" part="input-button" aria-expanded="false" data-value="--None--" aria-disabled="false" aria-required="false" aria-haspopup="listbox" id="combobox-button-305" aria-label="Lead Source" aria-controls="dropdown-element-305" class="slds-combobox__input slds-input_faux fix-slds-input_faux slds-combobox__input-value">…</button> aka getByRole('combobox', { name: 'Lead Source' })
+    2) <div role="listbox" lwc-4kb6kaqheak="" part="dropdown overlay" data-dropdown-element="" aria-label="Lead Source" id="dropdown-element-305" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-dropdown_left"></div> aka locator('#dropdown-element-305')
+
+Call log:
+  - waiting for getByLabel('Lead Source')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:71:38
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 |
+   5 | const screenshotDir = 'test-35';
+   6 |
+   7 | // Clean screenshot folder before test
+   8 | if (fs.existsSync(screenshotDir)) {
+   9 |   fs.readdirSync(screenshotDir).forEach(file => {
+   10 |     fs.unlinkSync(path.join(screenshotDir, file));
+   11 |   });
+   12 | } else {
+   13 |   fs.mkdirSync(screenshotDir);
+   14 | }
+   15 | // Helper to log and screenshot
+   16 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+   17 |   console.log(message);
+   18 |   await page.screenshot({ path: `${dir}/${step}.png` });
+   19 | }
+   20 | test('test', async ({ page }) => {
+   21 |  const screenshotDir = 'test-36';
+   22 |    if (fs.existsSync(screenshotDir)) {
+   23 |      fs.readdirSync(screenshotDir).forEach(file => {
+   24 |        fs.unlinkSync(path.join(screenshotDir, file));
+   25 |      });
+   26 |    } else {
+   27 |      fs.mkdirSync(screenshotDir);
+   28 |    }
+   29 |  
+   30 |    console.log('🌐 Opening login page...');
+   31 |    await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   32 |    await logAndScreenshot(page, screenshotDir, '1-login', '📸 Login page loaded');
+   33 |  
+   34 |    console.log('🔐 Logging in...');
+   35 |    await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   36 |    await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   37 |    await logAndScreenshot(page, screenshotDir, '2-login-filled', '📸 Credentials entered');
+   38 |    await page.getByRole('button', { name: 'Log In' }).click();
+   39 |    await page.waitForTimeout(2000);
+   40 |  
+   41 |    console.log('📇 Navigating to Opportunities tab...');
+   42 |
+   43 | // Click search button (if needed)
+   44 | console.log('📇 Navigating to Opportunities tab...');
+   45 |
+   46 | // Click the search button
+   47 | await page.getByRole('button', { name: 'Search' }).click();
+   48 | await page.waitForTimeout(1000);
+   49 |
+   50 | // Click on the "All Opportunities" entry in the dropdown
+   51 | const allOpportunities = page.locator('span:has-text("All Opportunities")').first();
+   52 | await page.waitForTimeout(1000);
+   53 | await allOpportunities.click();
+   54 | await page.getByRole('link', { name: 'Opportunities' }).click();
+   55 | await page.waitForTimeout(500);
+   56 | await page.getByRole('button', { name: 'New' }).click();
+   57 |
+   58 | // 🔽 Dropdowns
+   59 | await page.getByRole('textbox', { name: '*Opportunity Name' }).fill('Sample Opportunity');
+   60 |
+   61 | //await page.locator('#combobox-input-193').fill('Grand Hotels');
+   62 | /* console.log('🔽 Selecting Type...');
+   63 |   await page.locator('button[aria-label="Type"]').click();
+   64 |   await page.locator('lightning-base-combobox-item >> text=New cstomer').click();
+   65 |  */
+   66 | console.log('🔽 Selecting Lead Source...');
+   67 | await page.getByRole('combobox', { name: 'Type' }).click();
+   68 | await page.getByRole('option', { name: 'New customer' }).click();
+   69 | await page.waitForTimeout(1000);
+   70 |
+>  71 | await page.getByLabel('Lead Source').click();
+      |                                      ^ Error: locator.click: Error: strict mode violation: getByLabel('Lead Source') resolved to 2 elements:
+   72 | //await page.getByText('Other', { exact: true }).click();
+   73 |
+   74 | await page.locator('button[aria-label="Delivery/Installation Status"]').click();
+   75 | await page.getByText('In progress').click();
+   76 |
+   77 | // 📅 Date picker
+   78 | await page.getByRole('textbox', { name: 'Close Date' }).fill('04. 01. 2025.');
+   79 |
+   80 | // 🔢 Text fields
+   81 | await page.getByRole('textbox', { name: 'Opportunity Name' }).fill('Sample Opportunity');
+   82 | await page.getByRole('textbox', { name: 'Amount' }).fill('50000');
+   83 | await page.getByRole('textbox', { name: 'Next Step' }).fill('Follow up demo');
+   84 | await page.getByRole('textbox', { name: 'Probability (%)' }).fill('75');
+   85 | await page.getByRole('textbox', { name: 'Order Number' }).fill('ORD123456');
+   86 | await page.getByRole('textbox', { name: 'Main Competitor(s)' }).fill('Acme Corp');
+   87 | await page.getByRole('textbox', { name: 'Current Generator(s)' }).fill('Model X');
+   88 | await page.getByRole('textbox', { name: 'Tracking Number' }).fill('TRACK78910');
+   89 | await page.getByRole('textbox', { name: 'Description' }).fill('This opportunity is a sample for Playwright testing.');
+   90 |
+   91 | // 🔍 Search box - Account Name
+   92 | /* await page.getByRole('combobox', { name: 'Account Name' }).fill('Grand Hotels');
+   93 | await page.getByText('Grand Hotels & Resorts Ltd').click(); // Adjust if needed */
+   94 |
+   95 | // 🔍 Search box - Primary Campaign Source
+   96 | //await page.getByRole('combobox', { name: 'Primary Campaign Source' }).fill('Test Campaign');
+   97 |
+   98 | // ☑️ Private checkbox (optional)
+   99 | await page.getByRole('checkbox', { name: 'Private' }).check();
+  100 |
+  101 | // 💾 Save
+  102 | await page.getByRole('button', { name: 'Save' })
+  103 |
+  104 | console.log('✅ New Opportunity created successfully!');
+  105 |
+  106 | });
+```

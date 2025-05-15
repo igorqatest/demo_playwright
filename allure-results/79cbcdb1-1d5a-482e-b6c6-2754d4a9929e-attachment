@@ -1,0 +1,93 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:5:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('input[name="startDate"]')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:49:50
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import { format } from 'date-fns';
+   4 |
+   5 | test('test', async ({ page }) => {
+   6 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTen0AG/view');
+   7 |
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  10 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  11 |
+  12 |   await page.getByRole('tab', { name: 'Details' }).click();
+  13 |   await page.waitForTimeout(500);
+  14 |
+  15 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  16 |   await proposalLink.scrollIntoViewIfNeeded();
+  17 |
+  18 |   // ✅ Listen for new tab BEFORE clicking
+  19 |   const [newPage] = await Promise.all([
+  20 |     page.context().waitForEvent('page'),
+  21 |     proposalLink.click(),
+  22 |   ]);
+  23 |
+  24 |   await newPage.waitForLoadState();
+  25 |
+  26 |   // Generate dynamic values
+  27 |   const firstName = faker.person.firstName();
+  28 |   const lastName = faker.person.lastName();
+  29 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  30 |
+  31 |   const ackFirstName = faker.person.firstName();
+  32 |   const ackLastName = faker.person.lastName();
+  33 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  34 |
+  35 |   const today = format(new Date(), 'MM/dd/yyyy');
+  36 |   const threeWeeksLater = format(new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), 'MM/dd/yyyy');
+  37 |
+  38 |   // ✅ Interact in the new page context
+  39 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+  40 |   await newPage.getByText('Yes, I accept this proposal').click();
+  41 |
+  42 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  43 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  44 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  45 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  46 |
+  47 |   await newPage.getByText('Ansel enrollment platform').click();
+  48 |   // Click the startDate field to open the datepicker
+> 49 | await newPage.locator('input[name="startDate"]').click();
+     |                                                  ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  50 |
+  51 | // You may need to click through year/month if not in view
+  52 | // Example: Select April 12, 2025 manually
+  53 | await newPage.getByRole('button', { name: '2025' }).click(); // If it opens the year selector
+  54 | await newPage.getByText('Apr').click(); // Click the month
+  55 | await newPage.getByText('12').click(); // Click the day
+  56 |
+  57 | // Repeat for endDate
+  58 | await newPage.locator('input[name="endDate"]').click();
+  59 | await newPage.getByText('May').click();  // Adjust month based on calculated date
+  60 | await newPage.getByText('03').click();   // Example: 3 weeks later = May 3
+  61 |
+  62 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  63 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  64 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  65 |
+  66 |   await newPage.getByText('By checking this box, I agree').click();
+  67 | });
+```

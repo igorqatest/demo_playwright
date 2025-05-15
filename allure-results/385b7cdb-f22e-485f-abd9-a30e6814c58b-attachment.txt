@@ -1,0 +1,36 @@
+🔍 Checking: Roster Member Name → Expected: "Josephine Marcos"
+🔍 Checking: First Name → Expected: "Josephine"
+✅ Verified: "Josephine" found.
+🔍 Checking: Last Name → Expected: "Marcos"
+✅ Verified: "Marcos" found.
+🔍 Checking: Gender → Expected: "Female"
+✅ Verified: "Female" found.
+🔍 Checking: Date of Birth → Expected: "11/15/1968"
+✅ Verified: "11/15/1968" found.
+🔍 Checking: SocialSecurityNumber → Expected: "435-53-8376"
+✅ Verified: "435-53-8376" found.
+🔍 Checking: Email → Expected: "igor.pejin+ba224310037@joinansel.com"
+✅ Verified: "igor.pejin+ba224310037@joinansel.com" found.
+🔍 Checking: Phone → Expected: "250-562-882"
+✅ Verified: "250-562-882" found.
+🔍 Checking: Mobile Phone → Expected: "676-259-832"
+✅ Verified: "676-259-832" found.
+🔍 Checking: Status → Expected: "Active"
+✅ Verified: "Active" found.
+🔍 Checking: Role → Expected: "Primary"
+✅ Verified: "Primary" found.
+🔍 Checking: Age → Expected: "56"
+✅ Verified: "56" found.
+🔍 Checking: Street → Expected: "123 RandStreet"
+✅ Verified: "123 RandStreet" found.
+🔍 Checking: City → Expected: "Dallas"
+✅ Verified: "Dallas" found.
+🔍 Checking: Postal Code → Expected: "17001"
+✅ Verified: "17001" found.
+🔍 Checking: State → Expected: "Texas"
+✅ Verified: "Texas" found.
+🔍 Checking: Strategic Partner Name → Expected: "Brella"
+✅ Verified: "Brella" found.
+🔍 Checking: Owner → Expected: "Brella QA"
+✅ Verified: "Brella QA" found.
+✅ All Roster Member details verified successfully.

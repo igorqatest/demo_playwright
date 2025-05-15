@@ -1,0 +1,48 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByText('Sign up') resolved to 3 elements:
+    1) <a href="/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home" data-hydro-click-hmac="1ac0bd316eb4ecff0fd1f338bc397cea8b5025ce78fffb7ade6ffdd600360286" data-analytics-event="{"category":"Sign up","action":"click to sign up for account","label":"ref_page:/;ref_cta:Sign up;ref_loc:header logged out"}" class="HeaderMenu-link HeaderMenu-link--sign-up HeaderMenu-button flex-shrink-0 d-flex d-lg-inline-flex no-underline border color-border-default rounded px-2 py-1" data-hy…>↵                Sign up↵              </a> aka getByRole('link', { name: 'Sign up' })
+    2) <span class="Primer_Brand__Text-module__Text___pecHN Primer_Brand__Text-module__Text-font--mona-sans___GpzSG Primer_Brand__Text-module__Text--default___DChoE Primer_Brand__Text-module__Text--200___XAIGT Primer_Brand__Text-module__Text--antialiased___fYDxq Primer_Brand__Text-module__Text--weight-semibold___Ns19j Primer_Brand__Button-module__Button--label___lUBc0 Primer_Brand__Button-module__Button--label-medium___DW2TM Primer_Brand__Button-module__Button--label-primary___Leisi">Sign up for GitHub</span> aka locator('[id="FormControl--\\:Rjahb\\:"]').getByRole('button', { name: 'Sign up for GitHub' })
+    3) <span class="Primer_Brand__Text-module__Text___pecHN Primer_Brand__Text-module__Text-font--mona-sans___GpzSG Primer_Brand__Text-module__Text--default___DChoE Primer_Brand__Text-module__Text--200___XAIGT Primer_Brand__Text-module__Text--antialiased___fYDxq Primer_Brand__Text-module__Text--weight-semibold___Ns19j Primer_Brand__Button-module__Button--label___lUBc0 Primer_Brand__Button-module__Button--label-medium___DW2TM Primer_Brand__Button-module__Button--label-primary___Leisi">Sign up for GitHub</span> aka locator('#cta').getByRole('button', { name: 'Sign up for GitHub' })
+
+Call log:
+  - waiting for getByText('Sign up')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:6:35
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/');
+   5 |   
+>  6 |   await page.getByText('Sign up').click();  // works
+     |                                   ^ Error: locator.click: Error: strict mode violation: getByText('Sign up') resolved to 3 elements:
+   7 |   //await page.locator('header').getByText('Sign up').click(); // works
+   8 |   //await page.getByText('Sign up').nth(1).click(); // works
+   9 |   //await page.locator('a.HeaderMenu-link--sign-in').click(); // works
+  10 |   // works
+  11 |   //await page.getByText('Sign in with a passkey').click(); // works
+  12 |   //await page.locator('span').getByText('Sign in with a passkey').click(); // works
+  13 |   //await page.getByRole('button', { name: 'Sign in with a passkey' }).click(); // works
+  14 |   //await page.locator('button:has-text("Sign in with a passkey")').click();
+  15 |   await page.getByText('Sign in').click();
+  16 |   await page.getByLabel('Homepage', { exact: true}).click();
+  17 |
+  18 | });
+```

@@ -1,0 +1,40 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByTestId('Repositories')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:10:42
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/camrobert/SalesforceMarketingCloud/tree/main/SQL/Introduction%20to%20SQL');
+   5 |   await page.waitForTimeout(1000);
+   6 |   //await page.getByRole('link', { name: 'camrobert'}).click();
+   7 |   await page.locator('#repository-container-header').getByRole('link', { name: 'camrobert' }).click();
+   8 |   await page.waitForTimeout(1000);
+   9 |   //await page.getByRole('link', { name: 'Repositories' }).click();
+> 10 |   await page.getByTestId('Repositories').click();
+     |                                          ^ Error: locator.click: Test ended.
+  11 |   //await page.getByAltText("View camrobert's full-sized avatar").click();
+  12 | });
+  13 |
+  14 |
+```

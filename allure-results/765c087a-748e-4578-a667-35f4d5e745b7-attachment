@@ -1,0 +1,87 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:10:5
+
+# Error details
+
+```
+Error: locator.evaluate: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'Python' })
+
+    at expectColor (/Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:5:37)
+    at /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:51:7
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | // ✅ Helper to verify CSS color
+   4 | async function expectColor(locator, expectedRgbColor: string) {
+>  5 |   const actualColor = await locator.evaluate(el => getComputedStyle(el).color);
+     |                                     ^ Error: locator.evaluate: Test timeout of 30000ms exceeded.
+   6 |   console.log(`🎨 Expected: ${expectedRgbColor}, Found: ${actualColor}`);
+   7 |   expect(actualColor).toBe(expectedRgbColor);
+   8 | }
+   9 |
+  10 | test('test', async ({ page }) => {
+  11 |   console.log('Navigating to Salesforce login URL...');
+  12 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+  13 |
+  14 |   console.log('Filling in username...');
+  15 |   await page.getByRole('textbox', { name: 'Username' }).click();
+  16 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  17 |
+  18 |   console.log('Filling in password...');
+  19 |   await page.getByRole('textbox', { name: 'Password' }).click();
+  20 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  21 |
+  22 |   console.log('Clicking Log In...');
+  23 |   await page.getByRole('button', { name: 'Log In' }).click();
+  24 |
+  25 |   console.log('Navigating to John Bond contact record...');
+  26 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  27 |
+  28 |   console.log('Switching to Details tab...');
+  29 |   await page.getByRole('tab', { name: 'Details' }).click();
+  30 |
+  31 |   console.log('Waiting for half a second to ensure page stability...');
+  32 |   await page.waitForTimeout(500);
+  33 |
+  34 |   console.log('Clicking the external Playwright link...');
+  35 |   const popupPromise = page.waitForEvent('popup');
+  36 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+  37 |   const playwrightPage = await popupPromise;
+  38 |
+  39 |   console.log('Waiting for Playwright site to load...');
+  40 |   await playwrightPage.waitForLoadState('domcontentloaded');
+  41 |
+  42 |   console.log('Locating the heading span...');
+  43 |   const headingSpan = playwrightPage.getByRole('heading', { name: 'Playwright enables reliable' }).locator('span');
+  44 |
+  45 |   console.log('✅ Checking CSS color...');
+  46 |   await expectColor(headingSpan, 'rgb(69, 186, 75)'); // <-- use the correct RGB
+  47 |
+  48 |   console.log('🎉 Color check passed!');
+  49 |  // Check color of the 'Python' link
+  50 | const pythonLink = page.getByRole('link', { name: 'Python' });
+  51 | await expectColor(pythonLink, 'rgb(201, 57, 85)'); // replace with actual color
+  52 |
+  53 | // Check color of the heading 'Full isolation • Fast'
+  54 | const heading = page.getByRole('heading', { name: 'Full isolation • Fast' });
+  55 | await expectColor(heading, 'rgb(36, 99, 235)'); // replace with actual color
+  56 |
+  57 | // Check color of the 'Codegen.' link
+  58 | const codegenLink = page.getByRole('link', { name: 'Codegen.' });
+  59 | await expectColor(codegenLink, 'rgb(69, 186, 75)'); // replace with actual color
+  60 | });
+```

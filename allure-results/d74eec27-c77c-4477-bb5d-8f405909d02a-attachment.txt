@@ -1,0 +1,4 @@
+⚠️ Failed to click "Sign up": locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByText('Sign up to GitHub').first()
+

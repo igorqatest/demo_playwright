@@ -1,0 +1,35 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: testing
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:2:5
+
+# Error details
+
+```
+Error: locator.press: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('textbox', { name: 'characters out of 2000' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:6:73
+```
+
+# Test source
+
+```ts
+  1 | import { test, expect} from '@playwright/test';
+  2 | test ( 'testing', async ({ page})=>{
+  3 |     await page.goto('https://www.bing.com/');
+  4 |     await page.getByRole('link', { name: 'Accept' }).click();
+  5 |     await page.getByRole('textbox', { name: 'characters out of 2000' }).fill('playwright by testers');
+> 6 |     await page.getByRole('textbox', { name: 'characters out of 2000' }).press('Enter');
+    |                                                                         ^ Error: locator.press: Target page, context or browser has been closed
+  7 | });
+  8 |
+  9 |
+```

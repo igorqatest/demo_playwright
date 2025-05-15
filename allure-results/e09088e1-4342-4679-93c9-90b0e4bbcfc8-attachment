@@ -1,0 +1,125 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify Contact creation form with screenshots and logs
+- Location: /Users/pejin/Documents/Playwright QA/tests/Contact-JSON.spec.ts:14:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('link', { name: 'Contacts' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/Contact-JSON.spec.ts:37:54
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import {config} from './test.config'; // adjust the path if needed
+   4 |
+   5 | // Load contact data
+   6 | const contactData = require('./contact-data.json');
+   7 |
+   8 | // Helper function to take a screenshot with a console log message.
+   9 | async function screenshotAndLog(page, folder: string, step: string, message: string) {
+  10 |   console.log(message);
+  11 |   await page.screenshot({ path: `${folder}/${step}.png` });
+  12 | }
+  13 |
+  14 | test('Verify Contact creation form with screenshots and logs', async ({ page }) => {
+  15 |   const screenshotDir = 'test-34';
+  16 |
+  17 |   if (!fs.existsSync(screenshotDir)) {
+  18 |     fs.mkdirSync(screenshotDir);
+  19 |   }
+  20 |
+  21 |   console.log('🌐 Navigating to Salesforce Contacts page...');
+  22 |   await page.goto(config.url);
+  23 |   await screenshotAndLog(page, screenshotDir, '1-login-screen', '📸 Screenshot: Login screen');
+  24 |
+  25 |   console.log('📝 Logging in...');
+  26 |   await page.getByRole('textbox', { name: 'Username' }).fill(config.username);
+  27 |   await screenshotAndLog(page, screenshotDir, '2-username', '📸 Screenshot: Username filled');
+  28 |
+  29 |   await page.getByRole('textbox', { name: 'Password' }).fill(config.password);
+  30 |   await screenshotAndLog(page, screenshotDir, '3-password', '📸 Screenshot: Password filled');
+  31 |
+  32 |   await page.getByRole('button', { name: 'Log In' }).click();
+  33 |   await page.waitForTimeout(1500);
+  34 |   await screenshotAndLog(page, screenshotDir, '4-post-login', '📸 Screenshot: Post-login page');
+  35 |
+  36 |   console.log('📇 Opening Contacts tab...');
+> 37 |   await page.getByRole('link', { name: 'Contacts' }).click();
+     |                                                      ^ Error: locator.click: Test ended.
+  38 |   await page.waitForTimeout(2000);
+  39 |   await screenshotAndLog(page, screenshotDir, '5-contacts-tab', '📸 Screenshot: Contacts tab opened');
+  40 |
+  41 |   console.log('🆕 Clicking New button...');
+  42 |   await page.getByRole('button', { name: 'New' }).click();
+  43 |   await page.waitForTimeout(1000);
+  44 |   await screenshotAndLog(page, screenshotDir, '6-new-button-clicked', '📸 Screenshot: New button clicked');
+  45 |
+  46 |   console.log('🔽 Clicking Salutation dropdown...');
+  47 |   await page.locator('button[aria-label="Salutation"]').click();
+  48 |   console.log(`✅ Selecting option "${contactData.salutation}"...`);
+  49 |   await page.locator(`lightning-base-combobox-item >> text=${contactData.salutation}`).click();
+  50 |   await screenshotAndLog(page, screenshotDir, '7-salutation-selected', '📸 Screenshot: Salutation selected');
+  51 |
+  52 |   console.log('📝 Filling in First Name...');
+  53 |   await page.getByPlaceholder('First Name').fill(contactData.firstName);
+  54 |   console.log('📝 Filling in Last Name...');
+  55 |   await page.getByPlaceholder('Last Name').fill(contactData.lastName);
+  56 |   console.log('📞 Filling in Phone...');
+  57 |   await page.getByRole('textbox', { name: 'Phone', exact: true }).fill(contactData.phone);
+  58 |   console.log('📞 Filling in Home Phone...');
+  59 |   await page.getByRole('textbox', { name: 'Home Phone', exact: true }).fill(contactData.homePhone);
+  60 |   console.log('📞 Filling in Mobile...');
+  61 |   await page.getByRole('textbox', { name: 'Mobile', exact: true }).fill(contactData.mobile);
+  62 |   console.log('📞 Filling in Other Phone...');
+  63 |   await page.getByRole('textbox', { name: 'Other Phone', exact: true }).fill(contactData.otherPhone);
+  64 |   console.log('🖊️ Filling in Title...');
+  65 |   await page.getByRole('textbox', { name: 'Title' }).fill(contactData.title);
+  66 |   console.log('🖊️ Filling in Department...');
+  67 |   await page.getByRole('textbox', { name: 'Department' }).fill(contactData.department);
+  68 |   console.log('✉️ Filling in Email...');
+  69 |   await page.getByRole('textbox', { name: 'Email' }).fill(contactData.email);
+  70 |   console.log('📠 Filling in Fax...');
+  71 |   await page.getByRole('textbox', { name: 'Fax' }).fill(contactData.fax);
+  72 |   console.log('🎂 Filling in Birthdate...');
+  73 |   await page.getByRole('textbox', { name: 'Birthdate' }).fill(contactData.birthdate);
+  74 |   await screenshotAndLog(page, screenshotDir, '8-basic-fields-filled', '📸 Screenshot: Basic fields filled');
+  75 |
+  76 |   console.log('🔽 Selecting Lead Source...');
+  77 |   await page.locator('button[aria-label="Lead Source"]').click();
+  78 |   await page.locator(`lightning-base-combobox-item >> text=${contactData.leadSource}`).click();
+  79 |   await screenshotAndLog(page, screenshotDir, '9-lead-source-selected', '📸 Screenshot: Lead Source selected');
+  80 |
+  81 |   console.log('🌐 Filling in URL Name...');
+  82 |   await page.getByRole('textbox', { name: 'URL Name' }).fill(contactData.urlName);
+  83 |   console.log('🌐 Filling in Website...');
+  84 |   await page.getByRole('textbox', { name: 'Website' }).fill(contactData.website);
+  85 |   await screenshotAndLog(page, screenshotDir, '10-website-filled', '📸 Screenshot: Website fields filled');
+  86 |
+  87 |   console.log('👩 Filling in Assistant...');
+  88 |   await page.getByRole('textbox', { name: 'Assistant' }).fill(contactData.assistant);
+  89 |   console.log('📞 Filling in Asst. Phone...');
+  90 |   await page.getByRole('textbox', { name: 'Asst. Phone' }).fill(contactData.assistantPhone);
+  91 |   await screenshotAndLog(page, screenshotDir, '11-assistant-filled', '📸 Screenshot: Assistant fields filled');
+  92 |
+  93 |   console.log('💾 Clicking Save...');
+  94 |   await page.getByRole('button', { name: 'Save', exact: true })
+  95 |   await page.waitForTimeout(2000);
+  96 |   await screenshotAndLog(page, screenshotDir, '12-contact-saved', '📸 Screenshot: Contact saved');
+  97 |
+  98 |   console.log('✅ Contact created successfully!');
+  99 | });
+```

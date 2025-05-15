@@ -1,0 +1,6 @@
+✅ API response is correct! {
+  name: 'igor pejin',
+  job: 'developer',
+  id: '730',
+  createdAt: '2025-03-30T14:26:52.770Z'
+}

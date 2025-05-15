@@ -1,0 +1,86 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Mr' }) resolved to 2 elements:
+    1) <lightning-base-combobox-item role="option" data-value="Mr." lwc-4kb6kaqheak="" exportparts="option" aria-checked="false" aria-selected="false" lwc-7co8ha3nedg-host="" id="combobox-button-307-1-307" data-item-id="combobox-button-307-1" class="slds-media slds-listbox__option slds-media_center slds-media_small slds-listbox__option_plain">…</lightning-base-combobox-item> aka getByRole('option', { name: 'Mr.' })
+    2) <lightning-base-combobox-item role="option" data-value="Mrs." lwc-4kb6kaqheak="" exportparts="option" aria-checked="false" aria-selected="false" lwc-7co8ha3nedg-host="" id="combobox-button-307-3-307" data-item-id="combobox-button-307-3" class="slds-media slds-listbox__option slds-media_center slds-media_small slds-listbox__option_plain">…</lightning-base-combobox-item> aka getByRole('option', { name: 'Mrs.' })
+
+Call log:
+  - waiting for getByRole('option', { name: 'Mr' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-34.spec.ts:22:48
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   7 |   await page.getByRole('button', { name: 'Log In' }).click();
+   8 |   await page.waitForTimeout(1500);  
+   9 |   console.log('📇 Opening Contacts tab...');
+  10 |   await page.getByRole('link', { name: 'Contacts' }).click();
+  11 |   await page.waitForTimeout(2000);
+  12 |   await page.getByRole('button', { name: 'New' }).click();
+  13 |   await page.waitForTimeout(1000);
+  14 |   // Fill basic fields
+  15 |   // Open the Salutation dropdown (click the combobox button)
+  16 | await page.getByRole('combobox', { name: 'Salutation' }).click();
+  17 |
+  18 | // Wait for dropdown options to appear
+  19 | await page.waitForSelector('lightning-base-combobox-item'); // optional depending on page speed
+  20 |
+  21 | // Click the "Mr" option from the dropdown list
+> 22 | await page.getByRole('option', { name: 'Mr' }).click();
+     |                                                ^ Error: locator.click: Error: strict mode violation: getByRole('option', { name: 'Mr' }) resolved to 2 elements:
+  23 |   await page.getByPlaceholder('First Name').fill('John');
+  24 |   await page.getByPlaceholder('Last Name').fill('Doe');
+  25 |   await page.getByPlaceholder('Phone').fill('(123) 456-7890');
+  26 |   await page.getByPlaceholder('Home Phone').fill('(321) 654-0987');
+  27 |   await page.getByPlaceholder('Mobile').fill('(111) 222-3333');
+  28 |   await page.getByPlaceholder('Other Phone').fill('(444) 555-6666');
+  29 |   await page.getByPlaceholder('Title').fill('QA Engineer');
+  30 |   await page.getByPlaceholder('Department').fill('Quality Assurance');
+  31 |   await page.getByPlaceholder('Email').fill('john.doe@example.com');
+  32 |   await page.getByPlaceholder('Fax').fill('(777) 888-9999');
+  33 |   await page.getByLabel('Birthdate').fill('01/01/1990');
+  34 |
+  35 |   // Searchable lookup fields (may need more advanced handling in Salesforce)
+  36 |   await page.getByPlaceholder('Search Accounts...').fill('Test Account');
+  37 |   await page.getByPlaceholder('Search Contacts...').fill('Manager Name');
+  38 |
+  39 |   // Dropdown selections
+  40 |   await page.getByLabel('Lead Source').selectOption('--None--');
+  41 |
+  42 |   // Website + URL fields
+  43 |   await page.getByPlaceholder('Website URL').fill('https://playwright.dev');
+  44 |   await page.getByPlaceholder('URL Name').fill('Playwright Official');
+  45 |
+  46 |   // Assistant-related
+  47 |   await page.getByPlaceholder('Assistant').fill('Jane Smith');
+  48 |   await page.getByPlaceholder('Asst. Phone').fill('(101) 202-3030');
+  49 |
+  50 |   // Submit form
+  51 |   await page.getByRole('button', { name: 'Save' }).click();
+  52 |
+  53 |   // Optional: wait for confirmation or navigate forward
+  54 |   await page.waitForLoadState('networkidle');
+  55 |
+  56 |   console.log('✅ Contact created successfully!');
+  57 | });
+```

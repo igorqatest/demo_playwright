@@ -1,0 +1,20 @@
+🔍 Verifying: "Sign in to your Member Portal"
+✅ Verified: "Sign in to your Member Portal" is present on the page.
+🔍 Verifying: "Enter your details below to access to Ansel"
+✅ Verified: "Enter your details below to access to Ansel" is present on the page.
+🔍 Verifying: "Email address"
+✅ Verified: "Email address" is present on the page.
+🔍 Verifying: "Password"
+✅ Verified: "Password" is present on the page.
+🔍 Verifying: "Forgot password?"
+✅ Verified: "Forgot password?" is present on the page.
+🔍 Verifying: "© Ansel Health, Inc. All Rights Reserved"
+✅ Verified: "© Ansel Health, Inc. All Rights Reserved" is present on the page.
+🔍 Verifying: "Terms"
+✅ Verified: "Terms" is present on the page.
+🔍 Verifying: "Privacy"
+✅ Verified: "Privacy" is present on the page.
+🔍 Verifying: "Not yet registered? Create an account"
+✅ Verified: "Not yet registered? Create an account" is present on the page.
+🔍 Verifying: "Register"
+✅ Verified: "Register" is present on the page.

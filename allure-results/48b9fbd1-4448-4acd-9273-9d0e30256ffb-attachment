@@ -1,0 +1,108 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: My first test
+- Location: /Users/pejin/Documents/Playwright new/tests/test-1.spec.ts:4:5
+
+# Error details
+
+```
+Error: expect.toBeVisible: Error: strict mode violation: getByText('Moderate') resolved to 2 elements:
+    1) <span class="pineGreenText">Moderate</span> aka locator('span').filter({ hasText: 'Moderate' })
+    2) <b>Moderate</b> aka getByRole('cell', { name: 'Moderate' }).locator('b')
+
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByText('Moderate')
+
+    at /Users/pejin/Documents/Playwright new/tests/test-1.spec.ts:57:44
+```
+
+# Test source
+
+```ts
+   1 | import {test, expect} from '@playwright/test';
+   2 | import {config} from './reusable.ts';
+   3 |
+   4 | test('My first test', async ({ page }) => {
+   5 |     await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
+   6 |     //await page.getByRole('textbox', { name: 'Enter your email' }).fill(config.userMemberAnsel);
+   7 |     //await page.keyboard.type(email, { delay: 50 });
+   8 |     //await page.getByRole('textbox', { name: 'Enter your email' }).type(config.userMemberAnsel, { delay: 50 });
+   9 |     const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+  10 |   
+  11 |     // 👉 Now safely type with a delay
+  12 |     await emailInput.type(config.userMemberAnsel, { delay: 10 });
+  13 |     const passwordInput = page.locator('input[name="password"]');
+  14 |     await passwordInput.type(config.passwordMemberAnsel, { delay: 10 });
+  15 |     await page.getByRole('button', { name: 'Sign in' }).click();
+  16 |     // ✅ Check the page title
+  17 |   await expect(page).toHaveTitle(/Member Portal/);
+  18 |   await page.waitForTimeout(15000);
+  19 |   // ✅ Check important text exists
+  20 |   await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+  21 |
+  22 |   // --- Header ---
+  23 |   await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+  24 |   await expect(page.getByRole('link', { name: 'Claims' })).toBeVisible();
+  25 |   await expect(page.getByRole('link', { name: 'My info' })).toBeVisible();
+  26 |
+  27 |   // --- User Name ---
+  28 |   //await expect(page.getByText('Andres Fatima')).toBeVisible();
+  29 |   await expect(page.getByText('Andres Fatima').nth(1)).toBeVisible();
+  30 |   // --- Effective Date ---
+  31 |   await expect(page.getByText('Effective 01/01/2025')).toBeVisible();
+  32 |
+  33 |   // --- Buttons ---
+  34 |   await expect(page.getByRole('button', { name: 'File new claim' })).toBeVisible();
+  35 |   await expect(page.getByRole('button', { name: 'Condition lookup' })).toBeVisible();
+  36 |
+  37 |   // --- Coverage values ---
+  38 |   await expect(page.getByText('$200')).toBeVisible();
+  39 |   await expect(page.getByText('$500')).toBeVisible();
+  40 |   await expect(page.getByText('$1,000')).toBeVisible();
+  41 |
+  42 |   // --- Policy Document (Coverage Packet PDF) ---
+  43 |   await expect(page.getByText('Coverage packet')).toBeVisible();
+  44 |
+  45 |   // --- Family Info ---
+  46 |   await expect(page.getByText('Myself')).toBeVisible();
+  47 |   //await expect(page.getByText('Covered')).toBeVisible();
+  48 |   await expect(page.getByText('Covered', { exact: true })).toBeVisible();
+  49 |   //await expect(page.getByText('Andres Fatima', { exact: true })).toBeVisible();
+  50 |   await expect(page.getByRole('alert').filter({ hasText: 'Andres Fatima' })).toBeVisible();
+  51 |
+  52 |   // --- Footer Text ---
+  53 |   await expect(page.getByText(/©2025 Ansel Health, Inc. All Rights Reserved./, { exact: true })).toBeVisible();
+  54 |
+  55 |   // --- Benefit Limits Section ---
+  56 |   await expect(page.getByText('Benefit limits')).toBeVisible();
+> 57 |   await expect(page.getByText('Moderate')).toBeVisible();
+     |                                            ^ Error: expect.toBeVisible: Error: strict mode violation: getByText('Moderate') resolved to 2 elements:
+  58 |   await expect(page.getByText('Severe')).toBeVisible();
+  59 |   await expect(page.getByText('Catastrophic')).toBeVisible();
+  60 |
+  61 |   // --- Limitations and Exclusions Section ---
+  62 |   await expect(page.getByText('Limitations and exclusions')).toBeVisible();
+  63 |   await expect(page.getByText('Exclusions')).toBeVisible();
+  64 |   await expect(page.getByText('Waiting periods')).toBeVisible();
+  65 |   await expect(page.getByText('Renewability, cancellation, & termination')).toBeVisible();
+  66 |
+  67 |   // --- Call to Support ---
+  68 |   await expect(page.getByText('(888) 300-5382')).toBeVisible();
+  69 |
+  70 |   // --- Check a Button Background Color (optional) ---
+  71 |   const newClaimBtn = page.getByRole('button', { name: 'File new claim' });
+  72 |   const backgroundColor = await newClaimBtn.evaluate((el) => {
+  73 |     return window.getComputedStyle(el).backgroundColor;
+  74 |   });
+  75 |   console.log('File New Claim Button color:', backgroundColor);
+  76 |   // You can validate color if needed, e.g.
+  77 |   // expect(backgroundColor).toBe('rgb(33, 133, 208)');
+  78 | });
+```

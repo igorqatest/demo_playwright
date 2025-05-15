@@ -1,0 +1,150 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: My first test
+- Location: /Users/pejin/Documents/Playwright new/tests/member_ansel.spec.ts:5:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: getByRole('heading', { name: 'Coverage' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByRole('heading', { name: 'Coverage' })
+
+    at /Users/pejin/Documents/Playwright new/tests/member_ansel.spec.ts:19:65
+```
+
+# Test source
+
+```ts
+   1 |  import {test, expect} from '@playwright/test';
+   2 | import {config} from './reusable.ts';
+   3 | import { fa } from '@faker-js/faker';
+   4 |
+   5 | test('My first test', async ({ page }) => {
+   6 |     await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
+   7 |     
+   8 |     const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+   9 |   
+   10 |     // 👉 Now safely type with a delay
+   11 |     await emailInput.type(config.userMemberAnsel, { delay: 10 });
+   12 |     const passwordInput = page.locator('input[name="password"]');
+   13 |     await passwordInput.type(config.passwordMemberAnsel, { delay: 10 });
+   14 |     await page.getByRole('button', { name: 'Sign in' }).click();
+   15 |     // ✅ Check the page title
+   16 |   await expect(page).toHaveTitle(/Member Portal/);
+   17 |   await page.waitForTimeout(15000);
+   18 |   // ✅ Check important text exists
+>  19 |   await expect(page.getByRole('heading', { name: 'Coverage' })).toBeVisible();
+      |                                                                 ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+   20 |
+   21 |   //await expect(page.getByText('Note: This is a summary of')).toBeVisible();
+   22 |   await expect(
+   23 |     page.getByText('Note: This is a summary of', { exact: false })
+   24 |   ).toHaveText(
+   25 |     "Note: This is a summary of the important features of your coverage. This is not the insurance contract. Please refer to your certificate below for all details including the rights and obligations of both you and Ansel."
+   26 |   );
+   27 |   // --- Header ---
+   28 |   await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+   29 |   await expect(page.getByRole('link', { name: 'Claims' })).toBeVisible();
+   30 |   await expect(page.getByRole('link', { name: 'My info' })).toBeVisible();
+   31 |
+   32 |   await expect(page.getByRole('heading', { name: 'Coverage' })).toBeVisible();
+   33 |   await expect(page.getByRole('heading', { name: 'Family info' })).toBeVisible();
+   34 |
+   35 |   await expect(page.getByRole('heading', { name: 'Costs' })).toBeVisible();
+   36 |   await expect(page.getByRole('heading', { name: 'Policy document(s)' })).toBeVisible();
+   37 |   await expect(page.getByRole('heading', { name: 'Benefit limits' })).toBeVisible();
+   38 |   await expect(page.getByRole('heading', { name: 'Limitations and exclusions' })).toBeVisible();
+   39 |
+   40 |   await expect(page.getByText('A complete description of', { exact: false })).toContainText('A complete description of benefits, limitations, and exclusions will be provided in your certificate of Insurance and applicable Riders. All coverage is subject to the terms and conditions of the master group policy. We’ve provided a summary below.');
+   41 |   // --- User Name ---
+   42 |   await expect(page.getByText('Andres Fatima').nth(1)).toBeVisible();
+   43 |   // --- Effective Date ---
+   44 |   await expect(page.getByText('Effective 01/01/2025')).toBeVisible();
+   45 |
+   46 | await expect(page.locator('a').filter({ hasText: /^Summary$/ })).toHaveText('Summary');
+   47 | await expect(page.locator('a').filter({ hasText: 'Coverage timeline' })).toHaveText('Coverage timeline');
+   48 |
+   49 |
+   50 |   // --- Buttons ---
+   51 |   await expect(page.getByRole('button', { name: 'File new claim' })).toBeVisible();
+   52 |   await expect(page.getByRole('button', { name: 'Condition lookup' })).toBeVisible();
+   53 |
+   54 |   // --- Coverage values ---
+   55 |   await expect(page.getByText('$200')).toBeVisible();
+   56 |   await expect(page.getByText('$500')).toBeVisible();
+   57 |   await expect(page.getByText('$1,000')).toBeVisible();
+   58 |
+   59 |   // --- Policy Document (Coverage Packet PDF) ---
+   60 |   await expect(page.getByText('Coverage packet')).toBeVisible();
+   61 |
+   62 |   // --- Family Info ---
+   63 |   await expect(page.getByText('Myself')).toBeVisible();
+   64 |   await expect(page.getByText('Covered', { exact: true })).toBeVisible();
+   65 |   await expect(page.getByRole('alert').filter({ hasText: 'Andres Fatima' })).toBeVisible();
+   66 |
+   67 |   // --- Footer Text ---
+   68 |   await expect(page.getByText(/©2025 Ansel Health, Inc. All Rights Reserved./, { exact: true })).toBeVisible();
+   69 |
+   70 |   // --- Benefit Limits Section ---
+   71 |   await expect(page.getByText('Benefit limits')).toBeVisible();
+   72 |
+   73 |   await expect(page.getByText('Benefits are paid if the', { exact: false })).toContainText(
+   74 | 'Benefits are paid if the insured is diagnosed with a covered condition. Members may receive a benefit more than once as noted below.'
+   75 |   );
+   76 |   await expect(page.locator('span').filter({ hasText: 'Moderate' })).toBeVisible();
+   77 |   await expect(page.locator('span').filter({ hasText: 'Severe' })).toBeVisible();
+   78 |
+   79 |
+   80 |   await expect(page.locator('span').filter({ hasText: 'Catastrophic' })).toBeVisible();
+   81 |
+   82 |   // --- Limitations and Exclusions Section ---
+   83 |   await expect(page.getByText('Limitations and exclusions')).toBeVisible();
+   84 |   await expect(
+   85 |     page.getByText('A complete description of', { exact: false })).toHaveText(
+   86 |     'A complete description of benefits, limitations, and exclusions will be provided in your certificate of Insurance and applicable Riders. All coverage is subject to the terms and conditions of the master group policy. We’ve provided a summary below.'
+   87 |   );
+   88 |
+   89 |   await expect(page.getByText('Exclusions', { exact: true })).toBeVisible();
+   90 |   await expect(page.getByText('We will not pay benefits for any condition that is contributed to, caused by,', { exact: false }))
+   91 |   .toContainText('We will not pay benefits for any condition that is contributed to, caused by, or resulting from:');
+   92 |   
+   93 |   await expect(page.getByText('commission of or attempt to', { exact: false }))
+   94 |   .toContainText('commission of or attempt to commit a felony, or voluntary participation in a riot or insurrection;')
+   95 |   
+   96 |   await expect(page.getByText('incarceration or imprisonment', { exact: false })).toContainText('incarceration or imprisonment following conviction for a crime;');
+   97 |   await expect(page.getByText('seeking non-emergency', { exact: false })).toContainText('seeking non-emergency treatment during travel or activity outside the United States, Mexico, or Canada, unless the Insured receives confirmation of the diagnosis in the United States, Mexico, or Canada;');
+   98 |
+   99 |   await expect(page.getByText('active duty service or', { exact: false })).toContainText('active duty service or training in the military (naval force, air force or National Guard/Reserves or equivalent) for service/training extending beyond 180 days of any state, country or international organization, unless specifically allowed by a provision of this Certificate;');
+  100 |   await expect(page.getByText('involvement in any declared', { exact: false })).toContainText('involvement in any declared or undeclared war or act of war (not including acts of terrorism), while serving in the military or an auxiliary unit attached to the military, or working in an area of war whether voluntarily or as required by an employer;');
+  101 |   await expect(page.getByText('a member of the Insured’s', { exact: false })).toContainText('a member of the Insured’s Immediate Family;');
+  102 |   
+  103 |   await expect(page.getByText('In addition, We will not pay', { exact: false })).toContainText('In addition, We will not pay benefits for any of the following:');
+  104 |   await expect(page.getByText('a Chronic Condition;', { exact: true })).toContainText('a Chronic Condition;');
+  105 |   await expect(page.getByText('a Mental Illness;', { exact: true })).toContainText('a Mental Illness;');
+  106 |   await expect(page.getByText('a Maternity Condition;', { exact: true })).toContainText('a Maternity Condition;');
+  107 |   await expect(page.getByText('“Not Covered” conditions as', { exact: false })).toContainText('“Not Covered” conditions as designated in the Conditions List.');
+  108 |
+  109 |
+  110 |   await expect(page.getByText('Waiting periods', { exact: true })).toBeVisible();
+  111 |   await expect(page.getByText('Waiting periodsIf you enroll', { exact: false })).toContainText('If you enroll or add a family member outside of an open enrollment period (annual, new hire, or other qualifying life event), your benefits or any increases are subject to a60 day waiting period. Any diagnoses that occur during the waiting period will not be covered.');
+  112 |   await expect(page.getByText('Renewability, cancellation, & termination', { exact: true })).toBeVisible();
+  113 |
+  114 |   await expect(page.getByText('Renewability, cancellation, & terminationThis coverage is offered under a group', { exact: false })).toContainText('This coverage is offered under a group policy, and is annually renewable. Your continued coverage depends on whether your employer renews the group policy. If your employer does not renew the policy, coverage ends for all employees. You may be eligible to continue, or “port”, your coverage if you leave your employer or if your employer discontinues the group policy. If your employer renews the policy, you will have the option to continue your coverage. Premiums may change on the policy anniversary and your employer’s contribution to policy premiums may also change. You may choose to terminate coverage before the next policy anniversary by letting your employer know your choice in writing.');
+  115 |
+  116 |   // --- Call to Support ---
+  117 |   //await expect(page.getByText('(888) 300-5382', { exact: true })).toBeVisible();
+  118 |
+  119 |   // --- Check a Button Background Color (optional) ---
+```

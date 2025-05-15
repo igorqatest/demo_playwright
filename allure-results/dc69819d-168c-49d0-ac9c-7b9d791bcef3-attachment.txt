@@ -1,0 +1,58 @@
+🌐 Navigating to Roster Member record...
+🔐 Logging into Salesforce...
+⏳ Waiting for page content...
+
+🔍 Found 50 fields. Extracting values...
+
+📄 Roster Member Name: Frankie Paisley
+📄 First Name: Frankie
+📄 Middle Name: [No Value]
+📄 Last Name: Paisley
+📄 Gender: Male
+📄 Date of Birth: 11/23/1941
+📄 SocialSecurityNumber: 354-97-0648
+📄 Email: igor.pejin+ba921206419@joinansel.com
+📄 Phone: [No Value]
+📄 Mobile Phone: 346-565-4745
+📄 Test: Test
+📄 Status: Active
+📄 Role: Primary
+📄 Age: 83
+📄 Street: Avenida Sarmiento 4543
+📄 City: Dallas
+📄 Postal Code: 71676
+📄 State: Florida
+📄 Country: [No Value]
+📄 Do Not Call: Do Not Call
+📄 Strategic Partner Name: Brella
+📄 Concierge: [No Value]
+📄 Owner: Partner BrellaOpen Partner Brella PreviewOpen Partner Brella PreviewChange Owner
+📄 Created By: Partner BrellaOpen Partner Brella PreviewOpen Partner Brella Preview, 3/5/2025, 9:35 AM
+📄 Last Modified By: Brella QAOpen Brella QA PreviewOpen Brella QA Preview, 4/4/2025, 2:35 PM
+📄 Employer: Automation ER 1741176898Open Automation ER 1741176898 PreviewOpen Automation ER 1741176898 Preview
+📄 Employment Status: Active
+📄 Title: [No Value]
+📄 Date of Hire: 12/28/1995
+📄 Class: Class AOpen Class A PreviewOpen Class A Preview
+📄 Payroll Frequency: Monthly
+📄 Billing Group Field: [No Value]
+📄 Termination Date: [No Value]
+📄 Termination Reason: [No Value]
+📄 Modification Reason: [No Value]
+📄 Contract: 00010999Open 00010999 PreviewOpen 00010999 Preview
+📄 Asset: Frankie, Paisley (Employee + Family) | 2025Open Frankie, Paisley (Employee + Family) | 2025 PreviewOpen Frankie, Paisley (Employee + Family) | 2025 Preview
+📄 Asset Group: AG-74405Open AG-74405 PreviewOpen AG-74405 Preview
+📄 Benefit Eligibility Date: 12/1/2024
+📄 Coverage Effective Date: 3/5/2025
+📄 Age At Policy Effective Date: 82
+📄 Enrollment Status: Enrolled
+📄 Enrollment Received Date: 3/5/2025
+📄 Loss of Eligibility Date: [No Value]
+📄 Eligibility Loss Reason: [No Value]
+📄 Enrollment Period New Hires: [No Value]
+📄 EnrollmentDeclined: EnrollmentDeclined
+📄 Decline Coverage Explanation: [No Value]
+📄 Decline Coverage Reasons: [No Value]
+📄 Prospective Record Type Name: Prospective_Member_Census
+
+✅ Extraction complete!

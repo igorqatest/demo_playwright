@@ -1,0 +1,208 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce Enrollment Link Click (Optimized)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:100:5
+
+# Error details
+
+```
+Error: locator.waitFor: Error: strict mode violation: locator('span.test-id__field-value') resolved to 65 elements:
+    1) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11 is-read-only">…</span> aka locator('span').filter({ hasText: 'CT-' })
+    2) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11 is-read-only">…</span> aka locator('span').filter({ hasText: 'Partner AIGOpen Partner AIG PreviewOpen Partner AIG PreviewChange Owner' })
+    3) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka locator('span').filter({ hasText: '20.00' })
+    4) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka locator('span').filter({ hasText: 'Restrict Family Members' }).nth(1)
+    5) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka locator('span').filter({ hasText: /^Age Reduction$/ }).nth(1)
+    6) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka getByRole('definition').filter({ hasText: 'Edit Coverage Options' }).locator('span').first()
+    7) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka locator('span').filter({ hasText: '70' })
+    8) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka locator('span').filter({ hasText: 'Brella Select' })
+    9) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka locator('span').filter({ hasText: '50%' })
+    10) <span lwc-2qpe2t0sbck="" class="test-id__field-value slds-form-element__static slds-grow word-break-ie11">…</span> aka getByRole('definition').filter({ hasText: 'Edit Custom Moderate' }).locator('span').first()
+    ...
+
+Call log:
+  - waiting for locator('span.test-id__field-value') to be visible
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:121:20
+```
+
+# Test source
+
+```ts
+   21 |     if (await linkElement.isVisible()) {
+   22 |         const linkText = await linkElement.innerText();
+   23 |         await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+   24 |     } else {
+   25 |         console.log('⚠️ Link not found, trying alternative methods...');
+   26 |
+   27 |         await page.getByRole('button', { name: 'Get The Link' }).click();
+   28 |
+   29 |         // Shadow DOM Handling
+   30 |         const shadowLink = await page.evaluate(() => {
+   31 |             const shadowHost = document.querySelector('#sectionContent-174');
+   32 |             return shadowHost?.shadowRoot?.querySelector('a')?.getAttribute('href') ?? null;
+   33 |         });
+   34 |
+   35 |         if (shadowLink) {
+   36 |             await page.goto(shadowLink, { waitUntil: 'domcontentloaded' });
+   37 |         } else {
+   38 |             console.log('⚠️ Trying XPath method...');
+   39 |             const xpathLink = page.locator('//a[contains(text(), "https://qa-aig-platform.joinansel.com/enrollment")]');
+   40 |             if (await xpathLink.isVisible()) {
+   41 |                 await xpathLink.click({ force: true });
+   42 |             } else {
+   43 |                 console.log('❌ Could not find the enrollment link.');
+   44 |                 return; // Exit test if the link isn't found
+   45 |             }
+   46 |         }
+   47 |     }
+   48 |
+   49 |     // Step 3: Fill Form Details
+   50 |     console.log('📝 Filling out form details...');
+   51 |     await page.getByRole('textbox').fill('9QfzXO0@');
+   52 |     await page.getByRole('button', { name: 'Next step' }).click();
+   53 |
+   54 |     await page.locator('input[name="firstName"]').fill('John');
+   55 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+   56 |     await page.getByRole('combobox').locator('i').click();
+   57 |
+   58 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+   59 |
+   60 |     // Step 4: Function to Click "Next step" with Delay
+   61 |     async function clickNextStepWithDelay(delay = 1000) {
+   62 |         await page.getByRole('button', { name: 'Next step' }).click();
+   63 |     }
+   64 |
+   65 |     // Proceed through form with controlled delays
+   66 |     await clickNextStepWithDelay(1500);
+   67 |     await clickNextStepWithDelay(1500);
+   68 |     await page.getByText('Yes', { exact: true }).click();
+   69 |     await page.getByText('Yes', { exact: true }).click();
+   70 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+   71 |
+   72 |     await clickNextStepWithDelay(1500);
+   73 |     await clickNextStepWithDelay(1500);
+   74 |     await clickNextStepWithDelay(2000);
+   75 |     await clickNextStepWithDelay(2000);
+   76 |     await clickNextStepWithDelay(2000);
+   77 |     await clickNextStepWithDelay(2000);
+   78 |     await clickNextStepWithDelay(2000);
+   79 |     await clickNextStepWithDelay(2000);
+   80 |     await clickNextStepWithDelay(2000);
+   81 |     await clickNextStepWithDelay(2000);
+   82 |
+   83 |
+   84 |     // Confirm selections
+   85 |     await page.getByText('Yes').click();
+   86 |     await page.getByText('I typically pay copays').click();
+   87 |     await clickNextStepWithDelay(1500);
+   88 |
+   89 |     await page.getByText('I generally can purchase').click();
+   90 |     await clickNextStepWithDelay(2500);
+   91 |
+   92 |     
+   93 |   
+   94 |
+   95 |     console.log('🎯 Test Completed.');
+   96 | }); */
+   97 |
+   98 | import { test, expect } from '@playwright/test';
+   99 |
+  100 | test('Salesforce Enrollment Link Click (Optimized)', async ({ page }) => {
+  101 |     console.log('🚀 Starting Test');
+  102 |
+  103 |     // Step 1: Login to Salesforce
+  104 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view', { waitUntil: 'domcontentloaded' });
+  105 |
+  106 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  107 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  108 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  109 |
+  110 |     // Wait for Salesforce dashboard to load
+  111 |     await page.waitForTimeout(5000);
+  112 |     console.log('✅ Logged in to Salesforce.');
+  113 |
+  114 |     // Step 2: Find and Click Enrollment Link
+  115 |     console.log('🔍 Looking for the Enrollment Link inside the span...');
+  116 |
+  117 |     // Locate the span containing the link
+  118 |     const linkSpan = page.locator('span.test-id__field-value');
+  119 |
+  120 |     // Wait for the span to be visible
+> 121 |     await linkSpan.waitFor({ state: 'visible', timeout: 10000 });
+      |                    ^ Error: locator.waitFor: Error: strict mode violation: locator('span.test-id__field-value') resolved to 65 elements:
+  122 |
+  123 |     // Extract the URL text from the span
+  124 |     let linkText = await linkSpan.innerText();
+  125 |     console.log(`✅ Found Enrollment Link: ${linkText}`);
+  126 |
+  127 |     // If the link is empty, click "Edit Employee Shopping Link" and extract it again
+  128 |     if (!linkText.trim()) {
+  129 |         console.log('⚠️ Link is empty. Clicking "Edit Employee Shopping Link" to reveal it...');
+  130 |
+  131 |         // Click the Edit button
+  132 |         await page.locator('button[title="Edit Employee Shopping Link"]').click();
+  133 |
+  134 |         // Wait for the field to update
+  135 |         await page.waitForTimeout(2000); // Adjust if needed
+  136 |
+  137 |         // Extract the updated text
+  138 |         linkText = await page.locator('span.test-id__field-value').innerText();
+  139 |         console.log(`✅ Found Updated Enrollment Link: ${linkText}`);
+  140 |     }
+  141 |
+  142 |     // Navigate to the extracted link
+  143 |     await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+  144 |     console.log('✅ Successfully navigated to the Enrollment Link.');
+  145 |
+  146 |     // Step 3: Fill Form Details
+  147 |     console.log('📝 Filling out form details...');
+  148 |     await page.getByRole('textbox').fill('9QfzXO0@');
+  149 |     await page.getByRole('button', { name: 'Next step' }).click();
+  150 |
+  151 |     await page.locator('input[name="firstName"]').fill('John');
+  152 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+  153 |     await page.getByRole('combobox').locator('i').click();
+  154 |
+  155 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+  156 |
+  157 |     // Step 4: Function to Click "Next step" with Delay
+  158 |     async function clickNextStepWithDelay(delay = 1000) {
+  159 |         await page.waitForTimeout(delay);
+  160 |         await page.getByRole('button', { name: 'Next step' }).click();
+  161 |     }
+  162 |
+  163 |     // Proceed through form with controlled delays
+  164 |     await clickNextStepWithDelay(1500);
+  165 |     await clickNextStepWithDelay(1500);
+  166 |     await page.getByText('Yes', { exact: true }).click();
+  167 |     await page.getByText('Yes', { exact: true }).click();
+  168 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+  169 |
+  170 |     await clickNextStepWithDelay(1500);
+  171 |     await clickNextStepWithDelay(1500);
+  172 |     await clickNextStepWithDelay(2000);
+  173 |     await clickNextStepWithDelay(2000);
+  174 |     await clickNextStepWithDelay(2000);
+  175 |     await clickNextStepWithDelay(2000);
+  176 |     await clickNextStepWithDelay(2000);
+  177 |     await clickNextStepWithDelay(2000);
+  178 |     await clickNextStepWithDelay(2000);
+  179 |     await clickNextStepWithDelay(2000);
+  180 |
+  181 |     // Confirm selections
+  182 |     await page.getByText('Yes').click();
+  183 |     await page.getByText('I typically pay copays').click();
+  184 |     await clickNextStepWithDelay(1500);
+  185 |
+  186 |     await page.getByText('I generally can purchase').click();
+  187 |     await clickNextStepWithDelay(2500);
+  188 |
+  189 |     console.log('🎯 Test Completed.');
+  190 | });
+```

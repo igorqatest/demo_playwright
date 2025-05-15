@@ -1,0 +1,2 @@
+✅ Iframe located successfully.
+✅ Clicked Sign button (navigate-btn) inside iframe.

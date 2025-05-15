@@ -1,0 +1,87 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:14:5
+
+# Error details
+
+```
+Error: expect.toContainText: Error: strict mode violation: locator('h1 yt-formatted-string') resolved to 3 elements:
+    1) <yt-formatted-string title="" ellipsis-truncate="" ellipsis-truncate-styling="" class="miniplayer-title style-scope ytd-miniplayer" is-empty="function(){var e=_.Ed.apply(0,arguments);a.loggingStatus.currentExternalCall=b;a.loggingStatus.bypassProxyController=!0;var g,k=((g=a.is)!=null?g:a.tagName).toLowerCase();er(k,b,"PROPERTY_ACCESS_CALL_EXTERNAL");var m;g=(m=c!=null?c:d[b])==null?void 0:m.call.apply(m,[d].concat(_.ze(e)));a.loggingStatus.currentExternalCall=void 0;a.loggingStatus.bypassProxyController=!1;return…>…</yt-formatted-string> aka locator('#info-bar h1 yt-formatted-string')
+    2) <yt-formatted-string force-default-style="" class="style-scope ytd-watch-metadata" is-empty="function(){var e=_.Ed.apply(0,arguments);a.loggingStatus.currentExternalCall=b;a.loggingStatus.bypassProxyController=!0;var g,k=((g=a.is)!=null?g:a.tagName).toLowerCase();er(k,b,"PROPERTY_ACCESS_CALL_EXTERNAL");var m;g=(m=c!=null?c:d[b])==null?void 0:m.call.apply(m,[d].concat(_.ze(e)));a.loggingStatus.currentExternalCall=void 0;a.loggingStatus.bypassProxyController=!1;return g}">…</yt-formatted-string> aka locator('#above-the-fold #title yt-formatted-string')
+    3) <yt-formatted-string force-default-style="" class="style-scope ytd-video-primary-info-renderer" is-empty="function(){var e=_.Ed.apply(0,arguments);a.loggingStatus.currentExternalCall=b;a.loggingStatus.bypassProxyController=!0;var g,k=((g=a.is)!=null?g:a.tagName).toLowerCase();er(k,b,"PROPERTY_ACCESS_CALL_EXTERNAL");var m;g=(m=c!=null?c:d[b])==null?void 0:m.call.apply(m,[d].concat(_.ze(e)));a.loggingStatus.currentExternalCall=void 0;a.loggingStatus.bypassProxyController=!1;return g}">…</yt-formatted-string> aka locator('#info-contents h1 yt-formatted-string')
+
+Call log:
+  - expect.toContainText with timeout 5000ms
+  - waiting for locator('h1 yt-formatted-string')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:50:26
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.youtube.com/');
+   4 |    await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+   5 |    await page.getByRole('combobox', { name: 'Search' }).fill('playwright by testers');
+   6 |    await page.waitForTimeout(500);
+   7 |    await page.getByRole('combobox', { name: 'Search' }).press('Enter');
+   8 |    await page.getByRole('link', { name: 'Playwright by Testers Talk☑️' }).click();
+   9 | });
+  10 |  */
+  11 |
+  12 | import { test, expect } from '@playwright/test';
+  13 |
+  14 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+  15 |   await page.goto('https://www.youtube.com/');
+  16 |
+  17 |   // Dismiss cookie banner if present
+  18 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  19 |   if (await rejectCookies.isVisible()) {
+  20 |     await rejectCookies.click();
+  21 |   }
+  22 |
+  23 |   // Search input
+  24 |   const searchInput = page.getByRole('combobox', { name: /Search/i });
+  25 |   await searchInput.waitFor({ state: 'visible' });
+  26 |   await searchInput.fill('playwright by testers');
+  27 |   await page.waitForTimeout(500);
+  28 |   // 🔍 Click the Search button instead of pressing Enter
+  29 |   /* const searchButton = page.getByRole('button', { name: /Search/i });
+  30 |   await searchButton.click(); */
+  31 |   await searchInput.press('Enter');
+  32 |
+  33 |
+  34 |   // Wait for results to appear
+  35 |   await expect(page).toHaveURL(/results/);
+  36 |
+  37 |   const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i });
+  38 |   await videoLink.waitFor({ state: 'visible', timeout: 10000 });
+  39 |   await videoLink.click();
+  40 |
+  41 |   /* await expect(page).toHaveURL(/watch/);
+  42 |   await expect(page.getByRole('heading', { name: 'Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', exact: true }).locator('yt-formatted-string')).toContainText('Playwright');
+  43 |   await expect(page).toHaveTitle('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial'); */
+  44 |   await expect(page).toHaveURL(/watch/);
+  45 |
+  46 | // Use a relaxed locator for the <h1> title area
+  47 | const videoTitle = page.locator('h1 yt-formatted-string');
+  48 |
+  49 | // Assert that the title contains "Playwright"
+> 50 | await expect(videoTitle).toContainText(/Playwright/i);
+     |                          ^ Error: expect.toContainText: Error: strict mode violation: locator('h1 yt-formatted-string') resolved to 3 elements:
+  51 |
+  52 | // You can also assert the full page title if needed
+  53 | await expect(page).toHaveTitle(/Playwright Tutorial/i);
+  54 |   console.log('Playwright word found in the title');
+  55 |   console.log('✅ Test passed');
+  56 | });
+```

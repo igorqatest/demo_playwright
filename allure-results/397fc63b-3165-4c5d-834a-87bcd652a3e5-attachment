@@ -1,0 +1,39 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Test ended.
+Call log:
+  - waiting for getByRole('textbox', { name: 'Pasword' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-37.spec.ts:6:55
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+   5 |   await page.getByRole('textbox', { name: 'Username'}).fill('pejinigor@gmail.com');
+>  6 |   await page.getByRole('textbox', { name: 'Pasword'}).fill('Test123456');
+     |                                                       ^ Error: locator.fill: Test ended.
+   7 |   await page.getByRole('button', { name: 'Log in'}).click();
+   8 |   await page.waitForTimeout(2000);
+   9 | const fields= [
+  10 |   
+  11 | ]
+  12 |
+  13 | });
+```

@@ -1,0 +1,110 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping flow fresh start & correct resume prevention
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('link', { name: 'Prospectives (6+)' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:23:63
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Shopping flow fresh start & correct resume prevention', async ({ page, context }) => {
+   4 |   test.setTimeout(120_000);
+   5 |   console.log('🚀 Starting test');
+   6 |
+   7 |   // Salesforce login
+   8 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   9 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  10 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  11 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  12 |   console.log('✅ Logged into Salesforce');
+  13 |
+  14 |   await page.getByRole('tab', { name: 'Related' }).click();
+  15 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+  16 |
+  17 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+  18 |   await page.waitForTimeout(2000);
+  19 |   await csLink.click();
+  20 |   console.log('🔗 Clicked CS- link');
+  21 |
+  22 |   await page.getByRole('tab', { name: 'Related' }).click();
+> 23 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+     |                                                               ^ Error: locator.click: Target page, context or browser has been closed
+  24 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  25 |   await page.locator('a.slds-truncate >> visible=true').first().click({ force: true });
+  26 |   console.log('✅ Opened first prospective record');
+  27 |
+  28 |   await page.getByRole('tab', { name: 'Details' }).click();
+  29 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 100);
+  30 |
+  31 |   const ssn = await page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first().innerText();
+  32 |   console.log(`🔐 SSN: ${ssn}`);
+  33 |
+  34 |   const dobRaw = await page.locator('lightning-formatted-text')
+  35 |     .locator('xpath=../../..')
+  36 |     .filter({ hasText: 'Date of Birth' })
+  37 |     .locator('lightning-formatted-text')
+  38 |     .innerText();
+  39 |
+  40 |   let [month, day, year] = dobRaw.split('/');
+  41 |   const dob = `${month.padStart(2, '0')}/${day.padStart(2, '0')}/${year}`;
+  42 |   console.log(`🎂 DOB: ${dob}`);
+  43 |
+  44 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  45 |   console.log('🎯 Clicked "Get The Link"');
+  46 |
+  47 |   const validTextarea = page.locator('textarea').filter({ hasText: /^https:\/\/.+/ }).first();
+  48 |   await expect(validTextarea).toBeVisible({ timeout: 10000 });
+  49 |   const shoppingLink = await validTextarea.inputValue();
+  50 |   console.log(`🔗 Shopping link extracted: ${shoppingLink}`);
+  51 |
+  52 |   // 🧹 Open a clean tab and clear persisted session data
+  53 |   const newPage = await context.newPage();
+  54 |   await newPage.goto('about:blank');
+  55 |   await newPage.evaluate(() => {
+  56 |     localStorage.removeItem('partner-fsl');
+  57 |     localStorage.removeItem('enrollment-fsl');
+  58 |     localStorage.clear();
+  59 |     sessionStorage.clear();
+  60 |     console.log('🧼 Cleared localStorage and sessionStorage');
+  61 |   });
+  62 |
+  63 |   // Go to extracted shopping link
+  64 |   await newPage.goto(shoppingLink, { waitUntil: 'domcontentloaded' });
+  65 |   console.log('🆕 Navigated to shopping link');
+  66 |
+  67 |   // 🔐 Verification flow
+  68 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  69 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  70 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  71 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  72 |   console.log('✅ Verification complete');
+  73 |
+  74 |   // ⛔ Prevent re-click if already selected
+  75 |   const marriedNo = newPage.getByRole('radio', { name: 'No' });
+  76 |   const parentNone = newPage.getByRole('radio', { name: "I'm not a parent" });
+  77 |
+  78 |   if (!(await marriedNo.isChecked())) await marriedNo.click();
+  79 |   if (!(await parentNone.isChecked())) await parentNone.click();
+  80 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  81 |   console.log('👪 Household status selected');
+  82 |
+  83 |   // ✅ You can continue remaining steps as needed...
+  84 | });
+```

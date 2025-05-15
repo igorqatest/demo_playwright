@@ -1,0 +1,218 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Member Portal - Full UI and Content Validation
+- Location: /Users/pejin/Documents/Playwright new/tests/member_ansel.spec.ts:85:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: getByRole('link', { name: 'Coverage' })
+Expected: visible
+Received: <element(s) not found>
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByRole('link', { name: 'Coverage' })
+
+    at /Users/pejin/Documents/Playwright new/tests/member_ansel.spec.ts:102:64
+    at /Users/pejin/Documents/Playwright new/tests/member_ansel.spec.ts:101:14
+```
+
+# Test source
+
+```ts
+   2 | import {config} from './reusable.ts';
+   3 |
+   4 | test('My first test', async ({ page }) => {
+   5 |     await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
+   6 |     
+   7 |     const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+   8 |   
+   9 |     // 👉 Now safely type with a delay
+   10 |     await emailInput.type(config.userMemberAnsel, { delay: 10 });
+   11 |     const passwordInput = page.locator('input[name="password"]');
+   12 |     await passwordInput.type(config.passwordMemberAnsel, { delay: 10 });
+   13 |     await page.getByRole('button', { name: 'Sign in' }).click();
+   14 |     // ✅ Check the page title
+   15 |   await expect(page).toHaveTitle(/Member Portal/);
+   16 |   await page.waitForTimeout(15000);
+   17 |   // ✅ Check important text exists
+   18 |   await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+   19 |
+   20 |   // --- Header ---
+   21 |   await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+   22 |   await expect(page.getByRole('link', { name: 'Claims' })).toBeVisible();
+   23 |   await expect(page.getByRole('link', { name: 'My info' })).toBeVisible();
+   24 |
+   25 |   await expect(page.getByRole('heading', { name: 'Coverage' })).toBeVisible();
+   26 |   await expect(page.getByRole('heading', { name: 'Family info' })).toBeVisible();
+   27 |
+   28 |   await expect(page.getByRole('heading', { name: 'Costs' })).toBeVisible();
+   29 |   await expect(page.getByRole('heading', { name: 'Policy document(s)' })).toBeVisible();
+   30 |   await expect(page.getByRole('heading', { name: 'Benefit limits' })).toBeVisible();
+   31 |   await expect(page.getByRole('heading', { name: 'Limitations and exclusions' })).toBeVisible();
+   32 |
+   33 |   // --- User Name ---
+   34 |   await expect(page.getByText('Andres Fatima').nth(1)).toBeVisible();
+   35 |   // --- Effective Date ---
+   36 |   await expect(page.getByText('Effective 01/01/2025')).toBeVisible();
+   37 |
+   38 |   // --- Buttons ---
+   39 |   await expect(page.getByRole('button', { name: 'File new claim' })).toBeVisible();
+   40 |   await expect(page.getByRole('button', { name: 'Condition lookup' })).toBeVisible();
+   41 |
+   42 |   // --- Coverage values ---
+   43 |   await expect(page.getByText('$200')).toBeVisible();
+   44 |   await expect(page.getByText('$500')).toBeVisible();
+   45 |   await expect(page.getByText('$1,000')).toBeVisible();
+   46 |
+   47 |   // --- Policy Document (Coverage Packet PDF) ---
+   48 |   await expect(page.getByText('Coverage packet')).toBeVisible();
+   49 |
+   50 |   // --- Family Info ---
+   51 |   await expect(page.getByText('Myself')).toBeVisible();
+   52 |   await expect(page.getByText('Covered', { exact: true })).toBeVisible();
+   53 |   await expect(page.getByRole('alert').filter({ hasText: 'Andres Fatima' })).toBeVisible();
+   54 |
+   55 |   // --- Footer Text ---
+   56 |   await expect(page.getByText(/©2025 Ansel Health, Inc. All Rights Reserved./, { exact: true })).toBeVisible();
+   57 |
+   58 |   // --- Benefit Limits Section ---
+   59 |   await expect(page.getByText('Benefit limits')).toBeVisible();
+   60 |   await expect(page.locator('span').filter({ hasText: 'Moderate' })).toBeVisible();
+   61 |   await expect(page.locator('span').filter({ hasText: 'Catastrophic' })).toBeVisible();
+   62 |
+   63 |   // --- Limitations and Exclusions Section ---
+   64 |   await expect(page.getByText('Limitations and exclusions')).toBeVisible();
+   65 |   await expect(page.getByText('Exclusions', { exact: true })).toBeVisible();
+   66 |   await expect(page.getByText('Waiting periods', { exact: true })).toBeVisible();
+   67 |   await expect(page.getByText('Renewability, cancellation, & termination', { exact: true })).toBeVisible();
+   68 |
+   69 |   // --- Call to Support ---
+   70 |   //await expect(page.getByText('(888) 300-5382', { exact: true })).toBeVisible();
+   71 |
+   72 |   // --- Check a Button Background Color (optional) ---
+   73 |   const newClaimBtn = page.getByRole('button', { name: 'File new claim' });
+   74 |   const backgroundColor = await newClaimBtn.evaluate((el) => {
+   75 |     return window.getComputedStyle(el).backgroundColor;
+   76 |   });
+   77 |   console.log('File New Claim Button color:', backgroundColor);
+   78 |   // You can validate color if needed, e.g.
+   79 |   // expect(backgroundColor).toBe('rgb(33, 133, 208)');
+   80 | }); */
+   81 |
+   82 | import { test, expect } from '@playwright/test';
+   83 | import { config } from './reusable.ts';
+   84 |
+   85 | test('Member Portal - Full UI and Content Validation', async ({ page }) => {
+   86 |   await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
+   87 |
+   88 |   // --- Login Step ---
+   89 |   await test.step('Login to Member Portal', async () => {
+   90 |     const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+   91 |     await emailInput.type(config.userMemberAnsel, { delay: 10 });
+   92 |
+   93 |     const passwordInput = page.locator('input[name="password"]');
+   94 |     await passwordInput.type(config.passwordMemberAnsel, { delay: 10 });
+   95 |
+   96 |     await page.getByRole('button', { name: 'Sign in' }).click();
+   97 |     await expect(page).toHaveTitle(/Member Portal/);
+   98 |   });
+   99 |
+  100 |   // --- Wait for dashboard to load ---
+  101 |   await test.step('Wait for dashboard', async () => {
+> 102 |     await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+      |                                                                ^ Error: Timed out 5000ms waiting for expect(locator).toBeVisible()
+  103 |   });
+  104 |
+  105 |   // --- Header Navigation ---
+  106 |   await test.step('Header links', async () => {
+  107 |     await expect(page.getByRole('link', { name: 'Coverage' })).toBeVisible();
+  108 |     await expect(page.getByRole('link', { name: 'Claims' })).toBeVisible();
+  109 |     await expect(page.getByRole('link', { name: 'My info' })).toBeVisible();
+  110 |   });
+  111 |
+  112 |   // --- Section Headings ---
+  113 |   await test.step('Section headings', async () => {
+  114 |     await expect(page.getByRole('heading', { name: 'Coverage' })).toBeVisible();
+  115 |     await expect(page.getByRole('heading', { name: 'Family info' })).toBeVisible();
+  116 |     await expect(page.getByRole('heading', { name: 'Costs' })).toBeVisible();
+  117 |     await expect(page.getByRole('heading', { name: 'Policy document(s)' })).toBeVisible();
+  118 |     await expect(page.getByRole('heading', { name: 'Benefit limits' })).toBeVisible();
+  119 |     await expect(page.getByRole('heading', { name: 'Limitations and exclusions' })).toBeVisible();
+  120 |   });
+  121 |
+  122 |   // --- User and Profile ---
+  123 |   await test.step('User Profile info', async () => {
+  124 |     await expect(page.getByText('Andres Fatima')).toBeVisible();
+  125 |     await expect(page.getByText('Effective 01/01/2025')).toBeVisible();
+  126 |     await expect(page.getByText('Myself')).toBeVisible();
+  127 |     await expect(page.getByText('Covered')).toBeVisible();
+  128 |     await expect(page.getByRole('alert').filter({ hasText: 'Andres Fatima' })).toBeVisible();
+  129 |   });
+  130 |
+  131 |   // --- Main Action Buttons ---
+  132 |   await test.step('Main action buttons', async () => {
+  133 |     await expect(page.getByRole('button', { name: 'File new claim' })).toBeVisible();
+  134 |     await expect(page.getByRole('button', { name: 'Condition lookup' })).toBeVisible();
+  135 |   });
+  136 |
+  137 |   // --- Coverage Values ---
+  138 |   await test.step('Coverage benefits', async () => {
+  139 |     await expect(page.getByText('$200')).toBeVisible();
+  140 |     await expect(page.getByText('$500')).toBeVisible();
+  141 |     await expect(page.getByText('$1,000')).toBeVisible();
+  142 |   });
+  143 |
+  144 |   // --- Policy Documents ---
+  145 |   await test.step('Policy document section', async () => {
+  146 |     await expect(page.getByText('Coverage packet')).toBeVisible();
+  147 |   });
+  148 |
+  149 |   // --- Footer ---
+  150 |   await test.step('Footer Validation', async () => {
+  151 |     await expect(page.getByText(/©2025 Ansel Health, Inc. All Rights Reserved./)).toBeVisible();
+  152 |   });
+  153 |
+  154 |   // --- Benefit Limits Section ---
+  155 |   await test.step('Benefit limits section', async () => {
+  156 |     await expect(page.getByText('Benefit limits')).toBeVisible();
+  157 |     await expect(page.locator('span').filter({ hasText: 'Moderate' })).toBeVisible();
+  158 |     await expect(page.locator('span').filter({ hasText: 'Severe' })).toBeVisible();
+  159 |     await expect(page.locator('span').filter({ hasText: 'Catastrophic' })).toBeVisible();
+  160 |   });
+  161 |
+  162 |   // --- Limitations and Exclusions Section ---
+  163 |   await test.step('Limitations and exclusions section', async () => {
+  164 |     await expect(page.getByText('Limitations and exclusions')).toBeVisible();
+  165 |     await expect(page.getByText('Exclusions')).toBeVisible();
+  166 |     await expect(page.getByText('Waiting periods')).toBeVisible();
+  167 |     await expect(page.getByText('Renewability, cancellation, & termination')).toBeVisible();
+  168 |   });
+  169 |
+  170 |   // --- Support Info (Phone and Email) ---
+  171 |   await test.step('Support contact info', async () => {
+  172 |     await expect(page.getByText('(888) 300-5382')).toBeVisible();
+  173 |     await expect(page.getByText('support@joinansel.com')).toBeVisible();
+  174 |   });
+  175 |
+  176 |   // --- Check button style ---
+  177 |   await test.step('Button style check', async () => {
+  178 |     const newClaimBtn = page.getByRole('button', { name: 'File new claim' });
+  179 |     const backgroundColor = await newClaimBtn.evaluate((el) => {
+  180 |       return window.getComputedStyle(el).backgroundColor;
+  181 |     });
+  182 |     console.log('File New Claim Button color:', backgroundColor);
+  183 |     // You could also assert color if needed
+  184 |     // expect(backgroundColor).toBe('rgb(67, 128, 108)');  // Example color
+  185 |   });
+  186 |
+  187 | });
+```

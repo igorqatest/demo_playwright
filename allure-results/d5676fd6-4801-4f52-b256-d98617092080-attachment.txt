@@ -1,0 +1,1250 @@
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@16',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@16'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560045,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@20',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@20'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560060,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@24',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@24'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560072,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@28',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@28'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560083,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@32',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@32'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560097,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@36',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@36'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560109,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@40',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@40'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560121,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@44',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@44'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560131,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@48',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@48'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560141,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@52',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@52'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560152,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@56',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@56'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560160,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@60',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@60'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560171,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@64',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@64'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560180,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@68',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@68'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560189,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@72',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@72'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560196,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@76',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@76'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560204,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@80',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@80'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560213,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@84',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@84'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560220,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@88',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@88'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560227,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@92',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@92'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560235,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@96',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@96'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560242,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@100',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@100'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560248,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@104',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@104'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560255,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@108',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@108'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560265,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}
+❌ Failed extracting value for a label jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')
+    at eval (eval at evaluate (:234:30), <anonymous>:3:45)
+    at UtilityScript.evaluate (<anonymous>:236:17)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40 {
+  [Symbol(step)]: {
+    stepId: 'pw:api@112',
+    location: {
+      file: '/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts',
+      line: 110,
+      column: 40
+    },
+    category: 'pw:api',
+    title: 'jsHandle.evaluate',
+    apiName: 'jsHandle.evaluate',
+    params: {
+      expression: 'node => {\n' +
+        '          var _node$textContent;\n' +
+        "          return ((_node$textContent = node.textContent) === null || _node$textContent === void 0 ? void 0 : _node$textContent.trim()) || '';\n" +
+        '        }',
+      isFunction: true,
+      arg: [Object]
+    },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@112'
+    },
+    complete: [Function: complete],
+    endWallTime: 1743865560275,
+    error: {
+      message: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)',
+      stack: "Error: jsHandle.evaluate: TypeError: Cannot read properties of null (reading 'textContent')\n" +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at eval (eval at evaluate (:234:30), <anonymous>:3:45)\n' +
+        '    at UtilityScript.evaluate (<anonymous>:236:17)\n' +
+        '    at UtilityScript.<anonymous> (<anonymous>:1:44)\n' +
+        '    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:110:40',
+      cause: undefined
+    }
+  }
+}

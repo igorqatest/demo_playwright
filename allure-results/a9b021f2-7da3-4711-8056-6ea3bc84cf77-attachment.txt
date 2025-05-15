@@ -1,0 +1,10 @@
+🚀 Starting Test: Click on Irene Smith and open dropdown menu
+🔍 Navigated to Salesforce login page.
+📌 Opened the dropdown menu.
+🍼 Selected "Add Birth/Adoption".
+📅 Selected QLE Received Date.
+📅 Selected Baby Date of Birth.
+👶 Successfully added baby details.
+💑 Adding spouse details.
+🚹 Selected spouse role and gender.
+🎉 Successfully completed the process!

@@ -1,0 +1,4 @@
+📋 Extracting field details from the record...
+
+
+✅ All visible fields logged successfully!

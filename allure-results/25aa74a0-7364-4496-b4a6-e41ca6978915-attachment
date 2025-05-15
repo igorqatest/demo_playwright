@@ -1,0 +1,72 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-41.spec.ts:20:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('option', { name: 'Service', exact: true })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-41.spec.ts:37:68
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import fs from 'fs';
+   3 | import path from 'path';
+   4 | import { config} from './test.config'; // adjust the path if needed
+   5 |
+   6 | const screenshotDir = 'test-41';
+   7 |
+   8 | if (fs.existsSync(screenshotDir)) {
+   9 |   fs.readdirSync(screenshotDir).forEach(file => {
+  10 |     fs.unlinkSync(path.join(screenshotDir, file));
+  11 |   });
+  12 | } else {
+  13 |   fs.mkdirSync(screenshotDir);
+  14 | }
+  15 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+  16 |   console.log(message);
+  17 |   await page.screenshot({ path: `${dir}/${step}.png` });
+  18 | }
+  19 |
+  20 | test('test', async ({ page }) => {
+  21 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Account/001WU00000pLtH7YAK/view');
+  22 |   await page.pause();
+  23 |
+  24 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  25 |
+  26 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  27 |   await logAndScreenshot(page, screenshotDir, '1-login', 'Login page loaded');
+  28 |   await page.getByRole('button', { name: 'Log In' }).click();
+  29 |   
+  30 |   const launcher = page.getByRole('button', { name: 'App Launcher' })
+  31 |   await expect(launcher).toBeVisible();
+  32 |   await launcher.click();
+  33 |   await page.waitForTimeout(1000);
+  34 |   await logAndScreenshot(page, screenshotDir, '2-launcher', 'App Launcher loaded');
+  35 |   await page.waitForTimeout(1000);
+  36 |
+> 37 |   await page.getByRole('option', { name: 'Service', exact: true }).click();
+     |                                                                    ^ Error: locator.click: Test ended.
+  38 |   const test = page.getByRole('link', { name: 'Accounts' });
+  39 |   await expect(test).toBeVisible();
+  40 |
+  41 |   await test.click();
+  42 |   await page.getByRole('link', { name: 'Dickenson plc' }).click();
+  43 |   await page.waitForTimeout(3000);
+  44 |   await logAndScreenshot(page, screenshotDir, '3-accounts', 'Accounts loaded');  
+  45 |     await page.locator("button[name='Global.NewContact']").click();  
+  46 | });
+```

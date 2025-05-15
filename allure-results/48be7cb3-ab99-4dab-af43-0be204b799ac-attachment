@@ -1,0 +1,58 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: This is my new test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-10.spec.ts:20:5
+
+# Error details
+
+```
+Error: page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://qa-ansel-platform.joinansel.com/member/login", waiting until "load"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-10.spec.ts:21:14
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('my new test', async ({ page }) => {
+   4 |   await page.goto('https://qa-ansel-platform.joinansel.com/member/login');
+   5 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('igor.pejin+ba280201037@joinansel.com');
+   6 |   await page.locator('input[name="password"]').fill('Demo123456');
+   7 |   await page.getByRole('button', { name: 'Sign in' }).click();
+   8 |   await page.waitForTimeout(20000);
+   9 | });
+  10 |  */
+  11 |
+  12 |   /* for( const text of expectedResults){
+  13 |     const textLocator = page.locator(`text=${text}`);
+  14 |     //const textLocator = page.locator(`text=${text}`);  // ✅ Corrected template literal
+  15 |
+  16 |     await expect(textLocator).toBeVisible({timeout:5000});
+  17 |   } */
+  18 |   import { test, expect} from '@playwright/test';
+  19 |
+  20 | test('This is my new test', async({page})=>{
+> 21 |   await page.goto('https://qa-ansel-platform.joinansel.com/member/login');
+     |              ^ Error: page.goto: Target page, context or browser has been closed
+  22 |   const expectResults = [
+  23 |     'Sign in to your Member Portal',
+  24 |     'Enter your details below to access to Ansel',
+  25 |     'Not yet registered? Create an account'
+  26 |   ];
+  27 |
+  28 |   for(const  myText of expectResults){
+  29 |     const testing = page.locator(`text=${myText}`);
+  30 |     await expect(testing).toBeVisible({timeout:5000});
+  31 |   }
+  32 | })
+```

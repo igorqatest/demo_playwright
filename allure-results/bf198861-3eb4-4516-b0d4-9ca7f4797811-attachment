@@ -1,0 +1,174 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce Enrollment Link Click (Optimized)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:100:5
+
+# Error details
+
+```
+Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "CT-212921", waiting until "domcontentloaded"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:144:16
+```
+
+# Test source
+
+```ts
+   44 |                 return; // Exit test if the link isn't found
+   45 |             }
+   46 |         }
+   47 |     }
+   48 |
+   49 |     // Step 3: Fill Form Details
+   50 |     console.log('📝 Filling out form details...');
+   51 |     await page.getByRole('textbox').fill('9QfzXO0@');
+   52 |     await page.getByRole('button', { name: 'Next step' }).click();
+   53 |
+   54 |     await page.locator('input[name="firstName"]').fill('John');
+   55 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+   56 |     await page.getByRole('combobox').locator('i').click();
+   57 |
+   58 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+   59 |
+   60 |     // Step 4: Function to Click "Next step" with Delay
+   61 |     async function clickNextStepWithDelay(delay = 1000) {
+   62 |         await page.getByRole('button', { name: 'Next step' }).click();
+   63 |     }
+   64 |
+   65 |     // Proceed through form with controlled delays
+   66 |     await clickNextStepWithDelay(1500);
+   67 |     await clickNextStepWithDelay(1500);
+   68 |     await page.getByText('Yes', { exact: true }).click();
+   69 |     await page.getByText('Yes', { exact: true }).click();
+   70 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+   71 |
+   72 |     await clickNextStepWithDelay(1500);
+   73 |     await clickNextStepWithDelay(1500);
+   74 |     await clickNextStepWithDelay(2000);
+   75 |     await clickNextStepWithDelay(2000);
+   76 |     await clickNextStepWithDelay(2000);
+   77 |     await clickNextStepWithDelay(2000);
+   78 |     await clickNextStepWithDelay(2000);
+   79 |     await clickNextStepWithDelay(2000);
+   80 |     await clickNextStepWithDelay(2000);
+   81 |     await clickNextStepWithDelay(2000);
+   82 |
+   83 |
+   84 |     // Confirm selections
+   85 |     await page.getByText('Yes').click();
+   86 |     await page.getByText('I typically pay copays').click();
+   87 |     await clickNextStepWithDelay(1500);
+   88 |
+   89 |     await page.getByText('I generally can purchase').click();
+   90 |     await clickNextStepWithDelay(2500);
+   91 |
+   92 |     
+   93 |   
+   94 |
+   95 |     console.log('🎯 Test Completed.');
+   96 | }); */
+   97 |
+   98 | import { test, expect } from '@playwright/test';
+   99 |
+  100 | test('Salesforce Enrollment Link Click (Optimized)', async ({ page }) => {
+  101 |     console.log('🚀 Starting Test');
+  102 |
+  103 |     // Step 1: Login to Salesforce
+  104 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view', { waitUntil: 'domcontentloaded' });
+  105 |
+  106 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  107 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  108 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  109 |
+  110 |     // Wait for Salesforce dashboard to load
+  111 |     await page.waitForTimeout(5000);
+  112 |     console.log('✅ Logged in to Salesforce.');
+  113 |
+  114 |     // Step 2: Find and Click Enrollment Link
+  115 |     console.log('🔍 Looking for the Enrollment Link inside the span...');
+  116 |
+  117 |     // Locate the span containing the link
+  118 |
+  119 |     const linkSpan = page.locator('span.test-id__field-value').first();
+  120 |
+  121 |     await linkSpan.waitFor({ state: 'visible', timeout: 10000 });
+  122 |     
+  123 |
+  124 |     // Extract the URL text from the span
+  125 |     let linkText = await linkSpan.innerText();
+  126 |     console.log(`✅ Found Enrollment Link: ${linkText}`);
+  127 |
+  128 |     // If the link is empty, click "Edit Employee Shopping Link" and extract it again
+  129 |     if (!linkText.trim()) {
+  130 |         console.log('⚠️ Link is empty. Clicking "Edit Employee Shopping Link" to reveal it...');
+  131 |
+  132 |         // Click the Edit button
+  133 |         await page.locator('button[title="Edit Employee Shopping Link"]').click();
+  134 |
+  135 |         // Wait for the field to update
+  136 |         await page.waitForTimeout(2000); // Adjust if needed
+  137 |
+  138 |         // Extract the updated text
+  139 |         linkText = await page.locator('span.test-id__field-value').innerText();
+  140 |         console.log(`✅ Found Updated Enrollment Link: ${linkText}`);
+  141 |     }
+  142 |
+  143 |     // Navigate to the extracted link
+> 144 |     await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+      |                ^ Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+  145 |     console.log('✅ Successfully navigated to the Enrollment Link.');
+  146 |
+  147 |     // Step 3: Fill Form Details
+  148 |     console.log('📝 Filling out form details...');
+  149 |     await page.getByRole('textbox').fill('9QfzXO0@');
+  150 |     await page.getByRole('button', { name: 'Next step' }).click();
+  151 |
+  152 |     await page.locator('input[name="firstName"]').fill('John');
+  153 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+  154 |     await page.getByRole('combobox').locator('i').click();
+  155 |
+  156 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+  157 |
+  158 |     // Step 4: Function to Click "Next step" with Delay
+  159 |     async function clickNextStepWithDelay(delay = 1000) {
+  160 |         await page.waitForTimeout(delay);
+  161 |         await page.getByRole('button', { name: 'Next step' }).click();
+  162 |     }
+  163 |
+  164 |     // Proceed through form with controlled delays
+  165 |     await clickNextStepWithDelay(1500);
+  166 |     await clickNextStepWithDelay(1500);
+  167 |     await page.getByText('Yes', { exact: true }).click();
+  168 |     await page.getByText('Yes', { exact: true }).click();
+  169 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+  170 |
+  171 |     await clickNextStepWithDelay(1500);
+  172 |     await clickNextStepWithDelay(1500);
+  173 |     await clickNextStepWithDelay(2000);
+  174 |     await clickNextStepWithDelay(2000);
+  175 |     await clickNextStepWithDelay(2000);
+  176 |     await clickNextStepWithDelay(2000);
+  177 |     await clickNextStepWithDelay(2000);
+  178 |     await clickNextStepWithDelay(2000);
+  179 |     await clickNextStepWithDelay(2000);
+  180 |     await clickNextStepWithDelay(2000);
+  181 |
+  182 |     // Confirm selections
+  183 |     await page.getByText('Yes').click();
+  184 |     await page.getByText('I typically pay copays').click();
+  185 |     await clickNextStepWithDelay(1500);
+  186 |
+  187 |     await page.getByText('I generally can purchase').click();
+  188 |     await clickNextStepWithDelay(2500);
+  189 |
+  190 |     console.log('🎯 Test Completed.');
+  191 | });
+```

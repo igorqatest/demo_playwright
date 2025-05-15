@@ -1,0 +1,97 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:6:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByText('Yes, I accept this proposal')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:49:53
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 |
+   4 | import { format } from 'date-fns';
+   5 |
+   6 | test('test', async ({ page }) => {
+   7 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTen0AG/view');
+   8 | await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  10 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  11 |
+  12 |     await page.getByRole('tab', { name: 'Details' }).click();
+  13 | await page.waitForTimeout(500);
+  14 |
+  15 | // ✅ Step 2: Get the Proposal Link (partially matching the visible URL text)
+  16 | const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  17 |
+  18 | // ✅ Step 3: Scroll to it (in case it's out of viewport)
+  19 | await proposalLink.scrollIntoViewIfNeeded();
+  20 |
+  21 | // ✅ Step 4: Click the link
+  22 | await proposalLink.click();
+  23 | await page.evaluate(() => window.scrollTo(0, 0)); // ⬆️ reset scroll to top
+  24 |
+  25 | // Generate dynamic values
+  26 | const firstName = faker.person.firstName();
+  27 | const lastName = faker.person.lastName();
+  28 | const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  29 |
+  30 | const ackFirstName = faker.person.firstName();
+  31 | const ackLastName = faker.person.lastName();
+  32 | const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  33 |
+  34 | // 📅 Date logic
+  35 | const today = format(new Date(), 'MM/dd/yyyy');
+  36 | const threeWeeksLater = format(new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), 'MM/dd/yyyy');
+  37 | // 👇 Scroll down to reveal the form
+  38 |
+  39 |
+  40 | await page.evaluate(() => {
+  41 |   const el = document.querySelector('#root');
+  42 |   if (el) el.scrollTop = el.scrollHeight;
+  43 | });
+  44 |
+  45 | // Small delay to ensure content stabilizes (optional)
+  46 | await page.waitForTimeout(500);
+  47 |
+  48 | // Fill in the main form
+> 49 | await page.getByText('Yes, I accept this proposal').click();
+     |                                                     ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  50 |
+  51 |
+  52 | await page.locator('input[name="contactFirstName"]').fill(firstName);
+  53 | await page.locator('input[name="contactLastName"]').fill(lastName);
+  54 | await page.locator('input[name="contactEmail"]').fill(randomEmail);
+  55 | await page.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  56 |
+  57 | // Platform selection (if it's a dropdown or toggle, adjust as needed)
+  58 | await page.getByText('Ansel enrollment platform').click();
+  59 |
+  60 | // Fill in dates (adjust the selectors if needed)
+  61 | await page.locator('input[name="startDate"]').fill(today);
+  62 | await page.locator('input[name="endDate"]').fill(threeWeeksLater);
+  63 |
+  64 | // Acknowledgement section
+  65 | await page.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  66 | await page.locator('input[name="ackLastName"]').fill(ackLastName);
+  67 | await page.locator('input[name="ackEmail"]').fill(ackEmail);
+  68 |
+  69 | await page.getByText('By checking this box, I agree').click();
+  70 |
+  71 | });
+```

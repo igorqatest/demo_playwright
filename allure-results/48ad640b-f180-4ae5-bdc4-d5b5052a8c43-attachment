@@ -1,0 +1,179 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 📄 Extract field labels and values from .slds-tabs_default sections
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:135:5
+
+# Error details
+
+```
+Error: page.goto: net::ERR_NAME_NOT_RESOLVED at https://your-salesforce-url.here/
+Call log:
+  - navigating to "https://your-salesforce-url.here/", waiting until "load"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:137:14
+```
+
+# Test source
+
+```ts
+   37 |   console.log('⏳ Waiting for page content to load...');
+   38 |   await page.waitForTimeout(4000);
+   39 |
+   40 |   // Targeting the detail panel
+   41 |   const fieldsToExtract = [
+   42 |     'Roster Member Name',
+   43 |     'First Name',
+   44 |     'Last Name',
+   45 |     'Gender',
+   46 |     'Date of Birth',
+   47 |     'SocialSecurityNumber',
+   48 |     'Email',
+   49 |     'Phone',
+   50 |     'Mobile Phone',
+   51 |     'Status',
+   52 |     'Role',
+   53 |     'Age',
+   54 |     'Street',
+   55 |     'City',
+   56 |     'Postal Code',
+   57 |     'State',
+   58 |     'Strategic Partner Name',
+   59 |     'Owner'
+   60 |   ];
+   61 |
+   62 |   for (const label of fieldsToExtract) {
+   63 |     const field = page.locator(`div.slds-form-element__label:text-is("${label}")`).first();
+   64 |     const value = field.locator('xpath=..').locator('.slds-form-element__control span');
+   65 |
+   66 |     try {
+   67 |       const isVisible = await field.isVisible();
+   68 |       if (isVisible) {
+   69 |         const fieldValue = await value.textContent();
+   70 |         console.log(`✅ ${label}: ${fieldValue?.trim() || '[Empty]'}`);
+   71 |       } else {
+   72 |         console.warn(`⚠️ ${label} not visible.`);
+   73 |       }
+   74 |     } catch (err) {
+   75 |       console.error(`❌ Error extracting ${label}:`, err.message);
+   76 |     }
+   77 |   }
+   78 |
+   79 |   console.log('✅ Extraction complete!');
+   80 | }); */
+   81 |
+   82 | /* import { test, expect } from '@playwright/test';
+   83 |
+   84 | test('📄 Extract all visible fields from Roster Member page (multi-section)', async ({ page }) => {
+   85 |   console.log('🌐 Navigating to Roster Member record...');
+   86 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   87 |
+   88 |   console.log('🔐 Logging into Salesforce...');
+   89 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   90 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   91 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   92 |
+   93 |   console.log('⏳ Waiting for page content...');
+   94 |   await page.waitForSelector('.test-id__field-label');
+   95 |   await page.waitForTimeout(3000);
+   96 |
+   97 |   // 🔄 Scroll to bottom slowly to force lazy-loaded fields
+   98 |   for (let i = 0; i < 10; i++) {
+   99 |     await page.mouse.wheel(0, 300);
+  100 |     await page.waitForTimeout(300);
+  101 |   }
+  102 |
+  103 |   const labels = await page.locator('.test-id__field-label').all();
+  104 |
+  105 |   if (labels.length === 0) {
+  106 |     console.log('⚠️ No field labels found on the page.');
+  107 |     return;
+  108 |   }
+  109 |
+  110 |   console.log(`\n🔍 Found ${labels.length} fields. Extracting values...\n`);
+  111 |
+  112 |   for (const label of labels) {
+  113 |     try {
+  114 |       const labelText = (await label.textContent())?.trim() || '[No Label]';
+  115 |
+  116 |       const container = label.locator('xpath=../../..'); // Go to field container
+  117 |       const valueLocator = container.locator('.test-id__field-value');
+  118 |
+  119 |       let valueText = '[No Value]';
+  120 |       if (await valueLocator.count()) {
+  121 |         valueText = (await valueLocator.first().textContent())?.trim() || '[No Value]';
+  122 |       }
+  123 |
+  124 |       console.log(`📄 ${labelText}: ${valueText}`);
+  125 |     } catch (err) {
+  126 |       console.error('❌ Failed extracting field:', err);
+  127 |     }
+  128 |   }
+  129 |
+  130 |   console.log('\n✅ Extraction complete!');
+  131 | }); */
+  132 |
+  133 | import { test, expect } from '@playwright/test';
+  134 |
+  135 | test('📄 Extract field labels and values from .slds-tabs_default sections', async ({ page }) => {
+  136 |   console.log('🌐 Navigating to the page...');
+> 137 |   await page.goto('https://your-salesforce-url.here'); // Replace with actual URL
+      |              ^ Error: page.goto: net::ERR_NAME_NOT_RESOLVED at https://your-salesforce-url.here/
+  138 |
+  139 |   console.log('🔐 Logging into Salesforce...');
+  140 |   await page.getByRole('textbox', { name: 'Username' }).fill('your-username');
+  141 |   await page.getByRole('textbox', { name: 'Password' }).fill('your-password');
+  142 |   await page.getByRole('button', { name: /Log In/i }).click();
+  143 |   await page.waitForTimeout(4000); // Wait for page to fully load
+  144 |
+  145 |   // Scroll to load everything
+  146 |   for (let i = 0; i < 10; i++) {
+  147 |     await page.mouse.wheel(0, 300);
+  148 |     await page.waitForTimeout(300);
+  149 |   }
+  150 |
+  151 |   // Locate all .slds-tabs_default containers
+  152 |   const tabs = await page.locator('.slds-tabs_default').all();
+  153 |
+  154 |   if (tabs.length === 0) {
+  155 |     console.log('⚠️ No .slds-tabs_default sections found.');
+  156 |     return;
+  157 |   }
+  158 |
+  159 |   for (let i = 0; i < tabs.length; i++) {
+  160 |     const tab = tabs[i];
+  161 |     console.log(`\n📂 Extracting tab section ${i + 1}...\n`);
+  162 |
+  163 |     const labels = await tab.locator('.test-id__field-label').all();
+  164 |
+  165 |     if (labels.length === 0) {
+  166 |       console.log('⚠️ No field labels found in this tab.');
+  167 |       continue;
+  168 |     }
+  169 |
+  170 |     for (const label of labels) {
+  171 |       try {
+  172 |         const labelText = (await label.textContent())?.trim() || '[No Label]';
+  173 |         const container = label.locator('xpath=../../..');
+  174 |         const valueLocator = container.locator('.test-id__field-value');
+  175 |
+  176 |         let valueText = '[No Value]';
+  177 |         if (await valueLocator.count()) {
+  178 |           valueText = (await valueLocator.first().textContent())?.trim() || '[No Value]';
+  179 |         }
+  180 |
+  181 |         console.log(`📄 ${labelText}: ${valueText}`);
+  182 |       } catch (err) {
+  183 |         console.error('❌ Error reading label/value:', err);
+  184 |       }
+  185 |     }
+  186 |   }
+  187 |
+  188 |   console.log('\n✅ Extraction complete!');
+  189 | });
+```

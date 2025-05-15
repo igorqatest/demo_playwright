@@ -1,0 +1,40 @@
+🌐 Opening login page...
+📸 Login page loaded
+🔐 Logging in...
+📸 Credentials entered
+📇 Navigating to Contacts tab...
+📸 Contacts tab
+🆕 Opening New Contact form...
+📸 New Contact form opened
+🔍 Verifying field labels...
+❌ Error while checking "Contact Owner": Timed out 5000ms waiting for expect(locator).toBeVisible()
+
+Locator: getByLabel('Contact Owner').first()
+Expected: visible
+Received: hidden
+Call log:
+  - expect.toBeVisible with timeout 5000ms
+  - waiting for getByLabel('Contact Owner').first()
+    9 × locator resolved to <th scope="col" title="Contact Owner Alias" aria-label="Contact Owner Alias" data-aura-rendered-by="120:665;a" class="initialSortAsc sortable  slds-is-sortable  slds-is-resizable">…</th>
+      - unexpected value "hidden"
+
+✅ Label visible: Salutation
+✅ Label visible: First Name
+✅ Label visible: Last Name
+✅ Label visible: Phone
+✅ Label visible: Home Phone
+✅ Label visible: Mobile
+✅ Label visible: Other Phone
+✅ Label visible: Title
+✅ Label visible: Department
+✅ Label visible: Email
+✅ Label visible: Fax
+✅ Label visible: Birthdate
+✅ Label visible: Reports To
+✅ Label visible: Lead Source
+✅ Label visible: Website URL
+✅ Label visible: URL Name
+✅ Label visible: Assistant
+✅ Label visible: Asst. Phone
+✅ All label checks completed.
+📸 Scrolled to bottom of form container

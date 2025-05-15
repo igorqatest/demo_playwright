@@ -1,0 +1,127 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce Enrollment Link Click (Optimized)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:3:5
+
+# Error details
+
+```
+TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator('button:text("Get The Link")') to be visible
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-4.spec.ts:26:20
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Salesforce Enrollment Link Click (Optimized)', async ({ page }) => {
+   4 |     console.log('🚀 Starting Test');
+   5 |
+   6 |     // Step 1: Login to Salesforce
+   7 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view', { waitUntil: 'domcontentloaded' });
+   8 |
+   9 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   10 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   11 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   12 |
+   13 |     // Wait for Salesforce dashboard to load
+   14 |     await page.waitForTimeout(5000);
+   15 |     console.log('✅ Logged in to Salesforce.');
+   16 |
+   17 |     // Step 2: Find and Click Enrollment Link
+   18 |     console.log('🔍 Looking for the enrollment link...');
+   19 |     const linkElement = page.getByText('https://qa-aig-platform.joinansel.com/enrollment');
+   20 |
+   21 |     if (await linkElement.isVisible()) {
+   22 |         const linkText = await linkElement.innerText();
+   23 |         await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+   24 |     } else {
+   25 |         console.log('⚠️ Link not found, trying alternative methods...');
+>  26 |         await page.waitForSelector('button:text("Get The Link")', { timeout: 10000 });
+      |                    ^ TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
+   27 |
+   28 |         await page.getByRole('button', { name: 'Get The Link' }).click();
+   29 |
+   30 |         // Shadow DOM Handling
+   31 |         const shadowLink = await page.evaluate(() => {
+   32 |             const shadowHost = document.querySelector('#sectionContent-174');
+   33 |             return shadowHost?.shadowRoot?.querySelector('a')?.getAttribute('href') ?? null;
+   34 |         });
+   35 |
+   36 |         if (shadowLink) {
+   37 |             await page.goto(shadowLink, { waitUntil: 'domcontentloaded' });
+   38 |         } else {
+   39 |             console.log('⚠️ Trying XPath method...');
+   40 |             const xpathLink = page.locator('//a[contains(text(), "https://qa-aig-platform.joinansel.com/enrollment")]');
+   41 |             if (await xpathLink.isVisible()) {
+   42 |                 await xpathLink.click({ force: true });
+   43 |             } else {
+   44 |                 console.log('❌ Could not find the enrollment link.');
+   45 |                 return; // Exit test if the link isn't found
+   46 |             }
+   47 |         }
+   48 |     }
+   49 |
+   50 |     // Step 3: Fill Form Details
+   51 |     console.log('📝 Filling out form details...');
+   52 |     await page.getByRole('textbox').fill('9QfzXO0@');
+   53 |     await page.getByRole('button', { name: 'Next step' }).click();
+   54 |
+   55 |     await page.locator('input[name="firstName"]').fill('John');
+   56 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+   57 |     await page.getByRole('combobox').locator('i').click();
+   58 |
+   59 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+   60 |
+   61 |     // Step 4: Function to Click "Next step" with Delay
+   62 |     async function clickNextStepWithDelay(delay = 1000) {
+   63 |         await page.getByRole('button', { name: 'Next step' }).click();
+   64 |     }
+   65 |
+   66 |     // Proceed through form with controlled delays
+   67 |     await clickNextStepWithDelay(1500);
+   68 |     await clickNextStepWithDelay(1500);
+   69 |     await page.getByText('Yes', { exact: true }).click();
+   70 |     await page.getByText('Yes', { exact: true }).click();
+   71 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+   72 |
+   73 |     await clickNextStepWithDelay(1500);
+   74 |     await clickNextStepWithDelay(1500);
+   75 |     await clickNextStepWithDelay(2000);
+   76 |     await clickNextStepWithDelay(2000);
+   77 |     await clickNextStepWithDelay(2000);
+   78 |     await clickNextStepWithDelay(2000);
+   79 |     await clickNextStepWithDelay(2000);
+   80 |     await clickNextStepWithDelay(2000);
+   81 |     await clickNextStepWithDelay(2000);
+   82 |     await clickNextStepWithDelay(2000);
+   83 |
+   84 |
+   85 |     // Confirm selections
+   86 |     await page.getByText('Yes').click();
+   87 |     await page.getByText('I typically pay copays').click();
+   88 |     await clickNextStepWithDelay(1500);
+   89 |
+   90 |     await page.getByText('I generally can purchase').click();
+   91 |     await clickNextStepWithDelay(2500);
+   92 |
+   93 |     await page.waitForSelector('button:text("Email recommendations")', { timeout: 10000 });
+   94 |
+   95 |     await page.getByRole('button', { name: 'Email recommendations' }).click();
+   96 |     await page.getByRole('textbox', { name: 'Enter your email' }).fill('igor.pejin+testaigemail@joinansel.com');
+   97 |     await page.getByRole('button', { name: 'Send recommendations' }).click();   
+   98 |   
+   99 |
+  100 |     console.log('🎯 Test Completed.');
+  101 | });
+```

@@ -1,0 +1,129 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce Enrollment Link Click (Optimized)
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-20.spec.ts:20:5
+
+# Error details
+
+```
+Error: locator.getAttribute: Error: strict mode violation: locator('span.test-id__field-value a') resolved to 4 elements:
+    1) <a lwc-oj46kgc6r3="" data-navigation="enable" href="/lightning/r/Name/005QL000007KJQiYAO/view">…</a> aka locator('#sectionContent-193').getByRole('link', { name: 'Partner AIG' })
+    2) <a rel="noopener" target="_blank" lwc-f6gbo863ml="" href="https://qa-aig-platform.joinansel.com/enrollment/?token=VJkMTOaJMlHZWa-8Tee_UfDicwqgjMfu-EsJNbuk1n6bOl8HS4sRtqCmK5MiGiJgrlsrdrQX5fjze9eOyZUsi9lnxrA8pXzj-VNPG9aloBv68cpDgNgmXaOQ4uzmFWYQxQPVp-zv8ykioU74g-nFouyN7YIbPh9M5FmPJwGHanF2x04RQtgJaYcdMrMU0493nOpjen8odtrltFwFWX6nkXXnf-uLXdBVQ1pmVnwmOMYh1z7fttJch1qjhztaS0hoiQJKZg0hf-xltMZLxD4s-J3Ari-vSdA5MVuBbOEpydLv9ORjUhk29G1JPAjfp4JFew_pzuBgrm2DWs5fVan6CHh3Vl5jx7iZFd6z-y6VYYonfgDJksID71oksmwXVtl_8H8…>https://qa-aig-platform.joinansel.com/enrollment/…</a> aka getByRole('link', { name: 'https://qa-aig-platform.' })
+    3) <a lwc-oj46kgc6r3="" data-navigation="enable" href="/lightning/r/User/005QL000007KJQiYAO/view">…</a> aka locator('#sectionContent-399').getByRole('link', { name: 'Partner AIG' })
+    4) <a lwc-oj46kgc6r3="" data-navigation="enable" href="/lightning/r/User/0056g000004rqX3AAI/view">…</a> aka getByRole('link', { name: 'Brella QA' })
+
+Call log:
+  - waiting for locator('span.test-id__field-value a')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-20.spec.ts:43:38
+```
+
+# Test source
+
+```ts
+   1 | // import {test, expect} from '@playwright/test';
+   2 |
+   3 | // test('Testing', async ({page})=>{
+   4 | //   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view');
+   5 | //     // Step 2: Log in to Salesforce
+   6 |     
+   7 | //     /* await page.getByRole('textbox', {name: 'Username'}).fill('qa@joinansel.com.qa');
+   8 | //     await page.getByRole('textbox', {name: 'Password'}).fill('qa@joinansel.com.qa');
+   9 | //     await page.getByRole('button', {name: 'Log In to Sandbox'}).click();
+  10 | //     await page.waitForTimeout(5000); */
+  11 | //     await page.getByRole('textbox', {name: 'Username'}).fill('qa@joinansel.com.qa');
+  12 | //     await page.getByRole('textbox', {name: 'Password'}).fill('q8xPmBoudN1W');
+  13 | //     await page.getByRole('button', {name: 'Log In to Sandbox'}).click();
+  14 | //     await page.waitForTimeout(5000);
+  15 | //     //await page.getByRole('link', { name: 'https://qa-aig-platform.' }).click();
+  16 | // });
+  17 |
+  18 | import { test, expect } from '@playwright/test';
+  19 |
+  20 | test('Salesforce Enrollment Link Click (Optimized)', async ({ page }) => {
+  21 |     console.log('🚀 Starting Test');
+  22 |
+  23 |     // Step 1: Login to Salesforce
+  24 |     await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract_Terms__c/a91QL000001oyV3YAI/view', { waitUntil: 'domcontentloaded' });
+  25 |
+  26 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  27 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  28 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  29 |
+  30 |     // Wait for Salesforce dashboard to load
+  31 |     await page.waitForTimeout(5000);
+  32 |     console.log('✅ Logged in to Salesforce.');
+  33 |
+  34 |     // Step 2: Extract Enrollment Link from Employee Shopping Link Field
+  35 |     console.log('🔍 Looking for the Employee Shopping Link inside the <a> tag...');
+  36 |
+  37 |     // Locate the <a> element inside the span
+  38 |     const linkElement = page.locator('span.test-id__field-value a');
+  39 |
+  40 |     // Wait for the link to be available
+  41 |
+  42 |     // Extract the URL from the `href` attribute
+> 43 |     let linkText = await linkElement.getAttribute('href');
+     |                                      ^ Error: locator.getAttribute: Error: strict mode violation: locator('span.test-id__field-value a') resolved to 4 elements:
+  44 |     console.log(`✅ Found Enrollment Link: ${linkText}`);
+  45 |
+  46 |     // Navigate to the extracted link
+  47 |     if (linkText) {
+  48 |         await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+  49 |     } else {
+  50 |         console.error('❌ Error: Enrollment link is null.');
+  51 |     }
+  52 |     console.log('✅ Successfully navigated to the Enrollment Link.');
+  53 |
+  54 |     // Step 3: Fill Form Details
+  55 |     console.log('📝 Filling out form details...');
+  56 |     await page.getByRole('textbox').fill('9QfzXO0@');
+  57 |     await page.getByRole('button', { name: 'Next step' }).click();
+  58 |
+  59 |     await page.locator('input[name="firstName"]').fill('John');
+  60 |     await page.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('10/15/1999');
+  61 |     await page.getByRole('combobox').locator('i').click();
+  62 |
+  63 |     await page.getByRole('button', { name: 'Next step' }).waitFor({ state: 'visible', timeout: 60000 });
+  64 |
+  65 |     // Step 4: Function to Click "Next step" with Delay
+  66 |     async function clickNextStepWithDelay(delay = 1000) {
+  67 |         await page.waitForTimeout(delay);
+  68 |         await page.getByRole('button', { name: 'Next step' }).click();
+  69 |     }
+  70 |
+  71 |     // Proceed through form with controlled delays
+  72 |     await clickNextStepWithDelay(1500);
+  73 |     await clickNextStepWithDelay(1500);
+  74 |     await page.getByText('Yes', { exact: true }).click();
+  75 |     await page.getByText('Yes', { exact: true }).click();
+  76 |     await page.getByText('Yes, my youngest child is under 18 years old').click();
+  77 |
+  78 |     await clickNextStepWithDelay(1500);
+  79 |     await clickNextStepWithDelay(1500);
+  80 |     await clickNextStepWithDelay(2000);
+  81 |     await clickNextStepWithDelay(2000);
+  82 |     await clickNextStepWithDelay(2000);
+  83 |     await clickNextStepWithDelay(2000);
+  84 |     await clickNextStepWithDelay(2000);
+  85 |     await clickNextStepWithDelay(2000);
+  86 |     await clickNextStepWithDelay(2000);
+  87 |     await clickNextStepWithDelay(2000);
+  88 |
+  89 |     // Confirm selections
+  90 |     await page.getByText('Yes').click();
+  91 |     await page.getByText('I typically pay copays').click();
+  92 |     await clickNextStepWithDelay(1500);
+  93 |
+  94 |     await page.getByText('I generally can purchase').click();
+  95 |     await clickNextStepWithDelay(2500);
+  96 |
+  97 |     console.log('🎯 Test Completed.');
+  98 | });
+```

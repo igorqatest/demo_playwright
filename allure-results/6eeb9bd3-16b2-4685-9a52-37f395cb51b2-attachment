@@ -1,0 +1,130 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright new/tests/test-2.spec.ts:5:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: /Playwright by Testers Talk/i }).first()
+
+    at /Users/pejin/Documents/Playwright new/tests/test-2.spec.ts:49:19
+```
+
+# Test source
+
+```ts
+   1 |
+   2 |
+   3 | import { test, expect } from '@playwright/test';
+   4 |
+   5 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+   6 |   await page.goto('https://www.youtube.com/');
+   7 |
+   8 |   // Dismiss cookie banner if present
+   9 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+   10 |   if (await rejectCookies.isVisible()) {
+   11 |     await rejectCookies.click();
+   12 |   }
+   13 |   
+   14 |   await page.getByPlaceholder('Search').fill('playwright by testers');
+   15 |   await page.waitForTimeout(500);
+   16 |
+   17 |   const mySearch = page.getByPlaceholder('Search', { exact: true}).first()
+   18 |   await expect(mySearch).toBeVisible();
+   19 |   console.log('✅ It is visible!');
+   20 |
+   21 |   await expect(mySearch).toBeEditable();
+   22 |   console.log('✅ It is editable!');
+   23 |
+   24 |   await expect(mySearch).toBeEnabled();
+   25 |   console.log('✅ It is enabled!');
+   26 |
+   27 |   //await expect(mySearch).toHaveAttribute('placeholder', 'Search');
+   28 |   try {
+   29 |     await expect(mySearch).toHaveAttribute('placeholder', 'Search');
+   30 |     console.log('✅ Placeholder is correct');
+   31 |   } catch (error) {
+   32 |     console.warn('⚠️ Placeholder check failed:', error.message);
+   33 |     await page.screenshot({ path: 'placeholder-error.png' });
+   34 |   }
+   35 |
+   36 |
+   37 |   console.log('✅ It has "Search" placeholder!');
+   38 |   await expect.soft(mySearch).toHaveValue('playwright by testers');
+   39 |   console.log('✅ It has "playwright by testers" value!');
+   40 |   await expect(mySearch).not.toBeEmpty();
+   41 |   console.log('✅ It is not empty!');
+   42 |  
+   43 |     await page.getByPlaceholder('Search').press('Enter');
+   44 |     
+   45 |
+   46 |
+   47 |     const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i }).first();
+   48 |       await page.waitForTimeout(500);
+>  49 |   await videoLink.click(); 
+      |                   ^ Error: locator.click: Test timeout of 30000ms exceeded.
+   50 |
+   51 |   //await expect(page).toHaveURL(/watch/);
+   52 |   //await expect(page.getByRole('heading', { name: 'Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial', exact: true }).locator('yt-formatted-string')).toContainText('Playwright');
+   53 |   //await expect(page).toHaveTitle('Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial');
+   54 |   await page.waitForTimeout(1000);
+   55 |
+   56 |   const matches = await page.locator('a.yt-simple-endpoint').filter({ hasText: 'Playwright by Testers Talk' }).count();
+   57 |   console.log(`🔍 Found ${matches} matching links`);
+   58 |   
+   59 |   /* const signIn = page.getByRole('link', { name: 'Sign in' });
+   60 |   await signIn.click(); */
+   61 |   await page.getByText('Open panel').first().click();
+   62 |   await page.waitForTimeout(2000);
+   63 |  
+   64 |   
+   65 |   const title = page.locator('#title yt-formatted-string').first();
+   66 | await expect(title).toHaveText(/Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial/i, { timeout: 10000 });
+   67 | console.log('🎬 Title:', (await title.textContent())?.trim());
+   68 |
+   69 | const count = await page.locator('a.yt-simple-endpoint').filter({ hasText: 'Playwright by Testers Talk' }).count();
+   70 | console.log(`🔍 Matching links: ${count}`);
+   71 |
+   72 | console.log('✅ Video title is visible!');
+   73 |
+   74 |   await  page.goto('https://github.com/');
+   75 |    await page.getByRole('link', { name: 'Sign in' }).click();
+   76 |   await page.waitForTimeout(2000);
+   77 |   
+   78 |   await page.getByLabel('Homepage test', { exact: true}).click();
+   79 |   await page.getByText('Learn more').first().click();
+   80 |   await page.waitForTimeout(2000); 
+   81 |
+   82 |   //await page.getByRole('link', { name: 'Sign in' }).click();
+   83 |   //await page.getByText('Sign up').first().click();
+   84 |
+   85 |    let mySignIn;
+   86 |
+   87 |   try {
+   88 |     await page.getByText('Sign up to GitHub').first();
+   89 |     console.log('✅ Clicked "Sign up"');
+   90 |   } catch (error) {
+   91 |     console.warn('⚠️ Failed to click "Sign up":', error.message);
+   92 |     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+   93 |     await page.screenshot({ path: `screenshots/sign-up-error-${timestamp}.png` });
+   94 |   } 
+   95 |
+   96 |     try {
+   97 |     await page.getByText('Sign up').first().click();
+   98 |     console.log('✅ Clicked "Sign up" button');
+   99 |   } catch (error) {
+  100 |     console.warn('⚠️ Failed to click "Sign up":', error.message);
+  101 |     await page.screenshot({ path: 'screenshots/sign-up-click-error.png' });
+  102 |   }  
+  103 |   console.log('✅ Test passed');
+  104 | });
+```

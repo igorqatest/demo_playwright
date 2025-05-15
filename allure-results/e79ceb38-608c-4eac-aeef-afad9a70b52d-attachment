@@ -1,0 +1,111 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:39:5
+
+# Error details
+
+```
+Error: locator.fill: Error: strict mode violation: getByLabel('Search') resolved to 6 elements:
+    1) <input tabindex="-1" type="search" placeholder="" id="global-search-01" class="splashPage-input splashPage-lookup__search-input"/> aka getByLabel('Search Salesforce')
+    2) <button id="274:0" type="button" aria-label="Search" data-aura-rendered-by="274:0" data-proxy-id="aura-pos-lib-1" class="slds-button slds-button_neutral search-button slds-truncate">…</button> aka getByRole('button', { name: 'Search' })
+    3) <input part="input" id="input-67" type="search" lwc-enmikoh2qu="" class="slds-input" name="Contact-search-input" aria-label="Search this list..." placeholder="Search this list..." aria-describedby="listviewSearchTooltip-59 help-message-67"/> aka getByRole('searchbox', { name: 'Search this list...' })
+    4) <div id="972:0" role="dialog" tabindex="-1" aria-describedby="" aria-hidden="false" aria-labelledby="332:0" data-aura-rendered-by="972:0" data-proxy-id="aura-pos-lib-0" data-aura-class="uiPanel--default uiPanel" class="assistantPanel force-fixed-position uiPanel--default uiPanel positioned south open active">…</div> aka getByRole('dialog', { name: 'Search...' })
+    5) <input type="text" part="input" placeholder="" role="combobox" maxlength="255" lwc-4kb6kaqheak="" autocomplete="off" aria-expanded="false" aria-disabled="false" id="combobox-input-74" aria-haspopup="listbox" data-value="Search: All" aria-autocomplete="list" aria-controls="dropdown-element-74" class="slds-combobox__input slds-input slds-combobox__input-value"/> aka getByRole('combobox', { name: 'Search by object type' })
+    6) <input part="input" id="input-77" type="search" maxlength="100" lwc-enmikoh2qu="" class="slds-input" autocomplete="off" aria-describedby="help-message-77" aria-controls="suggestionsList-72" placeholder="Search Contacts and more..."/> aka getByRole('searchbox', { name: 'Search Contacts and more' })
+
+Call log:
+  - waiting for getByLabel('Search')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:54:33
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | // ✅ Helper to verify CSS color
+   4 |
+   5 |
+   6 | test('test', async ({ page }) => {
+   7 |   console.log('Navigating to Salesforce login URL...');
+   8 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   9 |
+  10 |   console.log('Filling in username...');
+  11 |   await page.getByRole('textbox', { name: 'Username' }).click();
+  12 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  13 |
+  14 |   console.log('Filling in password...');
+  15 |   await page.getByRole('textbox', { name: 'Password' }).click();
+  16 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  17 |
+  18 |   console.log('Clicking Log In...');
+  19 |   await page.getByRole('button', { name: 'Log In' }).click();
+  20 |
+  21 |   console.log('Navigating to John Bond contact record...');
+  22 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  23 |
+  24 |   console.log('Switching to Details tab...');
+  25 |   await page.getByRole('tab', { name: 'Details' }).click();
+  26 |
+  27 |   console.log('Waiting for half a second to ensure page stability...');
+  28 |   await page.waitForTimeout(500);
+  29 |
+  30 |   console.log('Clicking the external Playwright link...');
+  31 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+  32 |   await page.waitForTimeout(3000);
+  33 |   await page.getByRole('link', { name: 'Get started' }).click();
+  34 |
+  35 | }); */
+  36 |
+  37 |  import { test, expect } from '@playwright/test';
+  38 |
+  39 | test('test', async ({ page, context }) => {
+  40 |   console.log('Navigating to Salesforce login URL...');
+  41 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+  42 |
+  43 |   console.log('Filling in username...');
+  44 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  45 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  46 |
+  47 |   console.log('Clicking Log In...');
+  48 |   await page.getByRole('button', { name: 'Log In' }).click();
+  49 |
+  50 | /* await page.getByRole('button', { name: 'App Launcher' }).click();
+  51 | await page.getByRole('option', { name: 'Sales Console' }).click();
+  52 |  */
+  53 | await page.getByRole('button', { name: 'Search' }).click();
+> 54 | await page.getByLabel('Search').fill('Contacts');
+     |                                 ^ Error: locator.fill: Error: strict mode violation: getByLabel('Search') resolved to 6 elements:
+  55 |
+  56 |   console.log('Navigating to John Bond contact record...');
+  57 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  58 |
+  59 |   console.log('Switching to Details tab...');
+  60 |   await page.getByRole('tab', { name: 'Details' }).click();
+  61 |
+  62 |   console.log('Waiting a moment...');
+  63 |   await page.waitForTimeout(500);
+  64 |
+  65 |   console.log('Opening Playwright site (wait for popup)...');
+  66 |   
+  67 |   const popupPromise = page.waitForEvent('popup');
+  68 |   const popupTest = page.waitForEvent('popup');
+  69 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+  70 |   const popup = await popupPromise;
+  71 |   console.log('Switching to popup and clicking Get started...');
+  72 |   await popup.waitForLoadState();
+  73 |   await popup.getByRole('link', { name: 'Get started' }).click();
+  74 |
+  75 |   console.log('✅ Get started link clicked in new tab!');
+  76 |   await popup.getByRole('link', { name: 'How to install Playwright' }).click();  
+  77 | }); 
+  78 |
+```

@@ -1,0 +1,103 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Salesforce contact test with external link
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-24.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.evaluate: Test ended.
+Call log:
+  - waiting for getByRole('link', { name: 'TypeScript' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-24.spec.ts:52:41
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Salesforce contact test with external link', async ({ page }) => {
+   4 |   console.log('Navigating to Salesforce login URL...');
+   5 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).click();
+   9 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  10 |
+  11 |   console.log('Filling in password...');
+  12 |   await page.getByRole('textbox', { name: 'Password' }).click();
+  13 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  14 |
+  15 |   console.log('Clicking Log In...');
+  16 |   await page.getByRole('button', { name: 'Log In' }).click();
+  17 |
+  18 |   console.log('Navigating to John Bond contact record...');
+  19 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  20 |
+  21 |   console.log('Switching to Details tab...');
+  22 |   await page.getByRole('tab', { name: 'Details' }).click();
+  23 |
+  24 |   console.log('Waiting for half a second to ensure page stability...');
+  25 |   await page.waitForTimeout(500);
+  26 |
+  27 |   console.log('Clicking the external link (https://playwright.dev/)...');
+  28 |   const page1Promise = page.waitForEvent('popup');
+  29 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+  30 |   const page1 = await page1Promise;
+  31 |
+  32 |   console.log('Verifying that Playwright site loaded and heading is visible...');
+  33 |   await expect(page1.getByRole('heading', { name: 'Playwright enables reliable' }).locator('span')).toBeVisible();
+  34 |
+  35 |   console.log('✅ Test completed successfully!');
+  36 |
+  37 | const hexColor = await page1.locator('text=Playwright enables reliable >> span').evaluate(test =>
+  38 |   '#' + [...(getComputedStyle(test).color.match(/\d+/g) || [])]
+  39 |     .slice(0, 3)
+  40 |     .map(x => (+x).toString(16).padStart(2, '0'))
+  41 |     .join('')
+  42 |     .toUpperCase()
+  43 | );
+  44 |
+  45 | console.log('Hex color:', hexColor);
+  46 |
+  47 | const typeScriptLink = page.getByRole('link', { name: 'TypeScript' });
+  48 |
+  49 |   // Ensure element is ready
+  50 |
+  51 |   // Get computed color value
+> 52 |   const rgbColor = await typeScriptLink.evaluate(el =>
+     |                                         ^ Error: locator.evaluate: Test ended.
+  53 |     getComputedStyle(el).color
+  54 |   );
+  55 |
+  56 |   // Convert RGB to HEX
+  57 |   const rgbArray = rgbColor.match(/\d+/g)?.map(Number);
+  58 |   if (!rgbArray || rgbArray.length < 3) {
+  59 |     console.error('❌ Could not extract RGB values');
+  60 |     return;
+  61 |   }
+  62 |
+  63 |   const [r, g, b] = rgbArray;
+  64 |   const actualHex = `#${[r, g, b]
+  65 |     .map(x => x.toString(16).padStart(2, '0'))
+  66 |     .join('')
+  67 |     .toUpperCase()}`;
+  68 |
+  69 |   const expectedHex = '#1A7E1F';
+  70 |
+  71 |   console.log('🎯 Expected:', expectedHex);
+  72 |   console.log('🎨 Found:   ', actualHex);
+  73 |
+  74 |   expect(actualHex).toBe(expectedHex); 
+  75 |
+  76 |
+  77 | });
+```

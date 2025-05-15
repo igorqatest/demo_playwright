@@ -1,0 +1,18 @@
+⚠️ Roster Member Name not visible.
+⚠️ First Name not visible.
+⚠️ Last Name not visible.
+⚠️ Gender not visible.
+⚠️ Date of Birth not visible.
+⚠️ SocialSecurityNumber not visible.
+⚠️ Email not visible.
+⚠️ Phone not visible.
+⚠️ Mobile Phone not visible.
+⚠️ Status not visible.
+⚠️ Role not visible.
+⚠️ Age not visible.
+⚠️ Street not visible.
+⚠️ City not visible.
+⚠️ Postal Code not visible.
+⚠️ State not visible.
+⚠️ Strategic Partner Name not visible.
+⚠️ Owner not visible.

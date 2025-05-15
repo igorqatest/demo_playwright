@@ -1,0 +1,158 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Contract
+- Location: /Users/pejin/Documents/Playwright QA/tests/Contract_Ansel.spec.ts:48:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByText('No', { exact: true }) resolved to 2 elements:
+    1) <label>No</label> aka getByText('No').nth(1)
+    2) <label>No</label> aka getByText('No').nth(2)
+
+Call log:
+  - waiting for getByText('No', { exact: true })
+
+    at /Users/pejin/Documents/Playwright QA/tests/Contract_Ansel.spec.ts:100:47
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Contract', async ({ page }) => {
+   4 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/setPassword/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblR5cGUiOiJFbXBsb3llciIsImludml0ZUlkIjo1ODE0LCJlbXBsb3llcklkIjpudWxsLCJlYVVzZXJJZCI6bnVsbH0.__G1MbwB3laM_Y_Rlchk_09GjEuK6S3zoGPWnvVqd7w');
+   5 |   
+   6 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('igor.pejin+fajwqpfy@joinansel.com');
+   7 |   
+   8 |   await page.locator('input[name="password"]').fill('Demo123456');
+   9 |   const page1Promise = page.waitForEvent('popup');
+   10 |   
+   11 |   await page.getByRole('button', { name: 'Login' }).click();
+   12 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/login');
+   13 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('igor.pejin+fajwqpfy@joinansel.com');
+   14 |   await page.locator('input[name="password"]').fill('Demo123456');
+   15 |   await page.getByRole('button', { name: 'Login' }).click();
+   16 |   await page.waitForTimeout(2000);
+   17 |   await page.locator('input[name="SET_TAX_ID"]').fill('34-5467898');     
+   18 |     await page.locator('input[name="SET_ADDRESS"]').click();
+   19 |   await page.locator('input[name="SET_ADDRESS"]').fill('ocean view 1000');
+   20 |   await page.locator('input[name="SET_CITY"]').click();
+   21 |   await page.locator('input[name="SET_CITY"]').fill('San Diego');
+   22 |   await page.getByRole('textbox', { name: 'XXXXX', exact: true }).click();
+   23 |   await page.getByRole('textbox', { name: 'XXXXX', exact: true }).fill('23400 ');
+   24 |   await page.getByRole('button', { name: 'Next step' }).click();
+   25 |   await page.getByRole('listbox').filter({ hasText: 'Date of eligibility lossLast' }).click();
+   26 |   await page.getByRole('option', { name: 'Date of eligibility loss' }).locator('span').click();
+   27 |   await page.getByText('Yes, only unmarried children').click();
+   28 |   await page.getByText('No', { exact: true }).click();
+   29 |   await page.getByRole('button', { name: 'Next step' }).click();
+   30 |   await page.getByRole('button', { name: 'Sign', exact: true }).click();
+   31 |   await page.getByText('By clicking Continue to sign').click();
+   32 |   await page.getByRole('button', { name: 'Continue to sign' }).click();
+   33 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/accountCreation/docusign');
+   34 |   await page.locator('iframe[title="ds"]').contentFrame().locator('span').filter({ hasText: 'I agree to use electronic' }).first().click();
+   35 |   await page.locator('iframe[title="ds"]').contentFrame().getByRole('button', { name: 'Continue' }).click();
+   36 |   await page.locator('iframe[title="ds"]').contentFrame().locator('#navigate-btn').click();
+   37 |   await page.locator('iframe[title="ds"]').contentFrame().locator('#tab-form-element-f1202766-26ce-45b9-b53b-15e562651c66').click();
+   38 |   await page.locator('iframe[title="ds"]').contentFrame().getByLabel('or Select a Signature').getByText('Valentine Upton-Marquardt').click();
+   39 |   await page.locator('iframe[title="ds"]').contentFrame().getByRole('button', { name: 'Adopt and Sign' }).click();
+   40 |   await page.locator('iframe[title="ds"]').contentFrame().getByRole('button', { name: 'Required - Sign Here' }).click();
+   41 |   await page.locator('iframe[title="ds"]').contentFrame().locator('#action-bar-btn-finish').click();
+   42 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/accountCreation/success');
+   43 | }); */
+   44 |
+   45 | import { test, expect } from '@playwright/test';
+   46 | import { faker } from '@faker-js/faker';
+   47 |
+   48 | test('Contract', async ({ page }) => {
+   49 |
+   50 |   
+   51 |
+   52 |   // Constants
+   53 |   const email = 'igor.pejin+noxh6zq0@joinansel.com';
+   54 |   const password = 'Demo123456';
+   55 |
+   56 |   // Randomized values
+   57 |   const fein = `${faker.number.int({ min: 10, max: 99 })}-${faker.number.int({ min: 1000000, max: 9999999 })}`;
+   58 |   const street = faker.location.streetAddress();
+   59 |   const city = faker.location.city();
+   60 |   const zip = faker.location.zipCode('#####');
+   61 |
+   62 |   // ✅ Go to tokenized login (set password)
+   63 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/setPassword/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblR5cGUiOiJFbXBsb3llciIsImludml0ZUlkIjo1ODE1LCJlbXBsb3llcklkIjpudWxsLCJlYVVzZXJJZCI6bnVsbH0.g06HINSmBlJZovHyCZljwFUkMZVc6nNBqGH573N8IZA');
+   64 |
+   65 |   await page.locator('input[name="password"]').fill('Demo123456');
+   66 |   await page.locator('input[name="confirmPassword"]').fill('Demo123456');
+   67 |
+   68 |   await page.evaluate(() => {
+   69 |     (document.querySelector('input[name="agreeToTerms"]') as HTMLInputElement)?.click();
+   70 |   });
+   71 |   await page.getByRole('button', { name: 'Continue' }).click();
+   72 |
+   73 |
+   74 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill(email);
+   75 |   await page.locator('input[name="password"]').fill(password);
+   76 |   await page.getByRole('button', { name: 'Login' }).click();
+   77 |
+   78 |   
+   79 |
+   80 |
+   81 |   // ✅ Login again via UI
+   82 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/login');
+   83 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill(email);
+   84 |   await page.locator('input[name="password"]').fill(password);
+   85 |   await page.getByRole('button', { name: 'Login' }).click();
+   86 |   await page.waitForTimeout(4000);
+   87 |
+   88 |   // ✅ Fill random company info
+   89 |   await page.locator('input[name="SET_TAX_ID"]').fill(fein);
+   90 |   await page.locator('input[name="SET_ADDRESS"]').fill(street);
+   91 |   await page.locator('input[name="SET_CITY"]').fill(city);
+   92 |   await page.getByRole('textbox', { name: 'XXXXX', exact: true }).fill(zip);
+   93 |
+   94 |   await page.getByRole('button', { name: 'Next step' }).click();
+   95 |
+   96 |   // ✅ Additional eligibility config
+   97 |   await page.getByRole('listbox').filter({ hasText: 'Date of eligibility lossLast' }).click();
+   98 |   await page.getByRole('option', { name: 'Date of eligibility loss' }).locator('span').click();
+   99 |   await page.getByText('Yes, only unmarried children').click();
+> 100 |   await page.getByText('No', { exact: true }).click();
+      |                                               ^ Error: locator.click: Error: strict mode violation: getByText('No', { exact: true }) resolved to 2 elements:
+  101 |   await page.getByRole('button', { name: 'Next step' }).click();
+  102 |
+  103 |   // ✅ Sign
+  104 |   await page.getByRole('button', { name: 'Sign', exact: true }).click();
+  105 |   await page.getByText('By clicking Continue to sign').click();
+  106 |   await page.getByRole('button', { name: 'Continue to sign' }).click();
+  107 |
+  108 |   // ✅ DocuSign handling
+  109 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/accountCreation/docusign');
+  110 |   const frame = await page.frameLocator('iframe[title="ds"]');
+  111 |
+  112 |   await frame.locator('span').filter({ hasText: 'I agree to use electronic' }).first().click();
+  113 |   await frame.getByRole('button', { name: 'Continue' }).click();
+  114 |   await frame.locator('#navigate-btn').click();
+  115 |   await frame.locator('#tab-form-element-f1202766-26ce-45b9-b53b-15e562651c66').click();
+  116 |   await frame.getByLabel('or Select a Signature').getByText('Valentine Upton-Marquardt').click();
+  117 |   await frame.getByRole('button', { name: 'Adopt and Sign' }).click();
+  118 |   await frame.getByRole('button', { name: 'Required - Sign Here' }).click();
+  119 |   await frame.locator('#action-bar-btn-finish').click();
+  120 |
+  121 |   // ✅ Done
+  122 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/accountCreation/success');
+  123 |
+  124 |   console.log('✅ Random data used:');
+  125 |   console.log(`FEIN: ${fein}`);
+  126 |   console.log(`Street: ${street}`);
+  127 |   console.log(`City: ${city}`);
+  128 |   console.log(`Zip: ${zip}`);
+  129 | });
+```

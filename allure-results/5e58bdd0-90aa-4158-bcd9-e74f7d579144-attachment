@@ -1,0 +1,128 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-19.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('link', { name: 'CS-' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-19.spec.ts:16:49
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000HtrOUYAZ/view');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).click({
+   6 |     button: 'right'
+   7 |   });
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).click({
+   10 |     button: 'right'
+   11 |   });
+   12 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   13 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   14 |   await page.getByRole('tab', { name: 'Details' }).click();
+   15 |   await page.getByRole('tab', { name: 'Related' }).click();
+>  16 |   await page.getByRole('link', { name: 'CS-' }).click();
+      |                                                 ^ Error: locator.click: Test timeout of 30000ms exceeded.
+   17 |   //await page.locator('#window').click();
+   18 |   await page.getByRole('tab', { name: 'Related' }).click();
+   19 |   await page.getByRole('link', { name: 'Delilah Kannon' }).click();
+   20 |   await page.getByLabel('Prospectives').getByRole('link', { name: 'Delilah Kannon' }).click();
+   21 |   await page.getByRole('tab', { name: 'Details' }).click();
+   22 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+   23 |   const linkElement = page.getByText('https://qa-ansel-platform.joinansel.com/enrollment/?token=tQr4J-R8E-elZ6l6PrZMrrtvBkrUVWleiRovtyMiVU7JQk0W7oDjZ-xSbVqZSpxSJBoCWh2yH4Cjhgyx6qKvJ0DX8B0M6iAAIGr_TX45jcwMN1Ezsdlr_Y5yt6zxHZBxzV8jQCYG7xPVXbrpZa6bWliEGUVwWTLWxKnxS8E9fWIhaw-q70yoYyzbpWpuzKEJoTluKeSyxS37Hq9z7V6-Yw4Bu9MN41bQAL79xM1qQE3aCLneE5HwxDchfJw5QXwHUj9J2JL2sncyyn3FoqaC_RzDCLXyUho5z9moRFT6UVlw06VkQUG2yXpAuiw9Gzw-fZ_80h1AvCosthcPXE9F9xRwsBXsz6Off4A4DJ_J7IPkKX9ZzF_zxhS5B5qz4MBRQyn5_-o3g_2MvKnMHXdi5urwAKFt1Ct7feBd_N0s3IuhsYGrtijio23-Jy7FmXHPoYPIFyfh8XumtabNnu_Ux98BeS3zbXOx1NWoMaIpiCqadseztiUAGcFd_diBr9qJVPVlIl8IqR2k7SHoU5ZLiH_ZRobesvbyHifOOUDD6Hw1MOR_kiz1LI44v4NpEmm-gO3pRQLRCiARyDmLd5mRRs6mO0oivEnyIDknVk0d5xWWxujVbHpOShKhROCAD4UjWx0v3CH3a0WlMRNPOQ5c0K61kLhdWY4MYMyaqMlTBFPo-ND6Dl7Mbq9Be0xmKr9aNglmb3-HqUkbHcxMg1mpxmJcEWScGX6IHYqtQuotU3djM2wH4qJkA8ZW2Jz71Afx-ETb6Hvj_S-lP3Dx9boOto_kPb8kV4JysO7S_NxDNH93DfdKXsNpjDp72YJa-e87SzNYAjph6QoEyuhFojp-ihLtz_Non6Ja5Ioxzaq1J2-m-qDPxOhzpElXZUw4aantGqrVletbqM-uyVxIk7xPlJO86ep47FlegCzp5IMIEvnCN4hfoYau9shy0pY_4H4POiIXPOJ94M9s-G69PwN5sv2DotW2S8Q3dwLsghpQ-gJiyI_tNGQh1DeGKy648OaXb_sgCxs0OREEnLNc9Du6Se2XqwR1GERNIr6BVe-3xMRLpBNaWgw5yLu_9Il62vopmYTrweDTKTdqnzsQQPl5nJEtJwKTLvRG_bzFGNSLMvByrbKuhL6vKZIyMy02zL-8y9TH3XtTWxoE1qfzfBZo_TfB5VcDb5bUVFR14t-LDMShizqQOnRiHaX29IfPJ9Xtf-GMW6gtb6SGURrNdLQ6UfyXdYbZbnqMJeM7dgDbJRXzmPRipzJfjaGdglw4Kf4-HJole-GRrhqxKpfbN6-uP7bNKsBZBN1MwIz9d6CedMQ-gWJS-VJFF_tLqz8YZV56Z40c02RF5fEWNHNyuJWKh0pfj4sTmtuYxOXebrE_KR0=');
+   24 |
+   25 |   if (await linkElement.isVisible()) {
+   26 |       const linkText = await linkElement.innerText();
+   27 |       await page.goto(linkText, { waitUntil: 'domcontentloaded' });
+   28 |   } else {
+   29 |       console.log('⚠️ Link not found, trying alternative methods...');
+   30 |
+   31 |       await page.getByRole('button', { name: 'Get The Link' }).click();
+   32 |       // Shadow DOM Handling
+   33 |       const shadowLink = await page.evaluate(() => {
+   34 |           const shadowHost = document.querySelector('#sectionContent-174');
+   35 |           return shadowHost?.shadowRoot?.querySelector('a')?.getAttribute('href') ?? null;
+   36 |       });
+   37 |
+   38 |       if (shadowLink) {
+   39 |           await page.goto(shadowLink, { waitUntil: 'domcontentloaded' });
+   40 |       } else {
+   41 |           console.log('⚠️ Trying XPath method...');
+   42 |           const xpathLink = page.locator('//a[contains(text(), "https://qa-aig-platform.joinansel.com/enrollment")]');
+   43 |           if (await xpathLink.isVisible()) {
+   44 |               await xpathLink.click({ force: true });
+   45 |           } else {
+   46 |               console.log('❌ Could not find the enrollment link.');
+   47 |           }
+   48 |       }
+   49 |   }
+   50 |
+   51 |   /*await page.locator('#input-1927').dblclick();
+   52 |
+   53 |    await page1.getByRole('button', { name: 'Next step' }).click();
+   54 |   await page1.getByRole('textbox', { name: 'MM/DD/YYYY' }).click({
+   55 |     button: 'right'
+   56 |   });
+   57 |   await page1.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill('11/12/1978');
+   58 |   await page1.getByRole('textbox', { name: 'XXX-XX-XXXX' }).click();
+   59 |   await page1.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill('672-06-1075');
+   60 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   61 |   await page1.goto('https://qa-ansel-platform.joinansel.com/enrollment/learnAboutCoverage');
+   62 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   63 |   await page1.getByText('No', { exact: true }).click();
+   64 |   await page1.getByText('I\'m not a parent').click();
+   65 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   66 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   67 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   68 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   69 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   70 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   71 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   72 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   73 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   74 |   await page1.getByRole('link', { name: 'Skip this' }).click();
+   75 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   76 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   77 |   await page1.getByRole('listbox').filter({ hasText: 'FemaleMale' }).click();
+   78 |   await page1.getByRole('option', { name: 'Female' }).locator('span').click();
+   79 |   await page1.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).click();
+   80 |   await page1.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('(234) 545-678  ');
+   81 |   await page1.getByRole('listbox').filter({ hasText: 'MobileStandard' }).click();
+   82 |   await page1.getByRole('option', { name: 'Mobile' }).locator('span').click();
+   83 |   await page1.locator('input[name="SET_CITY"]').click();
+   84 |   await page1.locator('input[name="SET_CITY"]').fill('Miami');
+   85 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   86 |   await page1.locator('input[name="SET_STREET_ADDRESS"]').click();
+   87 |   await page1.locator('input[name="SET_STREET_ADDRESS"]').fill('Ocean view');
+   88 |   await page1.locator('input[name="SET_ZIP_CODE"]').click();
+   89 |   await page1.locator('input[name="SET_ZIP_CODE"]').fill('45600');
+   90 |   await page1.getByRole('button', { name: 'Next step' }).click();
+   91 |   await page1.locator('input[name="password"]').click();
+   92 |   await page1.locator('input[name="password"]').fill('Demo123456');
+   93 |   await page1.locator('input[name="confirmPassword"]').click();
+   94 |   await page1.locator('input[name="confirmPassword"]').fill('Demo123456');
+   95 |   page1.once('dialog', dialog => {
+   96 |     console.log(`Dialog message: ${dialog.message()}`);
+   97 |     dialog.dismiss().catch(() => {});
+   98 |   });
+   99 |   const page2Promise = page1.waitForEvent('popup');
+  100 |   await page1.getByText('I accept the Terms and Privacy').click();
+  101 |   const page2 = await page2Promise; */
+  102 | });
+```

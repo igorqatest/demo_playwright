@@ -1,0 +1,141 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping link extraction and flow with fresh start
+- Location: /Users/pejin/Documents/Playwright QA/tests/shopping_ansel.spec.ts:86:5
+
+# Error details
+
+```
+Error: locator.isChecked: Test timeout of 120000ms exceeded.
+Call log:
+  - waiting for getByRole('radio', { name: 'No' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/shopping_ansel.spec.ts:166:25
+```
+
+# Test source
+
+```ts
+   66 |   const value = await textArea.inputValue();
+   67 |   console.log('📋 Raw extracted value:', value);
+   68 |   expect(value).toMatch(/^https:\/\/.+/);
+   69 | }).toPass({ timeout: 10000 });
+   70 |
+   71 | // Extract and log
+   72 | const link = await textArea.inputValue();
+   73 | console.log(`🔗 Extracted standalone link: ${link}`);
+   74 |
+   75 | // Navigate to the link
+   76 | try {
+   77 |   await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+   78 |   console.log('🚀 Navigated to extracted link successfully!');
+   79 | } catch (err) {
+   80 |   console.error('❌ Failed to navigate to extracted link:', err);
+   81 | }
+   82 | }); */
+   83 |
+   84 | import { test, expect } from '@playwright/test';
+   85 |
+   86 | test('Shopping link extraction and flow with fresh start', async ({ page, context }) => {
+   87 |   test.setTimeout(120_000);
+   88 |   console.log('🚀 Starting test...');
+   89 |
+   90 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   91 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   92 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   93 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   94 |   console.log('✅ Logged into Salesforce');
+   95 |
+   96 |   await page.getByRole('tab', { name: 'Related' }).click();
+   97 |   console.log('📂 Opened Related tab');
+   98 |
+   99 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+  100 |
+  101 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+  102 |   await page.waitForTimeout(2000);
+  103 |   await csLink.click();
+  104 |   console.log('🔗 Clicked CS- link');
+  105 |
+  106 |   await page.waitForTimeout(1000);
+  107 |   await page.getByRole('tab', { name: 'Related' }).click();
+  108 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+  109 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  110 |
+  111 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+  112 |   await firstNameLink.click({ force: true });
+  113 |   console.log('✅ Opened first prospective record');
+  114 |
+  115 |   await page.waitForTimeout(1000);
+  116 |   await page.getByRole('tab', { name: 'Details' }).click();
+  117 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 100);
+  118 |
+  119 |   // Extract SSN
+  120 |   const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+  121 |   const ssn = await ssnElement.innerText();
+  122 |   console.log(`🔐 Extracted SSN: ${ssn}`);
+  123 |
+  124 |   // Extract and format DOB
+  125 |   const dobElement = page.locator('lightning-formatted-text')
+  126 |     .locator('xpath=../../..')
+  127 |     .filter({ hasText: 'Date of Birth' })
+  128 |     .locator('lightning-formatted-text');
+  129 |
+  130 |   const dobRaw = await dobElement.innerText();
+  131 |   let [month, day, year] = dobRaw.split('/');
+  132 |   month = month.padStart(2, '0');
+  133 |   day = day.padStart(2, '0');
+  134 |   const dob = `${month}/${day}/${year}`;
+  135 |   console.log(`🎂 Extracted and formatted DOB: ${dob}`);
+  136 |
+  137 |   // Click Get The Link
+  138 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  139 |   console.log('🎯 Clicked "Get The Link"');
+  140 |
+  141 |   const validTextarea = page.locator('textarea').filter({ hasText: /^https:\/\/.+/ }).first();
+  142 |   await expect(validTextarea).toBeVisible({ timeout: 10000 });
+  143 |
+  144 |   const shoppingLink = await validTextarea.inputValue();
+  145 |   console.log(`🔗 Extracted shopping link: ${shoppingLink}`);
+  146 |
+  147 |   // Open in a new tab (ensures fresh state and skips remembering old flow)
+  148 |   const newPage = await context.newPage();
+  149 |   await newPage.goto(shoppingLink, { waitUntil: 'domcontentloaded' });
+  150 |   console.log('🆕 Navigated to shopping link in new tab');
+  151 |
+  152 |   // Proceed with verify step
+  153 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  154 |   console.log('🔐 Verification started');
+  155 |
+  156 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  157 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  158 |
+  159 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  160 |   console.log('🔓 Verification passed');
+  161 |
+  162 |   // Select "No" for married, and "I'm not a parent"
+  163 |   const marriedNo = newPage.getByRole('radio', { name: 'No' });
+  164 |   const parentNone = newPage.getByRole('radio', { name: "I'm not a parent" });
+  165 |
+> 166 |   if (!(await marriedNo.isChecked())) await marriedNo.click();
+      |                         ^ Error: locator.isChecked: Test timeout of 120000ms exceeded.
+  167 |   if (!(await parentNone.isChecked())) await parentNone.click();
+  168 |   console.log('✅ Marital and parental status set');
+  169 |
+  170 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  171 |   console.log('➡️ Moved to next page after questions');
+  172 |
+  173 |   // Optionally: continue remaining steps as needed with logs
+  174 |   // Example:
+  175 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  176 |   console.log('📦 Continued onboarding flow');
+  177 |
+  178 |   // Done!
+  179 |   console.log('✅ Flow completed to this point.');
+  180 | });
+```

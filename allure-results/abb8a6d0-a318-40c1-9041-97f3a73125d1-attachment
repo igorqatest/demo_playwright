@@ -1,0 +1,48 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByText('Sign in') resolved to 3 elements:
+    1) <h1>Sign in to GitHub</h1> aka getByRole('heading', { name: 'Sign in to GitHub' })
+    2) <input type="submit" name="commit" value="Sign in" development="false" disable-emu-sso="false" data-signin-label="Sign in" data-disable-with="Signing in…" class="btn btn-primary btn-block js-sign-in-button" data-sso-label="Sign in with your identity provider"/> aka getByRole('button', { name: 'Sign in' })
+    3) <span class="Button-label">Sign in with a passkey</span> aka getByText('Sign in with a passkey')
+
+Call log:
+  - waiting for getByText('Sign in')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:15:35
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/');
+   5 |   
+   6 |   //await page.getByText('Sign up').first().click();  // works
+   7 |   //await page.locator('header').getByText('Sign up').click(); // works
+   8 |   //await page.getByText('Sign up').nth(1).click(); // works
+   9 |   //await page.locator('a.HeaderMenu-link--sign-in').click(); // works
+  10 |   await page.locator('a.HeaderMenu-link.HeaderMenu-link--sign-in').click(); // works
+  11 |   //await page.getByText('Sign in with a passkey').click(); // works
+  12 |   //await page.locator('span').getByText('Sign in with a passkey').click(); // works
+  13 |   //await page.getByRole('button', { name: 'Sign in with a passkey' }).click(); // works
+  14 |   //await page.locator('button:has-text("Sign in with a passkey")').click();
+> 15 |   await page.getByText('Sign in').click();
+     |                                   ^ Error: locator.click: Error: strict mode violation: getByText('Sign in') resolved to 3 elements:
+  16 |   await page.getByLabel('Homepage', { exact: true}).click();
+  17 |
+  18 | });
+```

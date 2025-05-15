@@ -1,0 +1,9 @@
+🧭 Logged into Salesforce
+📂 Opened Related tab
+🔗 Clicked CS- link successfully!
+✅ Clicked first name in list
+🔐 SSN: 692-74-5197
+🎂 DOB: 04/08/1984
+🔗 Clicked "Get The Link"
+🧪 Found textarea value: 
+🧪 Found textarea value: 

@@ -1,0 +1,122 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: My first test
+- Location: /Users/pejin/Documents/Playwright new/tests/claim_symetra.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Next step' })
+
+    at /Users/pejin/Documents/Playwright new/tests/claim_symetra.spec.ts:45:57
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { config } from './reusable.ts';
+   3 |
+   4 | test('My first test', async ({ page }) => {
+   5 |   console.log('✅ Navigating to Member Portal...');
+   6 |   await page.goto(config.urlMemberSymetra, { waitUntil: 'domcontentloaded' });
+   7 |
+   8 |   console.log('✅ Filling in Login form...');
+   9 |   const emailInput = page.getByRole('textbox', { name: 'Enter your email' });
+  10 |   await emailInput.type(config.userMemberSymetra, { delay: 10 });
+  11 |
+  12 |   const passwordInput = page.locator('input[name="password"]');
+  13 |   await passwordInput.type(config.passwordMemberSymetra, { delay: 10 });
+  14 |
+  15 |   await page.getByRole('button', { name: 'Sign in' }).click();
+  16 |
+  17 |   console.log('✅ Waiting for Dashboard to load...');
+  18 |   await page.waitForTimeout(15000); // Adjust the timeout as needed
+  19 |
+  20 |
+  21 | // 1. Click the "File new claim" button
+  22 | await page.getByRole('button', { name: 'File new claim' }).click();
+  23 |
+  24 | // 2. Locate all visible options (generic locator inside the dropdown)
+  25 | const claimOptions = page.locator('.menu .item, [role="menuitem"]'); // adjust based on your HTML structure
+  26 |
+  27 | // 3. Wait for options to be available
+  28 | await claimOptions.first().waitFor();
+  29 |
+  30 | // 4. Count how many options are shown
+  31 | const optionCount = await claimOptions.count();
+  32 | console.log(`🔎 Found ${optionCount} member options.`);
+  33 |
+  34 | // 5. Click based on how many options
+  35 | if (optionCount > 1) {
+  36 |   console.log('➡️ Clicking SECOND member option...');
+  37 |   await claimOptions.nth(1).click(); // second option (index 1)
+  38 | } else if (optionCount === 1) {
+  39 |   console.log('➡️ Only one member, clicking FIRST...');
+  40 |   await claimOptions.first().click();
+  41 | } else {
+  42 |   throw new Error('❌ No member options available to click.');
+  43 | }
+  44 |
+> 45 |   await page.getByRole('button', { name: 'Next step' }).click();
+     |                                                         ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  46 |
+  47 |   await page.locator('textarea[name="symptoms"]').fill('test');
+  48 |   await page.locator('textarea[name="providerDiagnosis"]').fill('test');
+  49 |   await page.locator('textarea[name="treatment"]').fill('test');
+  50 |   await page.locator('textarea[name="additionalInfo"]').fill('test');
+  51 |   await page.waitForTimeout(1000);
+  52 |   await page.getByRole('button', { name: 'Next step' }).click();
+  53 |
+  54 |
+  55 |   await page.getByText('Emergency room').click();
+  56 |   for (let i = 0; i < 10; i++) {
+  57 |     await page.mouse.wheel(0, 200);
+  58 |     await page.waitForTimeout(100);
+  59 |   }
+  60 | // 1. Type into the hospital field
+  61 | await page.locator('input.prompt').fill('Hospital');
+  62 |
+  63 | // 2. Wait for the suggestions to appear
+  64 | await page.waitForSelector('.results.visible .result');
+  65 |
+  66 | // 3. Click the first suggestion
+  67 | await page.locator('.results.visible .result').first().click();
+  68 |
+  69 | console.log('✅ Successfully clicked the first hospital!');
+  70 | //Tell us where you were treated
+  71 | await page.getByRole('button', { name: 'Next step' }).click();
+  72 | //Let´s prepare your documents
+  73 | await page.getByRole('button', { name: 'Next step' }).click();
+  74 | // Upload your pictures
+  75 | await page.getByRole('button', { name: 'Next step' }).click();
+  76 | // Confirm uploads
+  77 | await page.getByRole('button', { name: 'Next step' }).click();
+  78 | // Payment preference
+  79 | await page.getByRole('button', { name: '+Add payment method' }).click();
+  80 | await page.getByRole('row', { name: 'PayPal payout method Configure' }).getByRole('button').click();
+  81 | await page.locator('input[name="username"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  82 | await page.locator('input[name="confirmUsername"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  83 | await page.getByRole('button', { name: 'Submit' }).click();
+  84 | await page.waitForTimeout(4000);
+  85 | await page.getByRole('button', { name: 'Next step' }).click();
+  86 |
+  87 | for (let i = 0; i < 10; i++) {
+  88 |     await page.mouse.wheel(0, 400);
+  89 |     await page.waitForTimeout(100);
+  90 |   }
+  91 |  await page.locator('label').first().click();
+  92 |  await page.getByRole('button', { name: 'Submit' }).click();
+  93 |
+  94 |  await page.getByRole('button', { name: 'All done' }).click();
+  95 |  
+  96 | });
+```

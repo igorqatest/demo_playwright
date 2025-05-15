@@ -1,0 +1,29 @@
+🌐 Navigating to Roster Member record...
+🔐 Logging into Salesforce...
+⏳ Waiting for content...
+⚠️ Roster Member Name: No value
+⚠️ First Name: No value
+⚠️ Middle Name: No value
+⚠️ Last Name: No value
+⚠️ Gender: No value
+⚠️ Date of Birth: No value
+⚠️ SocialSecurityNumber: No value
+⚠️ Email: No value
+⚠️ Phone: No value
+⚠️ Mobile Phone: No value
+⚠️ Test: No value
+⚠️ Status: No value
+⚠️ Role: No value
+⚠️ Age: No value
+⚠️ Street: No value
+⚠️ City: No value
+⚠️ Postal Code: No value
+⚠️ State: No value
+⚠️ Country: No value
+⚠️ Do Not Call: No value
+⚠️ Strategic Partner Name: No value
+⚠️ Concierge: No value
+⚠️ Owner: No value
+⚠️ Created By: No value
+⚠️ Last Modified By: No value
+✅ Extraction complete!

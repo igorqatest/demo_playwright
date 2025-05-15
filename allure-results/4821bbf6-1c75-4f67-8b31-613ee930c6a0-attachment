@@ -1,0 +1,58 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByText('Sign in').first()
+    - locator resolved to <a href="/login" data-hydro-click-hmac="1ac0bd316eb4ecff0fd1f338bc397cea8b5025ce78fffb7ade6ffdd600360286" data-analytics-event="{"category":"Marketing nav","action":"click to Sign in","label":"ref_page:Marketing;ref_cta:Sign in;ref_loc:Header"}" class="HeaderMenu-link HeaderMenu-button d-inline-flex d-lg-none flex-order-1 f5 no-underline border color-border-default rounded-2 px-2 py-1 color-fg-inherit js-prevent-focus-on-mobile-nav" data-hydro-click="{"event_type":"authentication.click","payload"…>↵            Sign in↵          </a>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    10 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-27.spec.ts:6:43
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/');
+   5 |   
+>  6 |   await page.getByText('Sign in').first().click();  // works
+     |                                           ^ Error: locator.click: Target page, context or browser has been closed
+   7 |   //await page.locator('header').getByText('Sign up').click(); // works
+   8 |   //await page.getByText('Sign up').nth(1).click(); // works
+   9 |   //await page.locator('a.HeaderMenu-link--sign-in').click(); // works
+  10 |   // works
+  11 |   //await page.getByText('Sign in with a passkey').click(); // works
+  12 |   //await page.locator('span').getByText('Sign in with a passkey').click(); // works
+  13 |   //await page.getByRole('button', { name: 'Sign in with a passkey' }).click(); // works
+  14 |   //await page.locator('button:has-text("Sign in with a passkey")').click();
+  15 |   await page.getByText('Sign in').click();
+  16 |   await page.getByLabel('Homepage', { exact: true}).click();
+  17 |
+  18 | });
+```

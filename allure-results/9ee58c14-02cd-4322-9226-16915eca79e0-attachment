@@ -1,0 +1,117 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-18.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'New Account Contact Relation' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-18.spec.ts:49:78
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |     console.log('🚀 Starting the test');
+   5 |
+   6 |     // Navigate to Salesforce login page
+   7 |     console.log('🔍 Navigating to Salesforce login page...');
+   8 |     await page.goto('https://brella--qa.sandbox.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fbrella--qa.sandbox.lightning.force.com%252Flightning%252Fo%252FAccount%252Flist%253FfilterName%253D__Recent');
+   9 |     console.log('✅ Reached Salesforce login page.');
+  10 |
+  11 |     // Login process
+  12 |     console.log('🔐 Entering login credentials...');
+  13 |     await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  14 |     await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  15 |     await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  16 |     console.log('✅ Logged in successfully.');
+  17 |
+  18 |     // Navigate to Contacts
+  19 |     console.log('📂 Opening Contacts...');
+  20 |     await page.getByRole('link', { name: 'Contacts' }).click();
+  21 |     
+  22 |     // Click New Contact
+  23 |     console.log('➕ Creating a new contact...');
+  24 |     await page.getByRole('button', { name: 'New' }).click();
+  25 |     await page.getByRole('button', { name: 'Next' }).click();
+  26 |
+  27 |     // Fill contact details
+  28 |     console.log('📝 Filling out contact details...');
+  29 |     await page.getByRole('textbox', { name: 'First Name' }).fill('Contact');
+  30 |     await page.waitForTimeout(1000);
+  31 |     await page.getByRole('textbox', { name: '*Last Name' }).fill('Test');
+  32 |     await page.waitForTimeout(1000);
+  33 |     await page.getByRole('textbox', { name: 'Email' }).fill('igor.pejin+contacttest3@joinansel.com');
+  34 |
+  35 |     // Select Strategic Partner
+  36 |     console.log('🏢 Selecting Strategic Partner...');
+  37 |     await page.getByRole('combobox', { name: 'Strategic Partner Name' }).click();
+  38 |     await page.waitForTimeout(1000);
+  39 |     await page.getByRole('option', { name: 'Symetra' }).locator('span').nth(1).click();
+  40 |     
+  41 |     // Save Contact
+  42 |     console.log('💾 Saving Contact...');
+  43 |     await page.getByRole('button', { name: 'Save', exact: true }).click();
+  44 |     await page.waitForTimeout(1000);
+  45 |     console.log('✅ Contact saved successfully.');
+  46 |
+  47 |     // Create New Account Contact Relation
+  48 |     console.log('🔗 Creating a New Account Contact Relation...');
+> 49 |     await page.getByRole('button', { name: 'New Account Contact Relation' }).click();
+     |                                                                              ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  50 |     await page.getByRole('combobox', { name: 'Account *' }).click();
+  51 |     await page.getByRole('combobox', { name: 'Account *' }).fill('symetra');
+  52 |     await page.getByText('"symetra" in Accounts').click();
+  53 |     await page.getByRole('link', { name: 'Symetra', exact: true }).click();
+  54 |
+  55 |     // Select Role
+  56 |     console.log('🛠 Selecting Role...');
+  57 |     await page.locator('dl').filter({ hasText: 'Role*--None--' }).getByRole('combobox').click();
+  58 |     await page.getByRole('option', { name: 'Sales Team' }).click();
+  59 |
+  60 |     // Save the relation
+  61 |     console.log('💾 Saving Account Contact Relation...');
+  62 |     await page.getByRole('button', { name: 'Save' }).click();
+  63 |     console.log('✅ Account Contact Relation saved.');
+  64 |
+  65 |     // Refresh Page
+  66 |     console.log('🔄 Refreshing the page...');
+  67 |     await page.getByTitle('Indicates refresh action').click();
+  68 |     console.log('✅ Page refreshed successfully.');
+  69 |
+  70 |     // Select newly created account contact relation
+  71 |     console.log('📂 Opening Account Contact Relation...');
+  72 |     await page.getByText('Test C. - Sales Team, Symetra', { exact: true }).click();
+  73 |     await page.waitForLoadState('domcontentloaded');
+  74 |
+  75 |     // Provide Portal Access
+  76 |     console.log('🔐 Attempting to Provide Portal Access...');
+  77 |     await page.waitForSelector('button:text("Provide Portal Access")', { timeout: 10000 });
+  78 |     await page.getByRole('button', { name: 'Provide Portal Access' }).click();
+  79 |     console.log('✅ Portal access provided.');
+  80 |
+  81 |     // Confirm Action in Modal (Uncomment if needed)
+  82 |     /*
+  83 |     console.log('🛑 Waiting for confirmation modal...');
+  84 |     await page.waitForSelector('button:text("Confirm")', { timeout: 10000 });
+  85 |     console.log('✅ Modal detected. Clicking Confirm...');
+  86 |     await page.getByRole('button', { name: 'Confirm' }).click();
+  87 |     console.log('✅ Confirmed Portal Access.');
+  88 |     */
+  89 |
+  90 |     console.log('🎯 Test Completed Successfully.');
+  91 | });
+```

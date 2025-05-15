@@ -1,0 +1,7 @@
+✅ It is visible!
+✅ It is editable!
+✅ It is enabled!
+✅ Placeholder is correct
+✅ It has "Search" placeholder!
+✅ It has "playwright by testers" value!
+✅ It is not empty!

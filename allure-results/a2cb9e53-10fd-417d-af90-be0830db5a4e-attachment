@@ -1,0 +1,89 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.inputValue: Error: strict mode violation: locator('textarea') resolved to 3 elements:
+    1) <textarea readonly id="input-208" part="textarea" lwc-2c0jakuf71q="" class="slds-textarea"></textarea> aka locator('#input-208')
+    2) <textarea readonly part="textarea" id="input-1317" lwc-2c0jakuf71q="" class="slds-textarea"></textarea> aka locator('#input-1317')
+    3) <textarea readonly part="textarea" id="input-1740" lwc-2c0jakuf71q="" aria-invalid="false" class="slds-textarea">https://qa-ansel-platform.joinansel.com/enrollmen…</textarea> aka getByText('https://qa-ansel-platform.')
+
+Call log:
+  - waiting for locator('textarea')
+
+
+Call Log:
+- Timeout 10000ms exceeded while waiting on the predicate
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:49:6
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   7 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   8 |
+   9 |   console.log('🧭 Logged in and navigating to Contract page');
+  10 |
+  11 |   // Click Related tab
+  12 |   await page.getByRole('tab', { name: 'Related' }).click();
+  13 |   console.log('📂 Opened Related tab');
+  14 |
+  15 |   // Manually scroll the page to the bottom (or a large Y value)
+  16 |   for (let i = 0; i < 10; i++) {
+  17 |     await page.mouse.wheel(0, 30);
+  18 |   }
+  19 |
+  20 |   // Click the CS- link
+  21 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+  22 |   await csLink.click();
+  23 |   console.log('🔗 Clicked CS- link');
+  24 |
+  25 |   // Wait and click Related tab again
+  26 |   await page.waitForTimeout(1000);
+  27 |   await page.getByRole('tab', { name: 'Related' }).click();
+  28 |
+  29 |   
+  30 |   // Scroll down again
+  31 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+  32 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+  33 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+  34 |
+  35 | await firstNameLink.click({ force: true });
+  36 |
+  37 | console.log('✅ Clicked on the first name link in the list');
+  38 |   await page.getByRole('tab', { name: 'Details' }).click();
+  39 |   await page.locator('lightning-formatted-text').filter({ hasText: '692-74-5197' })
+  40 |   await page.locator('lightning-formatted-text').filter({ hasText: '4/8/1984' })
+  41 |
+  42 |   console.log('🧭 Navigating to contract page and clicking "Get The Link"...');
+  43 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+  44 |
+  45 |   const textArea = page.locator('textarea');
+  46 |   await expect(async () => {
+  47 |     const value = await textArea.inputValue();
+  48 |     expect(value).toMatch(/^https:\/\/.+/);
+> 49 |   }).toPass({ timeout: 10000 });
+     |      ^ Error: locator.inputValue: Error: strict mode violation: locator('textarea') resolved to 3 elements:
+  50 |
+  51 |   const link = await textArea.inputValue();
+  52 |   console.log(`✅ Shopping link extracted: ${link}`);
+  53 |
+  54 |   console.log('🌐 Opening shopping link...');
+  55 |   await page.goto(link, { waitUntil: 'domcontentloaded' });
+  56 | });
+```

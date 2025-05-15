@@ -1,0 +1,1061 @@
+🧭 Logged in and navigating to Contract page
+📂 Opened Related tab
+🔗 Clicked CS- link
+✅ Clicked on the first name link in the list
+🔐 SSN: 692-74-5197
+🎂 DOB: 04/08/1984
+🎯 Clicked "Get The Link"
+📝 Found textarea: 
+📝 Found textarea: 
+📄 Found span: Sfdclogo
+📄 Found span: ×Sorry to interrupt
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Open menu item submenu
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Sandbox: qa |
+📄 Found span: Brella Sales
+📄 Found span: Add favorite
+Favorites list
+Global Actions
+Guidance Center
+Salesforce Help
+Setup
+Notifications
+View profile
+📄 Found span: Brella Sales
+📄 Found span: 
+📄 Found span: Add favorite
+📄 Found span: 20
+📄 Found span: 
+📄 Found span: Favorites list
+📄 Found span: 
+📄 Found span: Global Actions
+📄 Found span: Global Actions
+📄 Found span: 
+📄 Found span: Guidance Center
+📄 Found span: 
+📄 Found span: Salesforce Help
+📄 Found span: 
+📄 Found span: Setup
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Notifications
+📄 Found span: View profile
+📄 Found span: 
+📄 Found span: 
+📄 Found span: View profile
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: App Launcher
+📄 Found span: Brella Sales
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Accounts
+📄 Found span: 
+📄 Found span: Accounts List
+📄 Found span: Contacts
+📄 Found span: 
+📄 Found span: Contacts List
+📄 Found span: Quotes: Ansel
+📄 Found span: | NW
+📄 Found span: | Sym
+📄 Found span: | Voya
+📄 Found span: | AIG
+📄 Found span: | Ren
+📄 Found span: Contracts: Ansel
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Curt Bogisich | Prospective
+📄 Found span: 
+📄 Found span: Curt Bogisich | Prospective List
+📄 Found span: 
+📄 Found span: Close tab
+📄 Found span: More
+📄 Found span: 
+📄 Found span: Show more navigation items
+📄 Found span: Edit nav items
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show more actions
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Open Kub, Dicki and Rosenbaum Preview
+📄 Found span: Open Kub, Dicki and Rosenbaum Preview
+📄 Found span: stage complete
+📄 Found span: stage complete
+📄 Found span: stage complete
+📄 Found span: Draft
+📄 Found span: 
+📄 Found span: In Approval Process
+📄 Found span: 
+📄 Found span: Finalized
+📄 Found span: 
+📄 Found span: Active
+📄 Found span: 
+📄 Found span: Expired
+📄 Found span: 
+📄 Found span: Terminated
+📄 Found span: 
+📄 Found span: Voided
+📄 Found span: 
+📄 Found span: Do not use
+📄 Found span: 
+📄 Found span: Mark Status as Complete
+📄 Found span: Tabs
+📄 Found span: 
+📄 Found span: Navigation ModeAction Mode
+📄 Found span: Navigation Mode
+📄 Found span: Action Mode
+📄 Found span: Sort by:Roster Member NameSorted: None
+📄 Found span: Sort by:
+📄 Found span: Roster Member Name
+📄 Found span: Sorted: None
+📄 Found span: Sort by:Date of HireSorted: None
+📄 Found span: Sort by:
+📄 Found span: Date of Hire
+📄 Found span: Sorted: None
+📄 Found span: Sort by:Termination DateSorted: None
+📄 Found span: Sort by:
+📄 Found span: Termination Date
+📄 Found span: Sorted: None
+📄 Found span: Sort by:ClassSorted: None
+📄 Found span: Sort by:
+📄 Found span: Class
+📄 Found span: Sorted: None
+📄 Found span: Sort by:AssetSorted: None
+📄 Found span: Sort by:
+📄 Found span: Asset
+📄 Found span: Sorted: None
+📄 Found span: Pansy Boehm
+📄 Found span: Aug 12, 2020
+📄 Found span: 
+📄 Found span: Class A
+📄 Found span: 
+📄 Found span: Kamryn Boehm
+📄 Found span: May 4, 2023
+📄 Found span: 
+📄 Found span: Class A
+📄 Found span: 
+📄 Found span: Curt Bogisich
+📄 Found span: Oct 21, 2022
+📄 Found span: 
+📄 Found span: Class A
+📄 Found span: 
+📄 Found span: Hulda Douglas
+📄 Found span: Mar 18, 2020
+📄 Found span: 
+📄 Found span: Class A
+📄 Found span: 
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Oct 23, 2018
+📄 Found span: 
+📄 Found span: Class A
+📄 Found span: 
+📄 Found span: Mittie Kris
+📄 Found span: Aug 7, 2019
+📄 Found span: 
+📄 Found span: Class A
+📄 Found span: 
+📄 Found span: Indicates Case
+📄 Found span: Indicates Case
+📄 Found span: Annual Open Enrollment Events (0)
+📄 Found span: Indicates Case
+📄 Found span: Indicates Case
+📄 Found span: QLE Enrollment Events (0)
+📄 Found span: 
+📄 Found span: Admin Changes
+📄 Found span: (0)
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Notes & Attachments
+📄 Found span: (0)
+📄 Found span: Drop Files
+📄 Found span: 
+📄 Found span: Drop Files
+📄 Found span: 
+📄 Found span: Upload Files
+📄 Found span: Or drop files
+📄 Found span: 
+📄 Found span: Census
+📄 Found span: (1)
+📄 Found span: Navigation ModeAction Mode
+📄 Found span: Navigation Mode
+📄 Found span: Action Mode
+📄 Found span: Census Name
+📄 Found span: Census Name
+📄 Found span: 
+📄 Found span: 
+📄 Found span: CS-30440Open CS-30440 PreviewOpen CS-30440 Preview
+📄 Found span: CS-30440
+📄 Found span: CS-30440
+📄 Found span: CS-30440
+📄 Found span: Open CS-30440 Preview
+📄 Found span: Open CS-30440 Preview
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: View AllCensus
+📄 Found span: Census
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Contract History
+📄 Found span: (3)
+📄 Found span: Navigation ModeAction Mode
+📄 Found span: Navigation Mode
+📄 Found span: Action Mode
+📄 Found span: Date
+📄 Found span: Date
+📄 Found span: Field
+📄 Found span: Field
+📄 Found span: User
+📄 Found span: User
+📄 Found span: Original Value
+📄 Found span: Original Value
+📄 Found span: New Value
+📄 Found span: New Value
+📄 Found span: 4/13/2025, 5:31 AM
+📄 Found span: 4/13/2025, 5:31 AM
+📄 Found span: Contract in Approval.
+📄 Found span: Contract in Approval.
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 4/13/2025, 5:31 AM
+📄 Found span: 4/13/2025, 5:31 AM
+📄 Found span: Status
+📄 Found span: Status
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Draft
+📄 Found span: In Approval Process
+📄 Found span: 4/12/2025, 4:20 PM
+📄 Found span: 4/12/2025, 4:20 PM
+📄 Found span: Created.
+📄 Found span: Created.
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: 
+📄 Found span: 
+📄 Found span: View AllContract History
+📄 Found span: Contract History
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Navigation ModeAction Mode
+📄 Found span: Navigation Mode
+📄 Found span: Action Mode
+📄 Found span: Task Name
+📄 Found span: Task Name
+📄 Found span: Status
+📄 Found span: Status
+📄 Found span: Date Time Uploaded
+📄 Found span: Date Time Uploaded
+📄 Found span: File Name
+📄 Found span: File Name
+📄 Found span: Tabs
+📄 Found span: Filters: All time • All activities • All types
+📄 Found span: Timeline Settings
+📄 Found span: •
+📄 Found span: •
+📄 Found span: No activities to show. Get started by sending an email, scheduling a task, and more.
+📄 Found span: No past activity. Past meetings and tasks marked as done show up here.
+📄 Found span: Generate Implementation Link
+📄 Found span: 
+📄 Found span: Show more actions
+📄 Found span: Tabs
+📄 Found span: 
+📄 Found span: Prospectives
+📄 Found span: (6+)
+📄 Found span: 
+📄 Found span: Curt Bogisich
+📄 Found span: Curt Bogisich
+📄 Found span: Curt Bogisich
+📄 Found span: Open Curt Bogisich Preview
+📄 Found span: Open Curt Bogisich Preview
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Open Diego Kerluke-Schmitt Preview
+📄 Found span: Open Diego Kerluke-Schmitt Preview
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: Hulda Douglas
+📄 Found span: Hulda Douglas
+📄 Found span: Hulda Douglas
+📄 Found span: Open Hulda Douglas Preview
+📄 Found span: Open Hulda Douglas Preview
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: Kamryn Boehm
+📄 Found span: Kamryn Boehm
+📄 Found span: Kamryn Boehm
+📄 Found span: Open Kamryn Boehm Preview
+📄 Found span: Open Kamryn Boehm Preview
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: Mallory Murray
+📄 Found span: Mallory Murray
+📄 Found span: Mallory Murray
+📄 Found span: Open Mallory Murray Preview
+📄 Found span: Open Mallory Murray Preview
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: Mittie Kris
+📄 Found span: Mittie Kris
+📄 Found span: Mittie Kris
+📄 Found span: Open Mittie Kris Preview
+📄 Found span: Open Mittie Kris Preview
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: View AllProspectives
+📄 Found span: Prospectives
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Contacts
+📄 Found span: (1)
+📄 Found span: 
+📄 Found span: Amir Schmidt
+📄 Found span: Amir Schmidt
+📄 Found span: Amir Schmidt
+📄 Found span: Open Amir Schmidt Preview
+📄 Found span: Open Amir Schmidt Preview
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Show Actions
+📄 Found span: View AllContacts
+📄 Found span: Contacts
+📄 Found span: 
+📄 Found span: Census Name
+📄 Found span: CS-30440
+📄 Found span: IsActive
+📄 Found span: IsActive
+📄 Found span: IsActive
+📄 Found span: 
+📄 Found span: IsActive
+📄 Found span: 
+📄 Found span: Edit IsActive
+📄 Found span: ContractId
+📄 Found span: 00011166Open 00011166 PreviewOpen 00011166 Preview
+📄 Found span: 00011166
+📄 Found span: 00011166
+📄 Found span: 00011166
+📄 Found span: Open 00011166 Preview
+📄 Found span: Open 00011166 Preview
+📄 Found span: 
+📄 Found span: Edit ContractId
+📄 Found span: Agency Employer Relationship
+📄 Found span: Kub, Dicki and RosenbaumOpen Kub, Dicki and Rosenbaum PreviewOpen Kub, Dicki and Rosenbaum Preview
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Kub, Dicki and Rosenbaum
+📄 Found span: Open Kub, Dicki and Rosenbaum Preview
+📄 Found span: Open Kub, Dicki and Rosenbaum Preview
+📄 Found span: 
+📄 Found span: Edit Agency Employer Relationship
+📄 Found span: Strategic Partner Name
+📄 Found span: Brella
+📄 Found span: 
+📄 Found span: Edit Strategic Partner Name
+📄 Found span: Created By
+📄 Found span: Partner BrellaOpen Partner Brella PreviewOpen Partner Brella Preview, 4/13/2025, 7:53 AM
+📄 Found span: 
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Open Partner Brella Preview
+📄 Found span: Open Partner Brella Preview
+📄 Found span: ,
+📄 Found span: Last Modified By
+📄 Found span: Partner BrellaOpen Partner Brella PreviewOpen Partner Brella Preview, 4/13/2025, 7:53 AM
+📄 Found span: 
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Open Partner Brella Preview
+📄 Found span: Open Partner Brella Preview
+📄 Found span: ,
+📄 Found span: 
+📄 Found span: 9 items • Sorted by Name • Updated a few seconds ago
+📄 Found span: 9 items • Sorted by Name •
+📄 Found span: Updated a few seconds ago
+📄 Found span: List View Controls
+📄 Found span: Refresh
+📄 Found span: Refresh
+📄 Found span: Sort by multiple columns
+📄 Found span: Sort by multiple columns
+📄 Found span: Show quick filters
+📄 Found span: Show quick filters
+📄 Found span: Navigation ModeAction Mode
+📄 Found span: Navigation Mode
+📄 Found span: Action Mode
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Choose a Row
+📄 Found span: Select All
+📄 Found span: 
+📄 Found span: Select All
+📄 Found span: Sort by:NameSorted AscendingShow Name column actions
+📄 Found span: Sort by:
+📄 Found span: Name
+📄 Found span: Sorted Ascending
+📄 Found span: Show Name column actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Sort by:CompanySorted: NoneShow Company column actions
+📄 Found span: Sort by:
+📄 Found span: Company
+📄 Found span: Sorted: None
+📄 Found span: Show Company column actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Sort by:PhoneSorted: NoneShow Phone column actions
+📄 Found span: Sort by:
+📄 Found span: Phone
+📄 Found span: Sorted: None
+📄 Found span: Show Phone column actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 1
+📄 Found span: 
+📄 Found span: Select Item 1
+📄 Found span: Curt BogisichOpen Curt Bogisich PreviewOpen Curt Bogisich Preview
+📄 Found span: Curt Bogisich
+📄 Found span: Curt Bogisich
+📄 Found span: Curt Bogisich
+📄 Found span: Open Curt Bogisich Preview
+📄 Found span: Open Curt Bogisich Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 2
+📄 Found span: 
+📄 Found span: Select Item 2
+📄 Found span: Diego Kerluke-SchmittOpen Diego Kerluke-Schmitt PreviewOpen Diego Kerluke-Schmitt Preview
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Diego Kerluke-Schmitt
+📄 Found span: Open Diego Kerluke-Schmitt Preview
+📄 Found span: Open Diego Kerluke-Schmitt Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 3
+📄 Found span: 
+📄 Found span: Select Item 3
+📄 Found span: Hulda DouglasOpen Hulda Douglas PreviewOpen Hulda Douglas Preview
+📄 Found span: Hulda Douglas
+📄 Found span: Hulda Douglas
+📄 Found span: Hulda Douglas
+📄 Found span: Open Hulda Douglas Preview
+📄 Found span: Open Hulda Douglas Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 4
+📄 Found span: 
+📄 Found span: Select Item 4
+📄 Found span: Kamryn BoehmOpen Kamryn Boehm PreviewOpen Kamryn Boehm Preview
+📄 Found span: Kamryn Boehm
+📄 Found span: Kamryn Boehm
+📄 Found span: Kamryn Boehm
+📄 Found span: Open Kamryn Boehm Preview
+📄 Found span: Open Kamryn Boehm Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 5
+📄 Found span: 
+📄 Found span: Select Item 5
+📄 Found span: Mallory MurrayOpen Mallory Murray PreviewOpen Mallory Murray Preview
+📄 Found span: Mallory Murray
+📄 Found span: Mallory Murray
+📄 Found span: Mallory Murray
+📄 Found span: Open Mallory Murray Preview
+📄 Found span: Open Mallory Murray Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 6
+📄 Found span: 
+📄 Found span: Select Item 6
+📄 Found span: Mittie KrisOpen Mittie Kris PreviewOpen Mittie Kris Preview
+📄 Found span: Mittie Kris
+📄 Found span: Mittie Kris
+📄 Found span: Mittie Kris
+📄 Found span: Open Mittie Kris Preview
+📄 Found span: Open Mittie Kris Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 7
+📄 Found span: 
+📄 Found span: Select Item 7
+📄 Found span: Pansy BoehmOpen Pansy Boehm PreviewOpen Pansy Boehm Preview
+📄 Found span: Pansy Boehm
+📄 Found span: Pansy Boehm
+📄 Found span: Pansy Boehm
+📄 Found span: Open Pansy Boehm Preview
+📄 Found span: Open Pansy Boehm Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 8
+📄 Found span: 
+📄 Found span: Select Item 8
+📄 Found span: Terrance OrtizOpen Terrance Ortiz PreviewOpen Terrance Ortiz Preview
+📄 Found span: Terrance Ortiz
+📄 Found span: Terrance Ortiz
+📄 Found span: Terrance Ortiz
+📄 Found span: Open Terrance Ortiz Preview
+📄 Found span: Open Terrance Ortiz Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Select Item 9
+📄 Found span: 
+📄 Found span: Select Item 9
+📄 Found span: Weston NolanOpen Weston Nolan PreviewOpen Weston Nolan Preview
+📄 Found span: Weston Nolan
+📄 Found span: Weston Nolan
+📄 Found span: Weston Nolan
+📄 Found span: Open Weston Nolan Preview
+📄 Found span: Open Weston Nolan Preview
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Show Actions
+📄 Found span: Show Actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Follow
+📄 Found span: 
+📄 Found span: Follow
+📄 Found span: 
+📄 Found span: 
+📄 Found span: stage complete
+📄 Found span: stage complete
+📄 Found span: stage complete
+📄 Found span: Unqualified
+📄 Found span: 
+📄 Found span: New
+📄 Found span: 
+📄 Found span: Working - Contacted
+📄 Found span: 
+📄 Found span: Nurturing - Contacted
+📄 Found span: 
+📄 Found span: Closed
+📄 Found span: 
+📄 Found span: Converted
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Mark Prospective Status as Complete
+📄 Found span: 
+📄 Found span: Email
+📄 Found span: Email
+📄 Found span: Email
+📄 Found span: More Email Actions
+📄 Found span: New Task
+📄 Found span: New Task
+📄 Found span: New Task
+📄 Found span: More New Task Actions
+📄 Found span: Log a Call
+📄 Found span: Log a Call
+📄 Found span: Log a Call
+📄 Found span: More Log a Call Actions
+📄 Found span: Filters: All time • All activities • All types
+📄 Found span: Timeline Settings
+📄 Found span: •
+📄 Found span: •
+📄 Found span: No activities to show. Get started by sending an email, scheduling a task, and more.
+📄 Found span: No past activity. Past meetings and tasks marked as done show up here.
+📄 Found span: Prospective Owner
+📄 Found span: Partner Brella
+Open Partner Brella Preview
+Open Partner Brella Preview
+Change Owner
+📄 Found span: Partner Brella
+Open Partner Brella Preview
+Open Partner Brella Preview
+📄 Found span: 
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Open Partner Brella Preview
+📄 Found span: Open Partner Brella Preview
+📄 Found span: Change Owner
+📄 Found span: Class
+📄 Found span: Class A
+Open Class A Preview
+Open Class A Preview
+📄 Found span: Class A
+📄 Found span: Class A
+📄 Found span: Class A
+📄 Found span: Open Class A Preview
+📄 Found span: Open Class A Preview
+📄 Found span: 
+📄 Found span: Edit Class
+📄 Found span: Roster Member
+📄 Found span: Curt Bogisich
+Open Curt Bogisich Preview
+Open Curt Bogisich Preview
+📄 Found span: Curt Bogisich
+📄 Found span: Curt Bogisich
+📄 Found span: Curt Bogisich
+📄 Found span: Open Curt Bogisich Preview
+📄 Found span: Open Curt Bogisich Preview
+📄 Found span: 
+📄 Found span: Edit Roster Member
+📄 Found span: Phone
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Phone
+📄 Found span: Name
+📄 Found span: Curt Bogisich
+📄 Found span: 
+📄 Found span: Edit Name
+📄 Found span: Do Not Call
+📄 Found span: Do Not Call
+📄 Found span: Do Not Call
+📄 Found span: 
+📄 Found span: Do Not Call
+📄 Found span: 
+📄 Found span: Edit Do Not Call
+📄 Found span: Title
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Title
+📄 Found span: Gender
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Gender
+📄 Found span: Prospective Source
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Prospective Source
+📄 Found span: Mobile
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Mobile
+📄 Found span: Delegate Notes
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Delegate Notes
+📄 Found span: Fax
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Fax
+📄 Found span: Test
+📄 Found span: Test
+📄 Found span: Test
+📄 Found span: 
+📄 Found span: Test
+📄 Found span: 
+📄 Found span: Edit Test
+📄 Found span: Email
+📄 Found span: breanne_white63@yahoo.com
+📄 Found span: 
+📄 Found span: Edit Email
+📄 Found span: Strategic Partner Name
+📄 Found span: Brella
+📄 Found span: 
+📄 Found span: Edit Strategic Partner Name
+📄 Found span: Website
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Website
+📄 Found span: Prospective Status
+📄 Found span: New
+📄 Found span: 
+📄 Found span: Edit Prospective Status
+📄 Found span: Rating
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Rating
+📄 Found span: No. of Employees
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit No. of Employees
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Enrollment
+📄 Found span: EnrollmentDeclined
+📄 Found span: EnrollmentDeclined
+📄 Found span: EnrollmentDeclined
+📄 Found span: 
+📄 Found span: EnrollmentDeclined
+📄 Found span: 
+📄 Found span: Edit EnrollmentDeclined
+📄 Found span: Date of Hire
+📄 Found span: 10/22/2022
+📄 Found span: 
+📄 Found span: Edit Date of Hire
+📄 Found span: Billing Group Field
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Billing Group Field
+📄 Found span: Date of Birth
+📄 Found span: 4/8/1984
+📄 Found span: 
+📄 Found span: Edit Date of Birth
+📄 Found span: Coverage Effective Date
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Coverage Effective Date
+📄 Found span: CensusId
+📄 Found span: CS-30440
+Open CS-30440 Preview
+Open CS-30440 Preview
+📄 Found span: CS-30440
+📄 Found span: CS-30440
+📄 Found span: CS-30440
+📄 Found span: Open CS-30440 Preview
+📄 Found span: Open CS-30440 Preview
+📄 Found span: 
+📄 Found span: Edit CensusId
+📄 Found span: Decline Coverage Explanation
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Decline Coverage Explanation
+📄 Found span: ContractId
+📄 Found span: 00011166
+Open 00011166 Preview
+Open 00011166 Preview
+📄 Found span: 00011166
+📄 Found span: 00011166
+📄 Found span: 00011166
+📄 Found span: Open 00011166 Preview
+📄 Found span: Open 00011166 Preview
+📄 Found span: 
+📄 Found span: Edit ContractId
+📄 Found span: Decline Coverage Reasons
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Decline Coverage Reasons
+📄 Found span: Concierge Id
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Concierge Id
+📄 Found span: Enrollment Period New Hires
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Enrollment Period New Hires
+📄 Found span: HasInteractedShoppingExperience
+📄 Found span: HasInteractedShoppingExperience
+📄 Found span: HasInteractedShoppingExperience
+📄 Found span: 
+📄 Found span: HasInteractedShoppingExperience
+📄 Found span: 
+📄 Found span: Edit HasInteractedShoppingExperience
+📄 Found span: ProducerNumber
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit ProducerNumber
+📄 Found span: Termination Date
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Termination Date
+📄 Found span: SocialSecurityNumber
+📄 Found span: 692-74-5197
+📄 Found span: 
+📄 Found span: Edit SocialSecurityNumber
+📄 Found span: Enrollment Received Date
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Enrollment Received Date
+📄 Found span: Termination Reason
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Termination Reason
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Email Notification
+📄 Found span: Brella FAQ TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Brella FAQ TimeStamp
+📄 Found span: Clicked On Invitation for OE TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Clicked On Invitation for OE TimeStamp
+📄 Found span: Invitation For OE Chase TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Invitation For OE Chase TimeStamp
+📄 Found span: Invitation for OE TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Invitation for OE TimeStamp
+📄 Found span: Last Chance Reminder TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Last Chance Reminder TimeStamp
+📄 Found span: OE Launch TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit OE Launch TimeStamp
+📄 Found span: Pre-OE Invitation TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Pre-OE Invitation TimeStamp
+📄 Found span: Seventy Two Hour Reminder Cold TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Seventy Two Hour Reminder Cold TimeStamp
+📄 Found span: Seventy Two Hour Reminder Warn TimeStamp
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Seventy Two Hour Reminder Warn TimeStamp
+📄 Found span: Unsubscribe
+📄 Found span: Unsubscribe
+📄 Found span: Unsubscribe
+📄 Found span: 
+📄 Found span: Unsubscribe
+📄 Found span: 
+📄 Found span: Edit Unsubscribe
+📄 Found span: Has Clicked Email
+📄 Found span: Has Clicked Email
+📄 Found span: Has Clicked Email
+📄 Found span: 
+📄 Found span: Has Clicked Email
+📄 Found span: 
+📄 Found span: Edit Has Clicked Email
+📄 Found span: Has Opened Email
+📄 Found span: Has Opened Email
+📄 Found span: Has Opened Email
+📄 Found span: 
+📄 Found span: Has Opened Email
+📄 Found span: 
+📄 Found span: Edit Has Opened Email
+📄 Found span: Is Email Bounced
+📄 Found span: Is Email Bounced
+📄 Found span: Is Email Bounced
+📄 Found span: 
+📄 Found span: Is Email Bounced
+📄 Found span: 
+📄 Found span: Edit Is Email Bounced
+📄 Found span: Address
+📄 Found span: Texas
+📄 Found span: 
+📄 Found span: Edit Address
+📄 Found span: Created By
+📄 Found span: Partner Brella
+Open Partner Brella Preview
+Open Partner Brella Preview
+, 4/13/2025, 7:53 AM
+📄 Found span: 
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Open Partner Brella Preview
+📄 Found span: Open Partner Brella Preview
+📄 Found span: ,
+📄 Found span: Last Modified By
+📄 Found span: Partner Brella
+Open Partner Brella Preview
+Open Partner Brella Preview
+, 4/13/2025, 7:53 AM
+📄 Found span: 
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Partner Brella
+📄 Found span: Open Partner Brella Preview
+📄 Found span: Open Partner Brella Preview
+📄 Found span: ,
+📄 Found span: Description
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Edit Description
+📄 Found span: Compliance
+📄 Found span: 
+📄 Found span: Descartes Visual Compliance Denied Party Screening
+📄 Found span: Follow-ups
+📄 Found span: Communications
+📄 Found span: Email
+📄 Found span: Email
+📄 Found span: Email
+📄 Found span: More Email Actions
+📄 Found span: New Task
+📄 Found span: New Task
+📄 Found span: New Task
+📄 Found span: More New Task Actions
+📄 Found span: Log a Call
+📄 Found span: Log a Call
+📄 Found span: Log a Call
+📄 Found span: More Log a Call Actions
+📄 Found span: Filters: All time • All activities • All types
+📄 Found span: Timeline Settings
+📄 Found span: •
+📄 Found span: •
+📄 Found span: No activities to show.
+Get started by sending an email, scheduling a task, and more.
+📄 Found span: No past activity. Past meetings and tasks marked as done show up here.
+📄 Found span: 
+📄 Found span: Merge record
+📄 Found span: Merge record
+📄 Found span: We found no potential duplicates of this Prospective.
+📄 Found span: 
+📄 Found span: Email Notification Summary Metrics
+📄 Found span: (0)
+📄 Found span: Show more actions
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Approval History
+📄 Found span: (0)
+📄 Found span: Show actions for Approval History
+📄 Found span: Show actions for Approval History
+📄 Found span: 
+📄 Found span: Cases
+📄 Found span: (0)
+📄 Found span: Show more actions
+📄 Found span: 
+📄 Found span: Generate Links
+📄 Found span: 
+📄 Found span: Select Link Type
+📄 Found span: 
+📄 Found span: Generate Enrollment Standalone Link
+📄 Found span: 
+📄 Found span: 
+📄 Found span: Loading...
+📄 Found span: 

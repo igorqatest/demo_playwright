@@ -1,0 +1,157 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: 📄 Extract General and Employment fields for Roster Member
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:125:5
+
+# Error details
+
+```
+Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('#field-section-content-387')
+
+    at extractFieldsFromSection (/Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:143:19)
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:169:9
+```
+
+# Test source
+
+```ts
+   43 |     'First Name',
+   44 |     'Last Name',
+   45 |     'Gender',
+   46 |     'Date of Birth',
+   47 |     'SocialSecurityNumber',
+   48 |     'Email',
+   49 |     'Phone',
+   50 |     'Mobile Phone',
+   51 |     'Status',
+   52 |     'Role',
+   53 |     'Age',
+   54 |     'Street',
+   55 |     'City',
+   56 |     'Postal Code',
+   57 |     'State',
+   58 |     'Strategic Partner Name',
+   59 |     'Owner'
+   60 |   ];
+   61 |
+   62 |   for (const label of fieldsToExtract) {
+   63 |     const field = page.locator(`div.slds-form-element__label:text-is("${label}")`).first();
+   64 |     const value = field.locator('xpath=..').locator('.slds-form-element__control span');
+   65 |
+   66 |     try {
+   67 |       const isVisible = await field.isVisible();
+   68 |       if (isVisible) {
+   69 |         const fieldValue = await value.textContent();
+   70 |         console.log(`✅ ${label}: ${fieldValue?.trim() || '[Empty]'}`);
+   71 |       } else {
+   72 |         console.warn(`⚠️ ${label} not visible.`);
+   73 |       }
+   74 |     } catch (err) {
+   75 |       console.error(`❌ Error extracting ${label}:`, err.message);
+   76 |     }
+   77 |   }
+   78 |
+   79 |   console.log('✅ Extraction complete!');
+   80 | }); */
+   81 |
+   82 | /* import { test, expect } from '@playwright/test';
+   83 |
+   84 | test('📄 Extract Roster Member Fields from record page', async ({ page }) => {
+   85 |   console.log('🌐 Navigating to Roster Member record...');
+   86 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+   87 |
+   88 |   console.log('🔐 Logging into Salesforce...');
+   89 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   90 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   91 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   92 |
+   93 |   console.log('⏳ Waiting for page to fully load...');
+   94 |   await page.waitForSelector('.test-id__field-label');
+   95 |   await page.waitForTimeout(2000);
+   96 |
+   97 |   const labelLocators = await page.locator('.test-id__field-label').all();
+   98 |
+   99 |   for (const label of labelLocators) {
+  100 |     try {
+  101 |       const labelText = (await label.textContent())?.trim() || '[No Label]';
+  102 |
+  103 |       // Go two levels up to get the full field container
+  104 |       const container = label.locator('xpath=../../..');
+  105 |       const valueLocator = container.locator('.test-id__field-value');
+  106 |
+  107 |       let valueText = '[No Value]';
+  108 |
+  109 |       const valueCount = await valueLocator.count();
+  110 |       if (valueCount > 0) {
+  111 |         valueText = (await valueLocator.first().textContent())?.trim() || '[No Value]';
+  112 |       }
+  113 |
+  114 |       console.log(`📄 ${labelText}: ${valueText}`);
+  115 |     } catch (err) {
+  116 |       console.error(`❌ Error extracting value:`, err);
+  117 |     }
+  118 |   }
+  119 |  
+  120 |    console.log('\n✅ Extraction complete!');
+  121 | }); */
+  122 |
+  123 | import { test, expect } from '@playwright/test';
+  124 |
+  125 | test('📄 Extract General and Employment fields for Roster Member', async ({ page }) => {
+  126 |   console.log('🌐 Navigating to Roster Member record...');
+  127 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Roster_Member__c/a9VQL000000AcDj2AK/view');
+  128 |
+  129 |   console.log('🔐 Logging into Salesforce...');
+  130 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  131 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  132 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  133 |   await page.waitForTimeout(4000); // wait for redirect
+  134 |
+  135 |   console.log('⏳ Waiting for content to load...');
+  136 |   await page.waitForSelector('.test-id__field-label');
+  137 |
+  138 |   // 📦 Helper to extract fields from a given container
+  139 |   async function extractFieldsFromSection(sectionName: string, sectionLocator: string) {
+  140 |     console.log(`\n🔍 Extracting fields from section: ${sectionName}...`);
+  141 |
+  142 |     const section = page.locator(sectionLocator);
+> 143 |     await section.scrollIntoViewIfNeeded();
+      |                   ^ Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+  144 |     await page.waitForTimeout(500);
+  145 |
+  146 |     const labelEls = section.locator('.test-id__field-label');
+  147 |     const count = await labelEls.count();
+  148 |
+  149 |     if (count === 0) {
+  150 |       console.log(`⚠️ No fields found in section: ${sectionName}`);
+  151 |       return;
+  152 |     }
+  153 |
+  154 |     for (let i = 0; i < count; i++) {
+  155 |       const label = labelEls.nth(i);
+  156 |       const labelText = (await label.textContent())?.trim() || '[No Label]';
+  157 |       const container = label.locator('xpath=../../..');
+  158 |       const valueLocator = container.locator('.test-id__field-value');
+  159 |       const valueText = (await valueLocator.first().textContent())?.trim() || '[No Value]';
+  160 |
+  161 |       console.log(`📄 ${labelText}: ${valueText}`);
+  162 |     }
+  163 |   }
+  164 |
+  165 |   // ✅ General section
+  166 |   await extractFieldsFromSection('General Info', 'div[role="main"]');
+  167 |
+  168 |   // ✅ Employment section
+  169 |   await extractFieldsFromSection('Employment Info', '#field-section-content-387');
+  170 |
+  171 |   console.log('\n✅ All field extraction complete!');
+  172 | });
+```

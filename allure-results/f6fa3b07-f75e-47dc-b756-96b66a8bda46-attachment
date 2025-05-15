@@ -1,0 +1,67 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: YouTube search for "Playwright by testers"
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:14:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('link', { name: /Playwright by Testers Talk/i })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-2.spec.ts:35:19
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect} from '@playwright/test';
+   2 | test ( 'testing', async ({ page})=>{
+   3 |     await page.goto('https://www.youtube.com/');
+   4 |    await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+   5 |    await page.getByRole('combobox', { name: 'Search' }).fill('playwright by testers');
+   6 |    await page.waitForTimeout(500);
+   7 |    await page.getByRole('combobox', { name: 'Search' }).press('Enter');
+   8 |    await page.getByRole('link', { name: 'Playwright by Testers Talk☑️' }).click();
+   9 | });
+  10 |  */
+  11 |
+  12 | import { test, expect } from '@playwright/test';
+  13 |
+  14 | test('YouTube search for "Playwright by testers"', async ({ page }) => {
+  15 |   // Navigate to YouTube
+  16 |   await page.goto('https://www.youtube.com/');
+  17 |
+  18 |   // Handle cookie rejection if visible
+  19 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  20 |   if (await rejectCookies.isVisible()) {
+  21 |     await rejectCookies.click();
+  22 |     console.log('🛑 Rejected cookies');
+  23 |   }
+  24 |
+  25 |   // Interact with the search input
+  26 |   const searchInput = page.getByRole('combobox', { name: /Search/i });
+  27 |   await searchInput.waitFor({ state: 'visible' }); // smart wait
+  28 |   await searchInput.fill('playwright by testers');
+  29 |   await searchInput.press('Enter');
+  30 |   await page.waitForTimeout(500);
+  31 |  
+  32 |
+  33 |   // Wait for the desired video link to appear
+  34 |   const videoLink = page.getByRole('link', { name: /Playwright by Testers Talk/i });
+> 35 |   await videoLink.click();
+     |                   ^ Error: locator.click: Target page, context or browser has been closed
+  36 |   console.log('▶️ Video clicked');
+  37 |
+  38 |   // Optional: Assert video page loaded
+  39 |   await expect(page).toHaveURL(/watch/);
+  40 |   await expect(page.locator('h1')).toContainText('Playwright');
+  41 | });
+```

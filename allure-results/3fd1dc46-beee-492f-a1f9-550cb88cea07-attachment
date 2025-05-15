@@ -1,0 +1,182 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping flow with fresh start each time
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 120000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Next step' })
+    - locator resolved to <button disabled tabindex="-1" class="ui loading primary disabled button">Next step</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    13 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+    - waiting for element to be visible, enabled and stable
+  - element was detached from the DOM, retrying
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-38.spec.ts:111:60
+```
+
+# Test source
+
+```ts
+   11 |
+   12 |   await page.getByRole('tab', { name: 'Related' }).click();
+   13 |   console.log('📂 Opened Related tab');
+   14 |
+   15 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 30);
+   16 |
+   17 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+   18 |
+   19 | // Wait for visibility and stability
+   20 | await expect(csLink).toBeEnabled();
+   21 | await csLink.scrollIntoViewIfNeeded();
+   22 | await page.waitForTimeout(500); // Allow any animation to finish
+   23 |
+   24 | // Optional: check if page is loading (add logic if spinner is used in your app)
+   25 | // await expect(page.locator('.your-loading-spinner')).toHaveCount(0);
+   26 |
+   27 | // Try clicking with a retry fallback
+   28 | try {
+   29 |   await csLink.click({ timeout: 5000 });
+   30 |   console.log('🔗 Clicked CS- link successfully!');
+   31 | } catch (error) {
+   32 |   console.warn('⚠️ CS- link not clickable on first try. Retrying with force...');
+   33 |   await csLink.click({ force: true });
+   34 |   console.log('✅ Forced click on CS- link as fallback');
+   35 | }
+   36 |   await page.waitForTimeout(1000);
+   37 |   await page.getByRole('tab', { name: 'Related' }).click();
+   38 |
+   39 |   await page.getByRole('link', { name: 'Prospectives (6+)' }).click();
+   40 |   await page.getByRole('heading', { name: 'Prospectives' }).click();
+   41 |
+   42 |   const firstNameLink = page.locator('a.slds-truncate >> visible=true').first();
+   43 |   await firstNameLink.click({ force: true });
+   44 |   console.log('✅ Clicked first name in list');
+   45 |
+   46 |   await page.getByRole('tab', { name: 'Details' }).click();
+   47 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 100);
+   48 |
+   49 |   // Extract SSN
+   50 |   const ssnElement = page.locator('lightning-formatted-text').filter({ hasText: /^\d{3}-\d{2}-\d{4}$/ }).first();
+   51 |   const ssn = await ssnElement.innerText();
+   52 |   console.log(`🔐 SSN: ${ssn}`);
+   53 |
+   54 |   // Extract and format DOB
+   55 |   const dobElement = page.locator('lightning-formatted-text')
+   56 |     .locator('xpath=../../..')
+   57 |     .filter({ hasText: 'Date of Birth' })
+   58 |     .locator('lightning-formatted-text');
+   59 |
+   60 |   const dobRaw = await dobElement.innerText();
+   61 |   let [month, day, year] = dobRaw.split('/');
+   62 |   month = month.padStart(2, '0');
+   63 |   day = day.padStart(2, '0');
+   64 |   const dob = `${month}/${day}/${year}`;
+   65 |   console.log(`🎂 DOB: ${dob}`);
+   66 |
+   67 |   // Get the shopping link
+   68 |   await page.getByRole('button', { name: 'Get The Link' }).click();
+   69 |   console.log('🔗 Clicked "Get The Link"');
+   70 |
+   71 |   const validTextarea = page.locator('textarea').filter({ hasText: /^https:\/\/.+/ }).first();  
+   72 |   // 💬 Grab all textareas and find the one with the valid link
+   73 | // 🔁 Try to find valid link from textareas with retries
+   74 | let link = '';
+   75 | for (let i = 0; i < 10; i++) {
+   76 |   const textareas = await page.locator('textarea').all();
+   77 |   for (const ta of textareas) {
+   78 |     const val = (await ta.inputValue()).trim();
+   79 |     console.log(`🧪 Found textarea value: ${val}`);
+   80 |     if (val.includes('https://qa-ansel-platform.joinansel.com/enrollment')) {
+   81 |       link = val;
+   82 |       break;
+   83 |     }
+   84 |   }
+   85 |
+   86 |   if (link) break;
+   87 |   console.log('⏳ Link not found yet, waiting 1s before retry...');
+   88 |   await page.waitForTimeout(1000);
+   89 | }
+   90 |
+   91 | if (!link) {
+   92 |   throw new Error('❌ No valid shopping link found in any <textarea>.');
+   93 | }
+   94 |
+   95 | console.log(`✅ Final extracted shopping link: ${link}`);
+   96 |
+   97 | // 🌐 Open it in a new tab
+   98 | const newPage = await page.context().newPage();
+   99 | await newPage.goto(link, { waitUntil: 'domcontentloaded' });
+  100 | console.log('🚀 Navigated to standalone enrollment page');
+  101 |
+  102 |   // 3. Verification
+  103 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  104 |   console.log('📄 On Verification page');
+  105 |
+  106 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+  107 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+  108 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  109 |   console.log('✅ Verification submitted');
+  110 |
+> 111 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+      |                                                            ^ Error: locator.click: Test timeout of 120000ms exceeded.
+  112 |
+  113 |   // 4. Additional questions
+  114 |   await newPage.getByRole('radio', { name: 'No' }).click();
+  115 |   await newPage.getByText('I\'m not a parent').click();
+  116 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  117 |   console.log('👪 Household questions answered');
+  118 |
+  119 |   // 5. Progress through steps
+  120 |   for (let i = 1; i <= 8; i++) {
+  121 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+  122 |     console.log(`➡️ Page ${i + 2} complete`);
+  123 |   }
+  124 |
+  125 |   await newPage.getByRole('link', { name: 'Skip this' }).click();
+  126 |   console.log('🕵️‍♂️ Skipped optional promo');
+  127 |
+  128 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  129 |   await newPage.waitForTimeout(1000);
+  130 |   await newPage.getByRole('listbox').filter({ hasText: 'FemaleMale' }).click();
+  131 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  132 |   await newPage.getByRole('listbox').filter({ hasText: 'MobileStandard' }).click();
+  133 |
+  134 |   await newPage.locator('input[name="SET_STREET_ADDRESS"]').fill('123 Main St');
+  135 |   await newPage.locator('input[name="SET_ZIP_CODE"]').fill('12345');
+  136 |   await newPage.locator('input[name="SET_CITY"]').fill('Sample City');
+  137 |
+  138 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  139 |   console.log('📬 Contact info filled');
+  140 |
+  141 |   await newPage.locator('input[name="password"]').fill('Demo123456');
+  142 |   await newPage.locator('input[name="confirmPassword"]').fill('Demo123456');
+  143 |   await newPage.evaluate(() => {
+  144 |     const checkbox = document.querySelector('input[name="agreeToTerms"]');
+  145 |     if (checkbox) checkbox.removeAttribute('readonly');
+  146 |     (checkbox as HTMLInputElement).click();
+  147 |   });
+  148 |
+  149 |   console.log('🔐 Final step reached and password set.');
+  150 | });
+```

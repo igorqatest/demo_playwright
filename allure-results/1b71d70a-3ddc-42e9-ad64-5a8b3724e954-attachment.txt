@@ -1,0 +1,33 @@
+🌐 Navigating to Roster Member record...
+🔐 Logging into Salesforce...
+⏳ Waiting for page content...
+
+🔍 Found 25 fields. Extracting values...
+
+📄 Contact Owner: Igor PejinOpen Igor Pejin PreviewOpen Igor Pejin PreviewChange Owner
+📄 Phone: (123) 456-7890
+📄 Name: Mr. John Doe
+📄 Home Phone: (321) 654-0987
+📄 Account Name: [No Value]
+📄 Mobile: (111) 222-3333
+📄 Title: QA Engineer
+📄 Other Phone: (444) 555-6666
+📄 Department: Quality Assurance
+📄 Fax: (777) 888-9999
+📄 Birthdate: 01. 01. 1990.
+📄 Email: john.doe@example.com
+📄 Reports To: [No Value]
+📄 Assistant: Jane Smith
+📄 Lead Source: Web
+📄 Asst. Phone: (101) 202-3030
+📄 Website URL: Playwright Official
+📄 URL Name: https://playwright.dev
+📄 Mailing Address: [No Value]
+📄 Other Address: [No Value]
+📄 Languages: [No Value]
+📄 Level: [No Value]
+📄 Created By: Igor PejinOpen Igor Pejin PreviewOpen Igor Pejin Preview, 03. 04. 2025. 10:58
+📄 Last Modified By: Igor PejinOpen Igor Pejin PreviewOpen Igor Pejin Preview, 03. 04. 2025. 10:58
+📄 Description: [No Value]
+
+✅ Extraction complete!

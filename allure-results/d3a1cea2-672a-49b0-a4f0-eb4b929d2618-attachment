@@ -1,0 +1,121 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Submit proposal form with dynamic data
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:5:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveValue(expected)
+
+Locator: locator('input[name="enrollmentStartDate"]')
+Expected string: "04/12/2025"
+Received: <element(s) not found>
+Call log:
+  - expect.toHaveValue with timeout 5000ms
+  - waiting for locator('input[name="enrollmentStartDate"]')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:78:67
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import { format } from 'date-fns';
+   4 |
+   5 | test('Submit proposal form with dynamic data', async ({ page }) => {
+   6 |   // 1. Go to Salesforce Quote page
+   7 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTen0AG/view');
+   8 |
+   9 |   // 2. Login
+  10 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  11 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  12 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  13 |
+  14 |   // 3. Click Details tab and wait
+  15 |   await page.getByRole('tab', { name: 'Details' }).click();
+  16 |   await page.waitForTimeout(500);
+  17 |
+  18 |   // 4. Scroll to and click the Proposal Link
+  19 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  20 |   await proposalLink.scrollIntoViewIfNeeded();
+  21 |
+  22 |   // 5. Open new tab safely
+  23 |   const [newPage] = await Promise.all([
+  24 |     page.context().waitForEvent('page'),
+  25 |     proposalLink.click(),
+  26 |   ]);
+  27 |
+  28 |   await newPage.waitForLoadState();
+  29 |
+  30 |   // 6. Scroll to and click acceptance radio
+  31 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+  32 |   await newPage.getByText('Yes, I accept this proposal').click();
+  33 |
+  34 |   // 7. Generate dynamic personal data
+  35 |   const firstName = faker.person.firstName();
+  36 |   const lastName = faker.person.lastName();
+  37 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  38 |
+  39 |   const ackFirstName = faker.person.firstName();
+  40 |   const ackLastName = faker.person.lastName();
+  41 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  42 |
+  43 |  
+  44 |
+  45 |   // 9. Fill proposal contact form
+  46 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  47 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  48 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  49 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  50 |
+  51 |   // 10. Select platform type
+  52 |   await newPage.getByText('Ansel enrollment platform').click();
+  53 |
+  54 |   const today = format(new Date(), 'MM/dd/yyyy');
+  55 |   const threeWeeksLater = format(new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), 'MM/dd/yyyy');
+  56 |
+  57 |   // 🔥 Directly set the value of start date
+  58 |   await page.evaluate((date) => {
+  59 |     const input = document.querySelector('input[name="enrollmentStartDate"]') as HTMLInputElement;
+  60 |     if (input) {
+  61 |       input.value = date;
+  62 |       input.dispatchEvent(new Event('input', { bubbles: true }));
+  63 |       input.dispatchEvent(new Event('change', { bubbles: true }));
+  64 |     }
+  65 |   }, today);
+  66 |
+  67 |   // 🔥 Directly set the value of end date
+  68 |   await page.evaluate((date) => {
+  69 |     const input = document.querySelector('input[name="enrollmentEndDate"]') as HTMLInputElement;
+  70 |     if (input) {
+  71 |       input.value = date;
+  72 |       input.dispatchEvent(new Event('input', { bubbles: true }));
+  73 |       input.dispatchEvent(new Event('change', { bubbles: true }));
+  74 |     }
+  75 |   }, threeWeeksLater);
+  76 |
+  77 |   // ✅ Optional check
+> 78 |   await expect(page.locator('input[name="enrollmentStartDate"]')).toHaveValue(today);
+     |                                                                   ^ Error: Timed out 5000ms waiting for expect(locator).toHaveValue(expected)
+  79 |   await expect(page.locator('input[name="enrollmentEndDate"]')).toHaveValue(threeWeeksLater);
+  80 |
+  81 |   // 12. Fill acknowledgment section
+  82 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  83 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  84 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  85 |
+  86 |   // 13. Agree and finalize
+  87 |   await newPage.getByText('By checking this box, I agree').click();
+  88 |
+  89 |   // ✅ At this point, form is filled — you can optionally click "Submit" if required.
+  90 | });
+```

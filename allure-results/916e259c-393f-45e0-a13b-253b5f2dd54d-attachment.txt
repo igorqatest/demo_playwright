@@ -1,0 +1,9 @@
+🌐 Navigating to Roster Member record...
+🔐 Logging into Salesforce...
+⏳ Waiting for content...
+
+📁 Scanning section: Main Info
+
+📁 Scanning section: Employment Info
+
+✅ Data extraction complete!

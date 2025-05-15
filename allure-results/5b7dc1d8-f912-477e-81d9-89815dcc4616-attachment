@@ -1,0 +1,89 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Verify all fields and buttons are present in Contacts list view
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search') resolved to 2 elements:
+    1) <input part="input" id="input-66" type="search" lwc-enmikoh2qu="" class="slds-input" name="Contact-search-input" aria-label="Search this list..." placeholder="Search this list..." aria-describedby="listviewSearchTooltip-55 help-message-66"/> aka getByRole('searchbox', { name: 'Search this list...' })
+    2) <input part="input" type="search" id="input-117" maxlength="100" lwc-enmikoh2qu="" class="slds-input" autocomplete="off" aria-describedby="help-message-117" aria-controls="suggestionsList-112" placeholder="Search Contacts and more..."/> aka getByRole('searchbox', { name: 'Search Contacts and more' })
+
+Call log:
+  - waiting for getByPlaceholder('Search')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-33.spec.ts:44:41
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('Verify all fields and buttons are present in Contacts list view', async ({ page }) => {
+   4 |   // Go to your Salesforce Contacts page
+   5 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD'); // <-- Replace with actual URL
+   6 |
+   7 |   console.log('Filling in username...');
+   8 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   9 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  10 |
+  11 |   console.log('Clicking Log In...');
+  12 |   await page.getByRole('button', { name: 'Log In' }).click();
+  13 |   // Wait for the page to load
+  14 |   await page.waitForLoadState('domcontentloaded');
+  15 |  await page.waitForTimeout(500);
+  16 |   // 🔍 Table column headers
+  17 |   await expect(page.getByRole('button', { name: 'Sort Name' })).toBeVisible();
+  18 |   await expect(page.getByRole('button', { name: 'Sort Account Name' })).toBeVisible();
+  19 |   await expect(page.getByRole('button', { name: 'Sort Title' })).toBeVisible();
+  20 |   await expect(page.getByRole('button', { name: 'Sort Phone' })).toBeVisible();
+  21 |   await expect(page.getByRole('button', { name: 'Sort Email' })).toBeVisible();
+  22 |   await expect(page.getByRole('button', { name: 'Sort Contact Owner Alias' })).toBeVisible();
+  23 |   await expect(page.getByRole('button', { name: 'Refresh Refresh' })).toBeVisible();
+  24 |   await expect(page.getByRole('button', { name: 'Edit List' })).toBeVisible();
+  25 |  
+  26 |
+  27 |
+  28 |   // 🔘 Top action buttons
+  29 |   await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
+  30 |   await expect(page.getByRole('button', { name: 'Intelligence View' })).toBeVisible();
+  31 |   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
+  32 |   await expect(page.getByRole('button', { name: 'Add to Campaign' })).toBeVisible();
+  33 |   await expect(page.getByRole('button', { name: 'Send List Email' })).toBeVisible();
+  34 |
+  35 |   // 🔍 Search box (inside "Search this list...")
+  36 |   await expect(page.getByPlaceholder('Search this list...')).toBeVisible();
+  37 |
+  38 |   // 🛠️ List action icons (grid, filters, etc.)
+  39 |   await expect(page.locator('button[title="List View Controls"]')).toBeVisible(); // gear icon
+  40 |   await expect(page.getByRole('button', { name: 'Select list display' })).toBeVisible(); // funnel/dropdown
+  41 |   
+  42 |
+  43 |   await page.getByRole('button', { name: 'Search' }).click();
+> 44 |   await page.getByPlaceholder('Search').fill('Contacts');
+     |                                         ^ Error: locator.fill: Error: strict mode violation: getByPlaceholder('Search') resolved to 2 elements:
+  45 |   
+  46 |
+  47 |
+  48 |   console.log('Navigating to John Bond contact record...');
+  49 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  50 |   
+  51 |
+  52 |
+  53 |   console.log('Navigating to John Bond contact record...');
+  54 |   await page.getByRole('link', { name: 'John Bond' }).click();
+  55 |
+  56 |   console.log('Switching to Details tab...');
+  57 |   await page.getByRole('tab', { name: 'Details' }).click();
+  58 |
+  59 |   console.log('✅ All fields and buttons are present!');
+  60 | });
+```

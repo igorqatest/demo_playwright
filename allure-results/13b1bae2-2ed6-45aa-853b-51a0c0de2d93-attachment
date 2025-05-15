@@ -1,0 +1,72 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-29.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.evaluate: Error: strict mode violation: locator('.repo-language-color') resolved to 2 elements:
+    1) <span class="repo-language-color"></span> aka getByRole('paragraph').filter({ hasText: 'HTML 11' }).locator('span').nth(1)
+    2) <span class="repo-language-color"></span> aka getByRole('paragraph').filter({ hasText: 'HTML 4' }).locator('span').nth(1)
+
+Call log:
+  - waiting for locator('.repo-language-color')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-29.spec.ts:34:32
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://github.com/camrobert/SalesforceMarketingCloud/tree/main/SQL/Introduction%20to%20SQL');
+   5 |   await page.waitForTimeout(1000);
+   6 |   //await page.getByRole('link', { name: 'camrobert'}).click();
+   7 |   await page.locator('#repository-container-header').getByRole('link', { name: 'camrobert' }).click();
+   8 |   await page.waitForTimeout(1000);
+   9 |   await page.getByRole('link', { name: 'Repositories' }).click();
+  10 |   //await page.getByAltText("View camrobert's full-sized avatar").click();
+  11 |   await page.getByRole('link', { name: 'SalesforceMarketingCloud' })
+  12 |   
+  13 |   const link = page.getByRole('link', { name: 'SalesforceMarketingCloud' });
+  14 |
+  15 | // Wait for the element to be visible
+  16 | await expect(link).toBeVisible();
+  17 |
+  18 | const color = await link.evaluate(el => getComputedStyle(el).color);
+  19 | console.log('🎨 RGB:', color);
+  20 | const hex = color.replace(/[^\d,]/g, '')  // remove non-digits and non-commas
+  21 |   .split(',')                             // split into R, G, B
+  22 |   .slice(0, 3)                            // just take RGB (ignore alpha)
+  23 |   .map(x => (+x).toString(16).padStart(2, '0'))  // convert to hex
+  24 |   .join('')
+  25 |   .toUpperCase();
+  26 |
+  27 | console.log('🔷 HEX:', `#${hex}`);
+  28 | expect(`#${hex}`).toBe('#0969DA'); // adjust HEX if needed
+  29 |
+  30 | /* const link1 = await page.getByRole('listitem').filter({ hasText: 'SFMC-with-me Public Resources' }).locator('span').nth(3);
+  31 | const color1 = await link1.evaluate(el => getComputedStyle(el).color);
+  32 | console.log('🎨 RGB:', color1); */
+  33 | const colorDot = await page.locator('.repo-language-color');
+> 34 | const bgColor = await colorDot.evaluate(el => el.style.backgroundColor);
+     |                                ^ Error: locator.evaluate: Error: strict mode violation: locator('.repo-language-color') resolved to 2 elements:
+  35 | console.log('🎨 Background color (inline style):', bgColor);
+  36 |
+  37 | // Optional: Assert if needed
+  38 | expect(bgColor).toBe('rgb(227, 76, 38)'); // or use hex if you convert
+  39 |
+  40 |   
+  41 | });
+  42 |
+  43 |
+```

@@ -1,0 +1,27 @@
+⚠️ Failed to click "Sign up": locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByText('').first()
+    - locator resolved to <a href="#start-of-content" data-skip-target-assigned="false" class="px-2 py-4 color-bg-accent-emphasis color-fg-on-emphasis show-on-focus js-skip-to-content">Skip to content</a>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <span data-view-component="true" class="progress-pjax-loader Progress position-fixed width-full">…</span> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <span data-view-component="true" class="progress-pjax-loader Progress position-fixed width-full">…</span> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    30 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <span data-view-component="true" class="progress-pjax-loader Progress position-fixed width-full">…</span> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+

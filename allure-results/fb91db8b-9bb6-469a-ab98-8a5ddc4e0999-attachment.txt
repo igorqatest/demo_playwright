@@ -1,0 +1,8 @@
+🚀 Starting test...
+✅ Logged into Salesforce
+📂 Opened Related tab
+🔗 Clicked CS- link
+✅ Opened first prospective record
+🔐 Extracted SSN: 846-45-7519
+🎂 Extracted and formatted DOB: 11/11/1967
+🎯 Clicked "Get The Link"

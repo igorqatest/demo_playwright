@@ -1,0 +1,14 @@
+✅ It is visible!
+✅ It is editable!
+✅ It is enabled!
+✅ Placeholder is correct
+✅ It has "Search" placeholder!
+✅ It has "playwright by testers" value!
+✅ It is not empty!
+🔍 Found 2 matching links
+🎬 Title: Playwright Tutorial Full Course 2024 | Playwright Testing Tutorial
+🔍 Matching links: 2
+✅ Video title is visible!
+✅ Clicked "Sign in" button
+✅ Clicked "Sign up" button
+✅ Test passed

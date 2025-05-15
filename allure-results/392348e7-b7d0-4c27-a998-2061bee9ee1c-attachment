@@ -1,0 +1,41 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: locator('span').filter({ hasText: 'trenutci užasa' }) resolved to 2 elements:
+    1) <span class="subtitle" data-cms2-content-element="subTitle">…</span> aka getByRole('link', { name: 'Policijski očevid nakon' })
+    2) <span>trenutci užasa</span> aka getByRole('link', { name: 'Policijski očevid nakon' })
+
+Call log:
+  - waiting for locator('span').filter({ hasText: 'trenutci užasa' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-26.spec.ts:9:61
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://dnevnik.hr/');
+   5 |   await page.getByRole('button', { name: 'Prihvati i zatvori:' }).click();
+   6 |   //await page.getByRole('link', { name: 'Dinamo Financije pod' }).click();
+   7 |   const headline = page.locator('h3[data-cms2-content-element="title"]');
+   8 |   //await headline.first().click();
+>  9 |   await page.locator('span', { hasText: 'trenutci užasa' }).click();
+     |                                                             ^ Error: locator.click: Error: strict mode violation: locator('span').filter({ hasText: 'trenutci užasa' }) resolved to 2 elements:
+  10 |   //await page.locator('span.subtitle span', { hasText: 'trenutci užasa' }).click();
+  11 |   //await page.locator('a:has-text("trenutci užasa")').click();
+  12 | });
+```

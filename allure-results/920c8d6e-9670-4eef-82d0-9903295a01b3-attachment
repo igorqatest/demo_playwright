@@ -1,0 +1,90 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Regression Testing >> Test 3 - Google Search and YouTube Playlist Validation
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-13.spec.ts:35:9
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('link', { name: 'Reject' })
+    - locator resolved to <a h="ID=Bnp,5008.1" href="javascript: void(0)">Reject</a>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not stable
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not stable
+    - retrying click action
+      - waiting 100ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not stable
+    - retrying click action
+      - waiting 500ms
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-13.spec.ts:38:58
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test.describe('Smoke testing', () => {
+   4 |     test('Test 1 - Google Search and YouTube Playlist Validation', async ({ page }) => {
+   5 |
+   6 |         await page.goto('https://www.bing.com/');
+   7 |         await page.getByRole('link', { name: 'Reject' }).click();
+   8 |         await page.getByRole('textbox', { name: 'characters out of 2000' }).click();
+   9 |         await page.getByRole('textbox', { name: 'characters out of 2000' }).fill('playwright by testers');
+  10 |         await page.getByText('playwright testers talk').click();
+  11 |         await page.waitForTimeout(1000);
+  12 |        await page.getByRole('link', { name: 'Videos of Playwright Testers' }).click();
+  13 |         await page.waitForTimeout(2000);
+  14 |         
+  15 |         console.log('✅ Test Passed: The YouTube playlist page is opened successfully.');
+  16 |     });
+  17 | });
+  18 |
+  19 | test.describe('Regression Testing', () => {
+  20 |     test('Test 2 - Google Search and YouTube Playlist Validation', async ({ page }) => {
+  21 |
+  22 |         await page.goto('https://www.bing.com/');
+  23 |         await page.getByRole('link', { name: 'Reject' }).click();
+  24 |         await page.getByRole('textbox', { name: 'characters out of 2000' }).click();
+  25 |         await page.getByRole('textbox', { name: 'characters out of 2000' }).fill('playwright by testers');
+  26 |         await page.getByText('playwright testers talk').click();
+  27 |         await page.waitForTimeout(1000);
+  28 |         await page.getByRole('link', { name: 'Videos of Playwright Testers' }).click();
+  29 |         await page.waitForTimeout(2000);
+  30 |         
+  31 |         console.log('✅ Test Passed: The YouTube playlist page is opened successfully.');
+  32 |         
+  33 |     });
+  34 |
+  35 |     test('Test 3 - Google Search and YouTube Playlist Validation', async ({ page }) => {
+  36 |
+  37 |         await page.goto('https://www.bing.com/');
+> 38 |         await page.getByRole('link', { name: 'Reject' }).click();
+     |                                                          ^ Error: locator.click: Target page, context or browser has been closed
+  39 |         await page.getByRole('textbox', { name: 'characters out of 2000' }).click();
+  40 |         await page.getByRole('textbox', { name: 'characters out of 2000' }).fill('playwright by testers');
+  41 |         await page.getByText('playwright testers talk').click();
+  42 |         await page.waitForTimeout(1000);
+  43 |         await page.getByRole('link', { name: 'Videos of Playwright Testers' }).click();
+  44 |         await page.waitForTimeout(2000);
+  45 |         
+  46 |         console.log('✅ Test Passed: The YouTube playlist page is opened successfully.');
+  47 |     });
+  48 | });
+  49 |
+  50 |
+```

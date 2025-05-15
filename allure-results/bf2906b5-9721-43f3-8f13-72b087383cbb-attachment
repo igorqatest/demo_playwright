@@ -1,0 +1,112 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test with dynamic Employer name and State
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-29.spec.ts:5:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('listbox').first()
+    - locator resolved to <div tabindex="0" role="listbox" aria-expanded="false" class="ui item dropdown menuUserDropdown">…</div>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div role="alert" aria-atomic="true" aria-live="polite" class="divider text">Get help</div> from <div class="member-headerContainer">…</div> subtree intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div role="alert" aria-atomic="true" aria-live="polite" class="divider text">Get help</div> from <div class="member-headerContainer">…</div> subtree intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    124 × waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - <div role="alert" aria-atomic="true" aria-live="polite" class="divider text">Get help</div> from <div class="member-headerContainer">…</div> subtree intercepts pointer events
+      - retrying click action
+        - waiting 500ms
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-29.spec.ts:39:43
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import createCSV from './utils/generate-csv'; // ✅ make sure path is right
+   4 |
+   5 | test('test with dynamic Employer name and State', async ({ page }) => {
+   6 |   test.setTimeout(120_000); // ⏱️ Increase timeout to 2 minutes
+   7 |
+   8 |   // ✅ Step 1: Generate CSV
+   9 |   const csvPath = await createCSV(10);
+  10 |   console.log(`📄 CSV created at: ${csvPath}`);
+  11 |
+  12 |   // ✅ Step 2: Login
+  13 |   await page.goto('https://qa-ansel-platform.joinansel.com/partner/login');
+  14 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('damianp+damianp@joinansel.com');
+  15 |   await page.locator('input[name="password"]').fill('Demo123456');
+  16 |   await page.getByRole('button', { name: 'Login' }).click();
+  17 |
+  18 |   // ✅ Step 3: Flow
+  19 |   await page.getByRole('button', { name: 'Request a quote' }).click();
+  20 |   await page.locator('label').filter({ hasText: 'damian test6360' }).click();
+  21 |   await page.getByRole('button', { name: 'Next step' }).click();
+  22 |   await page.getByRole('button', { name: '+ Add employer' }).click();
+  23 |
+  24 |   const allowedStates = ['Texas', 'California', 'Florida', 'Ohio', 'Georgia'];
+  25 |   const randomCompanyName = faker.company.name();
+  26 |   const randomCity = faker.location.city();
+  27 |   const randomState = faker.helpers.arrayElement(allowedStates);
+  28 |
+  29 |   await page.locator('input[name="companyName"]').fill(randomCompanyName);
+  30 |   await page.locator('input[name="sicCode"]').fill('1');
+  31 |   await page.getByText('- Rice').click();
+  32 |   await page.locator('input[name="city"]').fill(randomCity);
+  33 |   await page.getByRole('combobox').getByRole('textbox').fill(randomState);
+  34 |   await page.getByRole('option', { name: randomState }).click();
+  35 |   await page.locator('input[name="eligibleEmployees"]').fill('20');
+  36 |   await page.getByRole('button', { name: 'Next step' }).click();
+  37 |
+  38 |   // Date & Class
+> 39 |   await page.getByRole('listbox').first().click();
+     |                                           ^ Error: locator.click: Test ended.
+  40 |   await page.getByRole('option', { name: 'Jun 1,' }).click();
+  41 |   await page.getByRole('textbox', { name: 'Ex. All full-time employees' }).fill('Class A');
+  42 |   await page.getByRole('button', { name: 'Next step' }).click();
+  43 |
+  44 |   // CSV Upload
+  45 |   await page.locator('input[type="file"]').setInputFiles(csvPath);
+  46 |   await page.getByRole('button', { name: 'Next step' }).click();
+  47 |
+  48 |   // Map BirthDate
+  49 |   const listbox = page.getByRole('row', { name: /Date of birth/i }).getByRole('listbox');
+  50 |   await listbox.click();
+  51 |   for (let i = 0; i < 5; i++) {
+  52 |     await page.keyboard.press('ArrowDown');
+  53 |     await page.waitForTimeout(100);
+  54 |   }
+  55 |   await page.keyboard.press('Enter');
+  56 |   await page.getByRole('button', { name: 'Next step' }).click();
+  57 |
+  58 |   // Final submission and email
+  59 |   await page.getByRole('button', { name: 'Submit' }).click();
+  60 |   await page.waitForSelector('text=Add another email address...');
+  61 |   await page.getByRole('textbox', { name: 'Add another email address...' }).fill('igor.pejin+anselquotetest@joinansel.com');
+  62 |   await page.getByRole('button', { name: 'Send' }).click();
+  63 | });
+```

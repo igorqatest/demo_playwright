@@ -1,0 +1,8 @@
+✅ API response is correct! {
+  name: 'igor',
+  surname: 'pejin',
+  city: 'Osijek',
+  job: 'developer',
+  id: '94',
+  createdAt: '2025-03-30T14:27:57.255Z'
+}

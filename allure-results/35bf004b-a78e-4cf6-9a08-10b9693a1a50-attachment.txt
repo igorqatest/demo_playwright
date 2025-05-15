@@ -1,0 +1,26 @@
+🚀 Starting test...
+✅ Logged into Salesforce
+📂 Opened Related tab
+🔗 Clicked CS- link
+✅ Opened first prospective record
+🔐 Extracted SSN: 513-83-8217
+🎂 Extracted and formatted DOB: 10/20/1985
+🎯 Clicked "Get The Link"
+🔗 Extracted shopping link: https://qa-ansel-platform.joinansel.com/enrollment/?token=s4PfVcVf0aPULihciGG6b0EAJn2334H_ztcUQq9aFl2Inbo4fA2cGqauopLFUHui3MZe1L2C9ZLkMU2yChhuyVFd2efhyyliqs-ulyViZKKkiRiLd2RgySZC5vyo7HZIQZZ12kag1_bFzcW58p7zlWMm5BIamkagtaF4CaYXTuPayZscg-DkVml1cspWAGylvZSbRiVdYzSMvI70_z3LcrYwIX5PZLWKzn8gIOWlRHIL-K9fUZ5KELFwxNU-VlgO70QQLrbptrAJi5yKyQdTeU8NF8csPFEr6sz6wdZ17XcII00eeGrzHf8no23eAlIEq3HNoHUiOmWZpTwIM0HfF12Rf9sd-4wEaSPpr7vWSvu7l3_sj4tZL1L855WL6HJMe2uWksxryBTotYz62VaOSsEUH9M18k9gSFKLlWK84YabClr2hDni-UX6yU0nAC4FyCE88ItFmqS-SfIMLBNH2k9FtsWdzyYAuZpyCPuQ9nMGBmgi4TftiE_cZeDK6eiVLwG8X0KbAlpBxJAPiNKuRyaeu3VfOVF0P3x8zC8teQFxzFZw5HdDYEr91YQNJOJ9oSsJD26OInTEli_4NwB8L5uG_7Boy1C3CV8qHwf5ji3KWtGamnY6v4Bbm21R3ocUey_iCfST9FFYla_XAoUJJpaOqMVuzShcYN9zVj_DHPpI_CJqW5fOVoPLxEG9jwI1WNPeH0ZrYLaqjAPo1sB8o9SjBn7RjLmXEqkF8afvHsldIm6o1-Y4af-tN5UAweoB5nKjSaWfKkscHZSFr0GbcI51uAe4_3BI_6ghZfFm1-PVJ8tNAkIgcxFa5r9dETyT-2Riy_M7rEk7gUg3UK_bwuR_Ho7W4KI0bwaSPZRErBAyygCizmnkl9HkRypzcdOgkcfmpoYvYYo8ZI4-bxk_D0IdrLLs0Sj2j9ffsvQp4tCUx-eYyL9fG_0HZFY1PBEwN1mv5IXWpYiuXjahmxBcLdruV-LlKg8wA1LMx3nodtZ2iQP9UkxEjIq_UkGG0RTVmFKcfVvli32TfnNoXYGegLJ_y90dc12zqEEh98O-2VcNxWlNHUcqR6oIL36ibqdsOS5CXfkWhOMJqmSlc2d2TC92dJfBsVyZteVf7zK6u_NcMVq1fJiPfsVsMcM2yBYBm83Jii5z3iqdTHk7Uz1bhVQHRm3D48QJz1JzXytmJW1M064Wgre0AIY8lrK97JcNyqJ8E6zIvgHrDxTWVwr5ToakN4NUrRSlENlrz9CaEsPqO72SNsTsX2rCZhHlnBhaad98AccdtsaniMM86yBxCx_oy550IbljwGCvTLaKsuBBN8hm3qRls4rpzYEaQ1CBBOw0Zn5wE2q1kYSt4fjsxvgURBG4gnODnvgiWYuSJ4A=
+🆕 Navigated to shopping link in new tab
+🔐 Verification started
+🔓 Verification passed
+👪 Household questions
+➡️ Page 3 complete
+➡️ Page 4 complete
+➡️ Page 5 complete
+➡️ Page 6 complete
+➡️ Page 7 complete
+➡️ Page 8 complete
+➡️ Page 9 complete
+➡️ Page 10 complete
+🏃 Skipped optional promo
+📱 Filled random phone number: 9538753171
+📬 Contact info filled
+✅ Flow completed to this point.
+🔐 Final step complete

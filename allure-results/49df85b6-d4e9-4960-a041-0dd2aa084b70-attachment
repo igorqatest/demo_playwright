@@ -1,0 +1,164 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test with dynamic Employer name and State
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:68:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('option', { name: 'Pensylvania' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:102:55
+```
+
+# Test source
+
+```ts
+   2 | import createCSV from './utils/generate-csv'; // ✅ Import the CSV generator
+   3 |
+   4 | test('Upload dynamic CSV file to census uploader', async ({ page }) => {
+   5 |   // Step 1: Generate the CSV
+   6 |   const csvPath = await createCSV(10); // 🔄 10 fake rows, path returned
+   7 |
+   8 |   // Step 2: Navigate and login
+   9 |   await page.goto('https://qa-ansel-platform.joinansel.com/partner/login');
+   10 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('damianp+damianp@joinansel.com');
+   11 |   await page.locator('input[name="password"]').fill('Demo123456');
+   12 |   await page.getByRole('button', { name: 'Login' }).click();
+   13 |
+   14 |   // Step 3: Navigate through steps
+   15 |   await page.getByRole('button', { name: 'Request a quote' }).click();
+   16 |   await page.locator('label').filter({ hasText: 'damian test6360' }).click();
+   17 |   await page.getByRole('button', { name: 'Next step' }).click();
+   18 |   await page.getByRole('button', { name: '+ Add employer' }).click();
+   19 |
+   20 |   await page.locator('input[name="companyName"]').fill('ER test');
+   21 |   await page.locator('input[name="sicCode"]').fill('1');
+   22 |   await page.getByText('- Rice').click();
+   23 |   await page.locator('input[name="city"]').fill('Dallas');
+   24 |   await page.getByRole('combobox').getByRole('textbox').fill('Texas');
+   25 |   await page.getByRole('option', { name: 'Texas' }).click();
+   26 |   await page.locator('input[name="eligibleEmployees"]').fill('20');
+   27 |   await page.getByRole('button', { name: 'Next step' }).click();
+   28 |
+   29 |   await page.getByRole('listbox').filter({ hasText: 'May 1, 2025Jun 1, 2025Jul 1,' }).click();
+   30 |   await page.getByRole('option', { name: 'Jun 1,' }).click();
+   31 |   await page.getByRole('textbox', { name: 'Ex. All full-time employees' }).fill('Class A');
+   32 |   await page.getByRole('button', { name: 'Next step' }).click();
+   33 |
+   34 |   // Step 4: Upload the CSV file
+   35 |   const fileInput = page.locator('input[type="file"]');
+   36 |   await fileInput.setInputFiles(csvPath);
+   37 |   console.log(`📂 Uploaded file: ${csvPath}`);
+   38 |
+   39 |   // Optionally wait or verify something here (success toast, table shows rows, etc.)
+   40 |   await page.getByRole('button', { name: 'Next step' }).click();
+   41 |   //await page.getByRole('row', { name: 'Date of birth*' }).getByRole('listbox').click();
+   42 |   // 1. Open the "Date of birth*" dropdown
+   43 |
+   44 | /// 1. Click the dropdown under "Date of birth"
+   45 | // Open the dropdown
+   46 | // Focus dropdown
+   47 | const listbox = page.getByRole('row', { name: /Date of birth/i }).getByRole('listbox');
+   48 | await listbox.click();
+   49 |
+   50 | // Press ↓ 5 times to reach "BirthDate"
+   51 | for (let i = 0; i < 5; i++) {
+   52 |   await page.keyboard.press('ArrowDown');
+   53 |   await page.waitForTimeout(100); // small pause
+   54 | }
+   55 |
+   56 | // Select
+   57 | await page.keyboard.press('Enter');
+   58 | await page.getByRole('button', { name: 'Next step' }).click();
+   59 |
+   60 | await page.getByRole('button', { name: 'Next step' }).click();
+   61 |
+   62 |
+   63 | }); */
+   64 |
+   65 | import { test, expect } from '@playwright/test';
+   66 | import { faker } from '@faker-js/faker';
+   67 |
+   68 | test('test with dynamic Employer name and State', async ({ page }) => {
+   69 |   // 🌐 Navigate to login
+   70 |   await page.goto('https://qa-ansel-platform.joinansel.com/partner/login');
+   71 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('damianp+damianp@joinansel.com');
+   72 |   await page.locator('input[name="password"]').fill('Demo123456');
+   73 |   await page.getByRole('button', { name: 'Login' }).click();
+   74 |
+   75 |   // 🧭 Navigate through setup steps
+   76 |   await page.getByRole('button', { name: 'Request a quote' }).click();
+   77 |   await page.locator('label').filter({ hasText: 'damian test6360' }).click();
+   78 |   await page.getByRole('button', { name: 'Next step' }).click();
+   79 |   await page.getByRole('button', { name: '+ Add employer' }).click();
+   80 |
+   81 |   // 🎲 Generate dynamic data
+   82 |   // 🎲 Generate dynamic data (safe states only)
+   83 | const allowedStates = [
+   84 |   'Texas', 'California', 'Alabama', 'Florida', 'Illinois', 'Alaska', 'Colorado', 'District of Columbia', 
+   85 |   'Delaware', 'Florida', 'Georgia', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+   86 |   'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Nebraska', 'Nevada', 
+   87 |   'Ohio', 'Oklahoma', 'Oregon', 'Pensylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Georgia', 'Virginia', 'West Virginia', 
+   88 |   'Wisconsin', 'Wyoming',  'Tennessee', 'Utah', 'Arkansas', 'Pennsylvania', 'Arizona'
+   89 | ];
+   90 |
+   91 | const randomCompanyName = faker.company.name();
+   92 | const randomCity = faker.address.city();
+   93 | const randomState = faker.helpers.arrayElement(allowedStates);
+   94 |
+   95 | // 🏢 Fill Employer details with dynamic values
+   96 | await page.locator('input[name="companyName"]').fill(randomCompanyName);
+   97 | await page.locator('input[name="sicCode"]').fill('1');
+   98 | await page.getByText('- Rice').click();
+   99 | await page.locator('input[name="city"]').fill(randomCity);
+  100 |
+  101 | await page.getByRole('combobox').getByRole('textbox').fill(randomState);
+> 102 | await page.getByRole('option', { name: randomState }).click();
+      |                                                       ^ Error: locator.click: Test ended.
+  103 | await page.locator('input[name="eligibleEmployees"]').fill('20');
+  104 |   await page.getByRole('button', { name: 'Next step' }).click();
+  105 |
+  106 |   await page.getByRole('listbox').filter({ hasText: 'May 1, 2025Jun 1, 2025Jul 1,' }).click();
+  107 |   await page.getByRole('option', { name: 'Jun 1,' }).click();
+  108 |   await page.getByRole('textbox', { name: 'Ex. All full-time employees' }).fill('Class A');
+  109 |   await page.getByRole('button', { name: 'Next step' }).click();
+  110 |
+  111 |   // Step 4: Upload the CSV file
+  112 |   const fileInput = page.locator('input[type="file"]');
+  113 |   await fileInput.setInputFiles(csvPath);
+  114 |   console.log(`📂 Uploaded file: ${csvPath}`);
+  115 |
+  116 |   // Optionally wait or verify something here (success toast, table shows rows, etc.)
+  117 |   await page.getByRole('button', { name: 'Next step' }).click();
+  118 |   //await page.getByRole('row', { name: 'Date of birth*' }).getByRole('listbox').click();
+  119 |   // 1. Open the "Date of birth*" dropdown
+  120 |
+  121 | /// 1. Click the dropdown under "Date of birth"
+  122 | // Open the dropdown
+  123 | // Focus dropdown
+  124 | const listbox = page.getByRole('row', { name: /Date of birth/i }).getByRole('listbox');
+  125 | await listbox.click();
+  126 |
+  127 | // Press ↓ 5 times to reach "BirthDate"
+  128 | for (let i = 0; i < 5; i++) {
+  129 |   await page.keyboard.press('ArrowDown');
+  130 |   await page.waitForTimeout(100); // small pause
+  131 | }
+  132 |
+  133 | // Select
+  134 | await page.keyboard.press('Enter');
+  135 | await page.getByRole('button', { name: 'Next step' }).click();
+  136 |
+  137 | await page.getByRole('button', { name: 'Next step' }).click();
+  138 |
+  139 | });
+```

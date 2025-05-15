@@ -1,0 +1,62 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByRole('link', { name: /^CS-/ })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:21:16
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   7 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   8 |
+   9 |   console.log('🧭 Logged in and navigating to Contract page');
+  10 |
+  11 |   // Click Related tab
+  12 |   await page.getByRole('tab', { name: 'Related' }).click();
+  13 |   console.log('📂 Opened Related tab');
+  14 |
+  15 |   // Manually scroll the page to the bottom (or a large Y value)
+  16 |   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  17 |   await page.waitForTimeout(1000); // allow time for content to load
+  18 |
+  19 |   // Click the CS- link
+  20 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+> 21 |   await csLink.click();
+     |                ^ Error: locator.click: Test ended.
+  22 |   console.log('🔗 Clicked CS- link');
+  23 |
+  24 |   // Wait and click Related tab again
+  25 |   await page.waitForTimeout(1000);
+  26 |   await page.getByRole('tab', { name: 'Related' }).click();
+  27 |
+  28 |   // Scroll down again
+  29 |   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  30 |   await page.waitForTimeout(1000);
+  31 |
+  32 |   // Click the first name link in the list
+  33 |   const firstNameLink = page.locator('a[role="link"]').first();
+  34 |   await firstNameLink.click();
+  35 |   console.log('👤 Clicked first name link in list');
+  36 | });
+```

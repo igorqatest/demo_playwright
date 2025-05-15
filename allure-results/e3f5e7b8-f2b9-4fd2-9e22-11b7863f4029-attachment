@@ -1,0 +1,194 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test with dynamic Employer name and State
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:23:5
+
+# Error details
+
+```
+Error: locator.fill: Test timeout of 120000ms exceeded.
+Call log:
+  - waiting for getByRole('textbox', { name: 'Username' })
+    - waiting for" https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTwX0AW/view" navigation to finish...
+    - navigated to "https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTwX0AW/view"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:124:57
+```
+
+# Test source
+
+```ts
+   24 |   test.setTimeout(120_000); // ⏱️ Increase timeout to 2 minutes
+   25 |
+   26 |   // ✅ Step 1: Generate CSV
+   27 |   const csvPath = await createCSV(10);
+   28 |   console.log(`📄 CSV created at: ${csvPath}`);
+   29 |
+   30 |   // ✅ Step 2: Login
+   31 |   await page.goto(config.urlPP);
+   32 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill(config.userNamePP);
+   33 |   await page.locator('input[name="password"]').fill(config.passWord);
+   34 |   await page.getByRole('button', { name: 'Login' }).click();
+   35 |
+   36 |   // ✅ Step 3: Flow
+   37 |   await page.getByRole('button', { name: 'Request a quote' }).click();
+   38 |   await page.locator('label').filter({ hasText: 'damian test6360' }).click();
+   39 |   await page.getByRole('button', { name: 'Next step' }).click();
+   40 |   await page.getByRole('button', { name: '+ Add employer' }).click();
+   41 |
+   42 |   // 🎲 Generate dynamic values
+   43 |   const allowedStates = ['Texas', 'California', 'Florida', 'Ohio', 'Georgia'];
+   44 |   const randomCompanyName = faker.company.name();
+   45 |   const randomCity = faker.location.city();
+   46 |   const randomState = faker.helpers.arrayElement(allowedStates);
+   47 |
+   48 |   // 🏢 Fill Employer details
+   49 |   await page.locator('input[name="companyName"]').fill(randomCompanyName);
+   50 |   await page.locator('input[name="sicCode"]').fill('1');
+   51 |   await page.getByText('- Rice').click();
+   52 |   await page.locator('input[name="city"]').fill(randomCity);
+   53 |   await page.getByRole('combobox').getByRole('textbox').fill(randomState);
+   54 |   await page.getByRole('option', { name: randomState }).click();
+   55 |   await page.locator('input[name="eligibleEmployees"]').fill('20');
+   56 |   await page.getByRole('button', { name: 'Next step' }).click();
+   57 |
+   58 |   // 📅 Date & Class
+   59 |   await page.getByRole('listbox').filter({ hasText: 'May 1, 2025Jun 1, 2025Jul 1,' }).click();
+   60 |   await page.getByRole('option', { name: 'Jun 1,' }).click();
+   61 |   await page.getByRole('textbox', { name: 'Ex. All full-time employees' }).fill('Class A');
+   62 |   await page.getByRole('button', { name: 'Next step' }).click();
+   63 |
+   64 |   // 📁 CSV Upload
+   65 |   await page.locator('input[type="file"]').setInputFiles(csvPath);
+   66 |   await page.getByRole('button', { name: 'Next step' }).click();
+   67 |
+   68 |   // 🔄 Map BirthDate
+   69 |   const listbox = page.getByRole('row', { name: /Date of birth/i }).getByRole('listbox');
+   70 |   await listbox.click();
+   71 |   for (let i = 0; i < 5; i++) {
+   72 |     await page.keyboard.press('ArrowDown');
+   73 |     await page.waitForTimeout(100);
+   74 |   }
+   75 |   await page.keyboard.press('Enter');
+   76 |   await page.getByRole('button', { name: 'Next step' }).click();
+   77 |   await page.getByRole('button', { name: 'Next step' }).click();
+   78 |
+   79 |   await page.getByText('Yes').click();
+   80 |   await page.getByText('Accident').click();
+   81 |   await page.getByText('Accident').click();
+   82 |   await page.getByRole('button', { name: 'Next step' }).click();
+   83 |
+   84 |   // 📨 Submit and send email
+   85 |   await page.getByRole('button', { name: 'Submit' }).click();
+   86 |   await page.getByRole('textbox', { name: 'Add another email address...' }).fill('igor.pejin+anselquotetest@joinansel.com');
+   87 |   await page.getByRole('button', { name: 'Send' }).click();
+   88 |
+   89 |   // 🔚 Back to dashboard and go to underwriting
+   90 |   await page.getByRole('button', { name: 'Back to quotes dashboard' }).click();
+   91 |   await page.goto(config.urlUnderWriting);
+   92 |
+   93 |   // 🔐 Salesforce login
+   94 |   await page.getByRole('textbox', { name: 'Username' }).fill(config.userNameSF);
+   95 |   await page.getByRole('textbox', { name: 'Password' }).fill(config.paswordSF);
+   96 |   await page.getByRole('button', { name: config.loginButtonName }).click();
+   97 |
+   98 |   // 🔍 Search for the created company
+   99 |  /*  await page.getByRole('button', { name: 'Search' }).click();
+  100 |   await page.getByRole('searchbox').fill(randomCompanyName);
+  101 |
+  102 |   await page.getByRole('rowheader', { name: 'Crist, Goldner and Carter |' }).getByRole('link') */
+  103 |   // 💬 You already searched for the company here:
+  104 |   await page.getByRole('button', { name: 'Search' }).click();
+  105 |   await page.getByRole('searchbox').fill(randomCompanyName);
+  106 |   await page.waitForTimeout(2000);
+  107 |   
+  108 |   const quoteRow = page.getByRole('rowheader', { name: new RegExp(`${randomCompanyName} \\|`) });
+  109 |   await page.waitForTimeout(3000);
+  110 |   await expect(quoteRow).toBeVisible();
+  111 |   await quoteRow.getByRole('link').click();
+  112 |   
+  113 |   console.log(`✅ Clicked quote row for: ${randomCompanyName}`);
+  114 | await page.getByTitle('Approved').click();
+  115 | await page.locator('button').filter({ hasText: 'Mark as Current Status' }).click();
+  116 | await page.waitForTimeout(4000);
+  117 | await page.getByTitle('Issued').click();
+  118 |
+  119 | await page.locator('button').filter({ hasText: 'Mark as Current Status' }).click();
+  120 | await page.waitForTimeout(5000);
+  121 |
+  122 |  await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KTen0AG/view');
+  123 |
+> 124 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+      |                                                         ^ Error: locator.fill: Test timeout of 120000ms exceeded.
+  125 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  126 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  127 |
+  128 |   await page.getByRole('tab', { name: 'Details' }).click();
+  129 |   await page.waitForTimeout(1000);
+  130 |
+  131 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  132 |   await proposalLink.scrollIntoViewIfNeeded();
+  133 |
+  134 |   const [newPage] = await Promise.all([
+  135 |     page.context().waitForEvent('page'),
+  136 |     proposalLink.click(),
+  137 |   ]);
+  138 |
+  139 |   await newPage.waitForLoadState();
+  140 |
+  141 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+  142 |   await newPage.getByText('Yes, I accept this proposal').click();
+  143 |
+  144 |   const firstName = faker.person.firstName();
+  145 |   const lastName = faker.person.lastName();
+  146 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  147 |   const ackFirstName = faker.person.firstName();
+  148 |   const ackLastName = faker.person.lastName();
+  149 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  150 |
+  151 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  152 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  153 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  154 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  155 |   await newPage.getByText('Ansel enrollment platform').click();
+  156 |
+  157 |   // --- 🗓️ Pick Start Date ---
+  158 |   const today = format(new Date(), 'MM/dd/yyyy');
+  159 |   const threeWeeksLater = format(addDays(new Date(), 21), 'MM/dd/yyyy');
+  160 |   
+  161 |   // 2. Remove readonly and type for Start Date
+  162 |   await newPage.evaluate(() => {
+  163 |     const input = document.querySelector('input[name="enrollmentStartDate"]');
+  164 |     if (input) input.removeAttribute('readonly');
+  165 |   });
+  166 |   await newPage.locator('input[name="enrollmentStartDate"]').fill(today);
+  167 |   
+  168 |   // 3. Remove readonly and type for End Date
+  169 |   await newPage.evaluate(() => {
+  170 |     const input = document.querySelector('input[name="enrollmentEndDate"]');
+  171 |     if (input) input.removeAttribute('readonly');
+  172 |   });
+  173 |   await newPage.locator('input[name="enrollmentEndDate"]').fill(threeWeeksLater);
+  174 |
+  175 |   // --- Acknowledgment ---
+  176 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  177 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  178 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  179 |
+  180 |   await newPage.getByText('By checking this box, I agree').click();
+  181 |
+  182 |   console.log('✅ Proposal filled successfully');
+  183 |
+  184 |
+  185 |
+  186 |
+  187 |
+  188 |
+  189 | });
+```

@@ -1,0 +1,68 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.waitFor: Test ended.
+Call log:
+  - waiting for locator('records-hoverable-link a').first() to be visible
+    21 × locator resolved to hidden <a lwc-oj46kgc6r3="" class="slds-truncate" data-navigation="enable" href="/lightning/r/Account/001QL00000fm9FyYAI/view">…</a>
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:35:21
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Contract/800QL00000JP9MvYAL/view');
+   5 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+   6 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+   7 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+   8 |
+   9 |   console.log('🧭 Logged in and navigating to Contract page');
+  10 |
+  11 |   // Click Related tab
+  12 |   await page.getByRole('tab', { name: 'Related' }).click();
+  13 |   console.log('📂 Opened Related tab');
+  14 |
+  15 |   // Manually scroll the page to the bottom (or a large Y value)
+  16 |   for (let i = 0; i < 10; i++) {
+  17 |     await page.mouse.wheel(0, 30);
+  18 |   }
+  19 |
+  20 |   // Click the CS- link
+  21 |   const csLink = page.getByRole('link', { name: /^CS-/ });
+  22 |   await csLink.click();
+  23 |   console.log('🔗 Clicked CS- link');
+  24 |
+  25 |   // Wait and click Related tab again
+  26 |   await page.waitForTimeout(1000);
+  27 |   await page.getByRole('tab', { name: 'Related' }).click();
+  28 |
+  29 |   // Scroll down again
+  30 |   
+  31 |
+  32 |   // Click the first name link in the list
+  33 |   const firstNameLink = page.locator('records-hoverable-link a').first();
+  34 |
+> 35 | await firstNameLink.waitFor({ state: 'visible' });
+     |                     ^ Error: locator.waitFor: Test ended.
+  36 | await firstNameLink.scrollIntoViewIfNeeded();
+  37 | const name = await firstNameLink.innerText();
+  38 | console.log(`✅ Clicking prospective: ${name}`);
+  39 | await firstNameLink.click();
+  40 | await firstNameLink.click({ force: true });
+  41 | });
+```

@@ -1,0 +1,141 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: open Playwright site in same tab without popup
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:74:5
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+
+Locator: locator(':root')
+Expected pattern: /.*playwright.dev/
+Received string:  "https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Contact/003WU00000JqDPlYAN/view"
+Call log:
+  - expect.toHaveURL with timeout 5000ms
+  - waiting for locator(':root')
+    9 × locator resolved to <html dir="ltr" lang="en-US">…</html>
+      - unexpected value "https://ansel2-dev-ed.develop.lightning.force.com/lightning/r/Contact/003WU00000JqDPlYAN/view"
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-25.spec.ts:104:22
+```
+
+# Test source
+
+```ts
+   4 |
+   5 |
+   6 | test('test', async ({ page }) => {
+   7 |   console.log('Navigating to Salesforce login URL...');
+   8 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   9 |
+   10 |   console.log('Filling in username...');
+   11 |   await page.getByRole('textbox', { name: 'Username' }).click();
+   12 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   13 |
+   14 |   console.log('Filling in password...');
+   15 |   await page.getByRole('textbox', { name: 'Password' }).click();
+   16 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   17 |
+   18 |   console.log('Clicking Log In...');
+   19 |   await page.getByRole('button', { name: 'Log In' }).click();
+   20 |
+   21 |   console.log('Navigating to John Bond contact record...');
+   22 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   23 |
+   24 |   console.log('Switching to Details tab...');
+   25 |   await page.getByRole('tab', { name: 'Details' }).click();
+   26 |
+   27 |   console.log('Waiting for half a second to ensure page stability...');
+   28 |   await page.waitForTimeout(500);
+   29 |
+   30 |   console.log('Clicking the external Playwright link...');
+   31 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+   32 |   await page.waitForTimeout(3000);
+   33 |   await page.getByRole('link', { name: 'Get started' }).click();
+   34 |
+   35 | }); */
+   36 |
+   37 | /* import { test, expect } from '@playwright/test';
+   38 |
+   39 | test('test', async ({ page, context }) => {
+   40 |   console.log('Navigating to Salesforce login URL...');
+   41 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   42 |
+   43 |   console.log('Filling in username...');
+   44 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   45 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   46 |
+   47 |   console.log('Clicking Log In...');
+   48 |   await page.getByRole('button', { name: 'Log In' }).click();
+   49 |
+   50 |   console.log('Navigating to John Bond contact record...');
+   51 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   52 |
+   53 |   console.log('Switching to Details tab...');
+   54 |   await page.getByRole('tab', { name: 'Details' }).click();
+   55 |
+   56 |   console.log('Waiting a moment...');
+   57 |   await page.waitForTimeout(500);
+   58 |
+   59 |   console.log('Opening Playwright site (wait for popup)...');
+   60 |   
+   61 |   const popupPromise = page.waitForEvent('popup');
+   62 |   await page.getByRole('link', { name: 'https://playwright.dev/' }).click();
+   63 |   const popup = await popupPromise;
+   64 |
+   65 |   console.log('Switching to popup and clicking Get started...');
+   66 |   await popup.waitForLoadState();
+   67 |   await popup.getByRole('link', { name: 'Get started' }).click();
+   68 |
+   69 |   console.log('✅ Get started link clicked in new tab!');
+   70 |   //await popup.getByRole('link', { name: 'How to install Playwright' }).click();  
+   71 | }); */
+   72 | import { test, expect } from '@playwright/test';
+   73 |
+   74 | test('open Playwright site in same tab without popup', async ({ page }) => {
+   75 |   console.log('🔐 Navigating to Salesforce login...');
+   76 |   await page.goto('https://ansel2-dev-ed.develop.my.salesforce.com/?ec=302&startURL=%2Fvisualforce%2Fsession%3Furl%3Dhttps%253A%252F%252Fansel2-dev-ed.develop.lightning.force.com%252Flightning');
+   77 |
+   78 |   console.log('👤 Logging in...');
+   79 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+   80 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+   81 |   await page.getByRole('button', { name: 'Log In' }).click();
+   82 |
+   83 |   console.log('📄 Opening John Bond record...');
+   84 |   await page.getByRole('link', { name: 'John Bond' }).click();
+   85 |   await page.getByRole('tab', { name: 'Details' }).click();
+   86 |   await page.waitForTimeout(1000); // Wait for fields to settle
+   87 |
+   88 |   console.log('🌍 Preparing Playwright link...');
+   89 |   const playwrightLink = page.getByRole('link', { name: 'https://playwright.dev/' });
+   90 |
+   91 |   // Wait until it's attached to the DOM
+   92 |   await playwrightLink.waitFor({ state: 'attached' });
+   93 |
+   94 |   // Remove target attribute so it doesn't open in new tab
+   95 |   await playwrightLink.evaluate(el => el.removeAttribute('target'));
+   96 |
+   97 |   console.log('🖱️ Clicking link...');
+   98 |   await playwrightLink.click();
+   99 |
+  100 |   console.log('⏳ Waiting for Playwright homepage to load...');
+  101 |   await page.waitForLoadState('domcontentloaded');
+  102 |
+  103 |   // Verify you're on Playwright
+> 104 |   await expect(page).toHaveURL(/.*playwright.dev/);
+      |                      ^ Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+  105 |   await expect(page.getByRole('link', { name: 'Get started' })).toBeVisible();
+  106 |
+  107 |   console.log('🚀 Clicking Get started...');
+  108 |   await page.getByRole('link', { name: 'Get started' }).click();
+  109 |
+  110 |   console.log('✅ Successfully navigated without popup!');
+  111 | });
+```

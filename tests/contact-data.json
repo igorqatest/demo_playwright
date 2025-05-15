@@ -1,0 +1,19 @@
+{
+  "salutation": "Mr.",
+  "firstName": "John",
+  "lastName": "Doe",
+  "phone": "(123) 456-7890",
+  "homePhone": "(321) 654-0987",
+  "mobile": "(111) 222-3333",
+  "otherPhone": "(444) 555-6666",
+  "title": "QA Engineer",
+  "department": "Quality Assurance",
+  "email": "john.doe@example.com",
+  "fax": "(777) 888-9999",
+  "birthdate": "01. 01. 1990.",
+  "leadSource": "Web",
+  "urlName": "https://playwright.dev",
+  "website": "Playwright Official",
+  "assistant": "Jane Smith",
+  "assistantPhone": "(101) 202-3030"
+}

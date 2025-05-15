@@ -1,0 +1,203 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Shopping only Primary
+- Location: /Users/pejin/Documents/Playwright new/tests/ansel_shopping/ansel_family.spec.ts:4:5
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByText('Male') resolved to 6 elements:
+    1) <div role="alert" aria-atomic="true" aria-live="polite" class="divider text">Female</div> aka locator('#root').getByRole('alert').filter({ hasText: 'Female' })
+    2) <span class="text">Female</span> aka locator('#root span').filter({ hasText: 'Female' })
+    3) <span class="text">Male</span> aka locator('#root').getByText('Male', { exact: true })
+    4) <div role="alert" aria-atomic="true" aria-live="polite" class="divider text">Female</div> aka getByText('Female').nth(2)
+    5) <span class="text">Female</span> aka getByRole('option', { name: 'Female' }).locator('span')
+    6) <span class="text">Male</span> aka getByRole('option', { name: 'Male', exact: true }).locator('span')
+
+Call log:
+  - waiting for getByText('Male')
+
+    at /Users/pejin/Documents/Playwright new/tests/ansel_shopping/ansel_family.spec.ts:162:33
+```
+
+# Test source
+
+```ts
+   62 |   const shoppingLink = await validTextarea.inputValue();
+   63 |   console.log(`🔗 Extracted shopping link`);
+   64 |
+   65 |   // Open in a new tab (ensures fresh state and skips remembering old flow)
+   66 |   const newPage = await context.newPage();
+   67 |   await newPage.goto(shoppingLink, { waitUntil: 'domcontentloaded' });
+   68 |   console.log('🆕 Navigated to shopping link in new tab');
+   69 |
+   70 |   // Proceed with verify step
+   71 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   72 |   console.log('🔐 Verification started');
+   73 |   await newPage.getByRole('textbox', { name: 'MM/DD/YYYY' }).fill(dob);
+   74 |   await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(ssn);
+   75 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   76 |   console.log('🔓 Verification passed');
+   77 |
+   78 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   79 |
+   80 |   // ✅ Ensure fresh continuation from the correct start page
+   81 |
+   82 |    // Select "No" for married, and "I'm not a parent"
+   83 |    await newPage.getByText('Yes', { exact: true }).click();
+   84 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 60);
+   85 |
+   86 |   await newPage.getByText('Yes, my youngest child is over 18 years old').click();
+   87 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   88 |   console.log('👪 Household questions');
+   89 |
+   90 |   // ⏭ Continue steps
+   91 |   for (let i = 1; i <= 8; i++) {
+   92 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+   93 |     console.log(`➡️ Page ${i + 2} complete`);
+   94 |   }
+   95 |    // Let's talk about medical expenses
+   96 |   await newPage.getByText('Yes').click();
+   97 |   await newPage.getByText('I typically pay the full cost').click();
+   98 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+   99 |   console.log('💰 Medical expenses questions');
+  100 |
+  101 |   // We'll keep your budget in mind
+  102 |   await newPage.getByText('I can purchase what I want').click();
+  103 |     await newPage.getByRole('button', { name: 'Next step' }).click();
+  104 |     console.log('✅ Purchasing what I want');
+  105 |
+  106 |
+  107 | await newPage.getByText('My family and me').click();
+  108 |
+  109 | console.log('✅ Select ansel benefits');
+  110 | await newPage.waitForTimeout(1000);
+  111 |
+  112 |
+  113 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  114 |   await newPage.waitForTimeout(1000);
+  115 |
+  116 |   await newPage.getByRole('button', { name: 'Next step' }).click();
+  117 |
+  118 |   
+  119 |   for (let i = 0; i < 10; i++) {
+  120 |     await page.mouse.wheel(0, 400);
+  121 |     await page.waitForTimeout(100);
+  122 |   }
+  123 |   await newPage.waitForTimeout(2000);
+  124 |   await newPage.getByRole('listbox').filter({ hasText: 'FemaleMale' }).click();
+  125 |
+  126 |   await newPage.waitForTimeout(1000);
+  127 |
+  128 | // Generate a random 9-digit phone number
+  129 | const random9Digits = Math.floor(100000000 + Math.random() * 900000000);
+  130 |
+  131 | // Format it properly like (XXX) XXX-XXXX
+  132 | const formattedPhone = `(${String(random9Digits).slice(0, 3)}) ${String(random9Digits).slice(3, 6)}-${String(random9Digits).slice(6)}`;
+  133 |
+  134 | await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).type(formattedPhone, { delay: 100 });
+  135 | console.log(`📱 Filled formatted phone number: ${formattedPhone}`);  
+  136 | await newPage.waitForTimeout(1000);
+  137 |
+  138 | await newPage.getByRole('listbox').filter({ hasText: 'MobileStandard' }).click();
+  139 |   await newPage.locator('input[name="SET_STREET_ADDRESS"]').fill('123 Main St');
+  140 |   await newPage.waitForTimeout(1000);
+  141 |
+  142 |   await newPage.locator('input[name="SET_ZIP_CODE"]').fill('12345');
+  143 |   await newPage.locator('input[name="SET_CITY"]').fill('Random City');
+  144 |
+  145 |
+  146 | // Add spouse
+  147 | await newPage.getByRole('button', { name: '+ Add dependent' }).click();
+  148 | await newPage.getByRole('listbox').filter({ hasText: 'SpouseChildDomestic' }).click();
+  149 | // Then select the 'Spouse' option
+  150 | await newPage.getByRole('option', { name: 'Spouse' }).click();
+  151 | await newPage.waitForTimeout(1000);
+  152 |
+  153 | await newPage.locator('input[name="firstName"]').fill('Jane');
+  154 | await newPage.locator('input[name="lastName"]').fill('Doe');
+  155 | // Open the dropdown
+  156 | await newPage.getByRole('listbox').filter({ hasText: /^FemaleMale$/ }).click();
+  157 |
+  158 | // Pick a random gender
+  159 | const gender = Math.random() > 0.5 ? 'Male' : 'Female';
+  160 |
+  161 | // Now click the text directly
+> 162 | await newPage.getByText(gender).click();
+      |                                 ^ Error: locator.click: Error: strict mode violation: getByText('Male') resolved to 6 elements:
+  163 |
+  164 | console.log(`✅ Selected gender: ${gender}`);
+  165 |
+  166 | // Select date of birth
+  167 | await newPage.locator('input[name="birthdate"]').fill('01/01/2004');
+  168 |
+  169 | // SSN
+  170 | // Helper to generate random SSN
+  171 | function generateRandomSSN() {
+  172 |   const part1 = Math.floor(100 + Math.random() * 900); // 3 digits
+  173 |   const part2 = Math.floor(10 + Math.random() * 90);   // 2 digits
+  174 |   const part3 = Math.floor(1000 + Math.random() * 9000); // 4 digits
+  175 |   return `${part1}-${part2}-${part3}`;
+  176 | }
+  177 |
+  178 | // Then fill it
+  179 | const randomSSN = generateRandomSSN();
+  180 |
+  181 |
+  182 | await newPage.getByRole('button', { name: 'Save' }).click();
+  183 |
+  184 | for (let i = 0; i < 10; i++) {
+  185 |     await page.mouse.wheel(0, 400);
+  186 |     await page.waitForTimeout(100);
+  187 |   }
+  188 |   // Add dependent
+  189 |   await newPage.getByRole('button', { name: '+ Add dependent' }).click();
+  190 |   await newPage.waitForTimeout(1000);
+  191 |
+  192 |   await newPage.getByRole('listbox').filter({ hasText: 'Child' }).click();
+  193 |   await newPage.waitForTimeout(1000);
+  194 |
+  195 |   await newPage.getByRole('option', { name: 'Child' }).click();
+  196 |   await newPage.waitForTimeout(1000);
+  197 |   await newPage.locator('input[name="firstName"]').fill('Mark');
+  198 |   await newPage.waitForTimeout(1000);
+  199 |
+  200 | await newPage.locator('input[name="lastName"]').fill('Smith');
+  201 | // Open the gender dropdown
+  202 | await newPage.waitForTimeout(1000);
+  203 | await newPage.getByRole('listbox').filter({ hasText: /^FemaleMale$/ }).click();
+  204 |   
+  205 | // Select date of birth
+  206 | await newPage.locator('input[name="birthdate"]').fill('01/01/2004');
+  207 |
+  208 | // Fill SSN
+  209 | const randomSSN1 = generateRandomSSN();
+  210 | await newPage.getByRole('textbox', { name: 'XXX-XX-XXXX' }).fill(randomSSN1);
+  211 | console.log(`✅ Filled random SSN: ${randomSSN1}`);
+  212 |
+  213 | await newPage.getByRole('button', { name: 'Next step' }).click();
+  214 | console.log('📬 Contact info filled');
+  215 |
+  216 |   await newPage.locator('input[name="password"]').fill('Demo123456');
+  217 |   await newPage.locator('input[name="confirmPassword"]').fill('Demo123456');
+  218 |   await newPage.evaluate(() => {
+  219 |     const cb = document.querySelector('input[name="agreeToTerms"]');
+  220 |     if (cb) cb.removeAttribute('readonly');
+  221 |     (cb as HTMLInputElement)?.click();
+  222 |   });
+  223 |
+  224 |
+  225 |   // Done!
+  226 |   console.log('✅ Flow completed to this point.'); 
+  227 |   for (let i = 0; i < 10; i++) await page.mouse.wheel(0, 200);
+  228 |   await newPage.getByRole('button', { name: 'Submit' }).click();
+  229 |   console.log(' Final step complete, Shopping Finished');
+  230 |
+  231 | });
+```

@@ -1,0 +1,203 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Create a New Opportunity in Salesforce
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:130:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for locator('span:has-text("All Opportunities")').first()
+    - locator resolved to <span lwc-k3u3t7jeg5="" title="All Opportunities" class="slds-text-body--regular slds-text-color--default slds-truncate slds-show">…</span>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    22 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+    - waiting for element to be visible, enabled and stable
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-36.spec.ts:161:26
+```
+
+# Test source
+
+```ts
+   61 |
+   62 | await logAndScreenshot(page, screenshotDir, '4-Opportunities-filled', '📸 Opportunities');
+   63 |
+   64 | console.log('🔽 Selecting Lead Source...');
+   65 | await page.getByRole('combobox', { name: 'Type' }).click();
+   66 | await page.getByRole('option', { name: 'New customer' }).click();
+   67 | await page.waitForTimeout(1000);
+   68 |
+   69 | await page.getByRole('combobox', { name: 'Lead Source' }).click();
+   70 |
+   71 | await page.waitForTimeout(1000);
+   72 |
+   73 | //await page.getByRole('option', { name: 'Other' }).click();
+   74 | //await page.getByText('Other', { exact: true }).click();
+   75 |
+   76 | await page.locator('button[aria-label="Delivery/Installation Status"]').click();
+   77 | await page.getByText('In progress').click();
+   78 |
+   79 | // 📅 Date picker
+   80 | await page.getByRole('textbox', { name: 'Close Date' }).fill('04. 01. 2025.');
+   81 |
+   82 | // 🔢 Text fields
+   83 | await page.getByRole('textbox', { name: 'Opportunity Name' }).fill('Sample Opportunity');
+   84 | await page.getByRole('textbox', { name: 'Amount' }).fill('50000');
+   85 | await page.getByRole('textbox', { name: 'Next Step' }).fill('Follow up demo');
+   86 | await page.getByRole('combobox', { name: 'Stage' }).click();
+   87 | await page.getByRole('option', { name: 'Prospecting' }).click();
+   88 | await logAndScreenshot(page, screenshotDir, '5-Stage-filled', '📸 End');
+   89 |
+   90 | await page.getByRole('textbox', { name: 'Probability (%)' }).fill('75');
+   91 | await page.getByRole('textbox', { name: 'Order Number' }).fill('ORD123456');
+   92 | await page.getByRole('textbox', { name: 'Main Competitor(s)' }).fill('Acme Corp');
+   93 | await logAndScreenshot(page, screenshotDir, '6-End-filled', '📸 End');
+   94 |
+   95 | await page.getByRole('textbox', { name: 'Current Generator(s)' }).fill('Model X');
+   96 | await page.getByRole('textbox', { name: 'Tracking Number' }).fill('TRACK78910');
+   97 | await page.getByRole('textbox', { name: 'Description' }).fill('This opportunity is a sample for Playwright testing.');
+   98 |
+   99 | // ☑️ Private checkbox (optional)
+  100 | await page.getByRole('checkbox', { name: 'Private' }).check();
+  101 |
+  102 | // 💾 Save
+  103 | await page.getByRole('button', { name: 'Save' })
+  104 |
+  105 | console.log('✅ New Opportunity created successfully!');
+  106 |
+  107 | }); */
+  108 |
+  109 | import { test, expect } from '@playwright/test';
+  110 | import fs from 'fs';
+  111 | import path from 'path';
+  112 |
+  113 | const screenshotDir = 'test-35';
+  114 |
+  115 | // Clean screenshot folder before test
+  116 | if (fs.existsSync(screenshotDir)) {
+  117 |   fs.readdirSync(screenshotDir).forEach(file => {
+  118 |     fs.unlinkSync(path.join(screenshotDir, file));
+  119 |   });
+  120 | } else {
+  121 |   fs.mkdirSync(screenshotDir);
+  122 | }
+  123 |
+  124 | // Helper to log and screenshot
+  125 | async function logAndScreenshot(page, dir: string, step: string, message: string) {
+  126 |   console.log(message);
+  127 |   await page.screenshot({ path: `${dir}/${step}.png` });
+  128 | }
+  129 |
+  130 | test('Create a New Opportunity in Salesforce', async ({ page }) => {
+  131 |   const screenshotDir = 'test-36';
+  132 |   if (fs.existsSync(screenshotDir)) {
+  133 |     fs.readdirSync(screenshotDir).forEach(file => {
+  134 |       fs.unlinkSync(path.join(screenshotDir, file));
+  135 |     });
+  136 |   } else {
+  137 |     fs.mkdirSync(screenshotDir);
+  138 |   }
+  139 |
+  140 |   console.log('🌐 Opening login page...');
+  141 |   await page.goto('https://ansel2-dev-ed.develop.lightning.force.com/lightning/o/Contact/list?filterName=00BWU00000QUsgp2AD');
+  142 |   await logAndScreenshot(page, screenshotDir, '1-login', '📸 Login page loaded');
+  143 |
+  144 |   console.log('🔐 Entering login credentials...');
+  145 |   await page.getByRole('textbox', { name: 'Username' }).fill('pejinigor@gmail.com');
+  146 |   await page.getByRole('textbox', { name: 'Password' }).fill('Test123456');
+  147 |   await logAndScreenshot(page, screenshotDir, '2-login-filled', '📸 Credentials entered');
+  148 |
+  149 |   console.log('➡️ Clicking login button...');
+  150 |   await page.getByRole('button', { name: 'Log In' }).click();
+  151 |   await page.waitForTimeout(1000);
+  152 |
+  153 |   console.log('📇 Navigating to Opportunities tab...');
+  154 |   await page.getByRole('button', { name: 'Search' }).click();
+  155 |   await page.waitForTimeout(1000);
+  156 |   await logAndScreenshot(page, screenshotDir, '3-Search-filled', '📸 Search opened');
+  157 |
+  158 |   console.log('🔎 Selecting "All Opportunities"...');
+  159 |   const allOpportunities = page.locator('span:has-text("All Opportunities")').first();
+  160 |   await page.waitForTimeout(1000);
+> 161 |   await allOpportunities.click();
+      |                          ^ Error: locator.click: Target page, context or browser has been closed
+  162 |
+  163 |   console.log('🧭 Clicking on "Opportunities"...');
+  164 |   await page.getByRole('link', { name: 'Opportunities' }).click();
+  165 |   await page.waitForTimeout(500);
+  166 |
+  167 |   console.log('➕ Clicking "New Opportunity"...');
+  168 |   await page.getByRole('button', { name: 'New' }).click();
+  169 |
+  170 |   console.log('📝 Filling basic Opportunity info...');
+  171 |   await page.getByRole('textbox', { name: '*Opportunity Name' }).fill('Sample Opportunity');
+  172 |
+  173 |   console.log('🏢 Selecting Account...');
+  174 |   await page.getByRole('combobox', { name: 'Account Name' }).click();
+  175 |   await page.getByRole('option', { name: 'Grand Hotels & Resorts Ltd' }).click();
+  176 |   await logAndScreenshot(page, screenshotDir, '4-Opportunities-filled', '📸 Opportunity basic info filled');
+  177 |
+  178 |   console.log('📊 Selecting Type...');
+  179 |   await page.getByRole('combobox', { name: 'Type' }).click();
+  180 |   await page.getByRole('option', { name: 'New customer' }).click();
+  181 |   await page.waitForTimeout(1000);
+  182 |
+  183 |   console.log('📥 Selecting Lead Source...');
+  184 |   await page.getByRole('combobox', { name: 'Lead Source' }).click();
+  185 |   await page.waitForTimeout(1000);
+  186 |   // If needed: await page.getByRole('option', { name: 'Other' }).click();
+  187 |
+  188 |   console.log('🚚 Selecting Delivery/Installation Status...');
+  189 |   await page.locator('button[aria-label="Delivery/Installation Status"]').click();
+  190 |   await page.getByText('In progress').click();
+  191 |
+  192 |   console.log('📅 Filling Close Date...');
+  193 |   await page.getByRole('textbox', { name: 'Close Date' }).fill('04. 01. 2025.');
+  194 |
+  195 |   console.log('💬 Filling remaining text fields...');
+  196 |   await page.getByRole('textbox', { name: 'Opportunity Name' }).fill('Sample Opportunity');
+  197 |   await page.getByRole('textbox', { name: 'Amount' }).fill('50000');
+  198 |   await page.getByRole('textbox', { name: 'Next Step' }).fill('Follow up demo');
+  199 |
+  200 |   console.log('🔽 Selecting Stage...');
+  201 |   await page.getByRole('combobox', { name: 'Stage' }).click();
+  202 |   await page.getByRole('option', { name: 'Prospecting' }).click();
+  203 |   await logAndScreenshot(page, screenshotDir, '5-Stage-filled', '📸 Stage selected');
+  204 |
+  205 |   console.log('📈 Filling additional Opportunity fields...');
+  206 |   await page.getByRole('textbox', { name: 'Probability (%)' }).fill('75');
+  207 |   await page.getByRole('textbox', { name: 'Order Number' }).fill('ORD123456');
+  208 |   await page.getByRole('textbox', { name: 'Main Competitor(s)' }).fill('Acme Corp');
+  209 |   await logAndScreenshot(page, screenshotDir, '6-End-filled', '📸 Final Opportunity data');
+  210 |
+  211 |   await page.getByRole('textbox', { name: 'Current Generator(s)' }).fill('Model X');
+  212 |   await page.getByRole('textbox', { name: 'Tracking Number' }).fill('TRACK78910');
+  213 |   await page.getByRole('textbox', { name: 'Description' }).fill('This opportunity is a sample for Playwright testing.');
+  214 |
+  215 |   console.log('☑️ Checking Private checkbox...');
+  216 |   await page.getByRole('checkbox', { name: 'Private' }).check();
+  217 |
+  218 |   console.log('💾 Clicking Save...');
+  219 |   await page.getByRole('button', { name: 'Save' }).click();
+  220 |
+  221 |   console.log('✅ New Opportunity created successfully!');
+  222 | });
+```

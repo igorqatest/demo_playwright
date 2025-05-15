@@ -1,0 +1,66 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: multiple test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-21.spec.ts:25:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: 'Reject the use of cookies and' })
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-21.spec.ts:30:79
+```
+
+# Test source
+
+```ts
+   1 | /* import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 | const testingWeb = [ 'Playwright by Testers Talk', 'Cypress by Testers Talk', 'API Testing by Testers Talk'];
+   5 | for (const name of testingWeb) {
+   6 |   await page.goto('https://www.youtube.com/');
+   7 |
+   8 |   // Dismiss cookie banner if present
+   9 |   const rejectCookies = page.getByRole('button', { name: /Reject the use of cookies/i });
+  10 |   if (await rejectCookies.isVisible()) {
+  11 |     await rejectCookies.click();
+  12 |   }
+  13 |   await page.waitForTimeout(1500);
+  14 |   await page.getByPlaceholder('Search', { exact: true }).fill(name);
+  15 |     await page.getByPlaceholder('Search', { exact: true }).press('Enter');
+  16 |
+  17 |     await page.getByPlaceholder('Search').press('Enter');
+  18 |
+  19 |     
+  20 |
+  21 | }
+  22 | }); */
+  23 |
+  24 | import { test, expect} from '@playwright/test';
+  25 | test ( 'multiple test', async ({ page})=> {
+  26 |    
+  27 |   const testWeb = [ 'Playwright by Testers Talk', 'Cypress by Testers Talk', 'API Testing by Testers Talk'];
+  28 |   for ( const testing of testWeb) {
+  29 |     await page.goto('https://www.youtube.com/');
+> 30 |     await page.getByRole('button', { name: 'Reject the use of cookies and' }).click();
+     |                                                                               ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  31 |     await page.waitForTimeout(500);
+  32 |     const searchInput = page.getByPlaceholder('Search', { exact: true});
+  33 |  await searchInput.fill(testing);
+  34 |  await searchInput.press('Enter');
+  35 |  await page.waitForTimeout(500);
+  36 |  await page.getByPlaceholder('Search', { exact: true}).press('Enter');
+  37 |  await page.waitForTimeout(500);
+  38 |
+  39 |   }
+  40 | });
+```

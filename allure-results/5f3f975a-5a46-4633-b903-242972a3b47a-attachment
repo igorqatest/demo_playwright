@@ -1,0 +1,114 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Submit proposal form with dynamic data
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:7:5
+
+# Error details
+
+```
+Error: locator.scrollIntoViewIfNeeded: Target page, context or browser has been closed
+Call log:
+  - waiting for locator('text=Yes, I accept this proposal')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-28.spec.ts:41:61
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { faker } from '@faker-js/faker';
+   3 | import { addDays, format } from 'date-fns';
+   4 | import { chromium } from '@playwright/test';
+   5 |
+   6 |
+   7 | test('Submit proposal form with dynamic data', async ({ page }) => {
+   8 |   await page.goto('https://brella--qa.sandbox.lightning.force.com/lightning/r/Quote/0Q0QL000001KU2z0AG/view');
+   9 |
+  10 |   await page.getByRole('textbox', { name: 'Username' }).fill('qa@joinansel.com.qa');
+  11 |   await page.getByRole('textbox', { name: 'Password' }).fill('q8xPmBoudN1W');
+  12 |   await page.getByRole('button', { name: 'Log In to Sandbox' }).click();
+  13 |
+  14 |   await page.getByRole('tab', { name: 'Details' }).click();
+  15 |   await page.waitForTimeout(1000);
+  16 |
+  17 |   const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  18 |   
+  19 |   
+  20 |
+  21 |
+  22 |   await proposalLink.scrollIntoViewIfNeeded();
+  23 | const [newPage] = await Promise.all([
+  24 |     page.context().waitForEvent('page'),
+  25 |     proposalLink.click(),
+  26 |   ]);
+  27 |   const context = await chromium.launchPersistentContext('', {
+  28 |     headless: false, // show browser
+  29 |     permissions: [], // remove all permissions
+  30 |     args: [
+  31 |       '--use-fake-ui-for-media-stream',
+  32 |       '--disable-geolocation',          // disable location hardware
+  33 |       '--deny-permission-prompts',      // Chrome-specific suppression
+  34 |     ],
+  35 |     viewport: { width: 1280, height: 800 },
+  36 |   });
+  37 |   
+  38 |
+  39 |   await newPage.waitForLoadState();
+  40 |
+> 41 |   await newPage.locator('text=Yes, I accept this proposal').scrollIntoViewIfNeeded();
+     |                                                             ^ Error: locator.scrollIntoViewIfNeeded: Target page, context or browser has been closed
+  42 |   await newPage.getByText('Yes, I accept this proposal').click();
+  43 |
+  44 |   const firstName = faker.person.firstName();
+  45 |   const lastName = faker.person.lastName();
+  46 |   const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  47 |   const ackFirstName = faker.person.firstName();
+  48 |   const ackLastName = faker.person.lastName();
+  49 |   const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  50 |
+  51 |   await newPage.locator('input[name="contactFirstName"]').fill(firstName);
+  52 |   await newPage.locator('input[name="contactLastName"]').fill(lastName);
+  53 |   await newPage.locator('input[name="contactEmail"]').fill(randomEmail);
+  54 |   await newPage.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  55 |   await newPage.getByText('Ansel enrollment platform').click();
+  56 |
+  57 |   // --- 🗓️ Pick Start Date ---
+  58 |   const today = format(new Date(), 'MM/dd/yyyy');
+  59 |   const threeWeeksLater = format(addDays(new Date(), 21), 'MM/dd/yyyy');
+  60 |   
+  61 |   // 2. Remove readonly and type for Start Date
+  62 |   await newPage.evaluate(() => {
+  63 |     const input = document.querySelector('input[name="enrollmentStartDate"]');
+  64 |     if (input) input.removeAttribute('readonly');
+  65 |   });
+  66 |   await newPage.locator('input[name="enrollmentStartDate"]').fill(today);
+  67 |   
+  68 |   // 3. Remove readonly and type for End Date
+  69 |   await newPage.evaluate(() => {
+  70 |     const input = document.querySelector('input[name="enrollmentEndDate"]');
+  71 |     if (input) input.removeAttribute('readonly');
+  72 |   });
+  73 |   await newPage.locator('input[name="enrollmentEndDate"]').fill(threeWeeksLater);
+  74 |
+  75 |   // --- Acknowledgment ---
+  76 |   await newPage.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  77 |   await newPage.locator('input[name="ackLastName"]').fill(ackLastName);
+  78 |   await newPage.locator('input[name="ackEmail"]').fill(ackEmail);
+  79 |
+  80 |   await newPage.getByText('By checking this box, I agree').click();
+  81 |
+  82 |   console.log('✅ Proposal filled successfully');
+  83 |   /* const acceptButton = newPage.locator('button:has-text("Accept"):not([disabled])');
+  84 | await acceptButton.waitFor({ state: 'visible' });
+  85 |
+  86 | // Then click it
+  87 | await acceptButton.click(); */
+  88 | });
+```

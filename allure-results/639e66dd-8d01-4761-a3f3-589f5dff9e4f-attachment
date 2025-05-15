@@ -1,0 +1,104 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/docusign.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Target page, context or browser has been closed
+Call log:
+  - waiting for locator('iframe[title="ds"]').contentFrame().locator('#navigate-btn')
+
+    at /Users/pejin/Documents/Playwright QA/tests/docusign.spec.ts:25:82
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/login');
+   5 |
+   6 |
+   7 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('igor.pejin+noxh6zq0@joinansel.com');
+   8 |   await page.locator('input[name="password"]').fill('Demo123456');
+   9 |   await page.getByRole('button', { name: 'Login' }).click();
+  10 |   //await page.goto('https://qa-ansel-platform.joinansel.com/employer/accountCreation/docusign');
+  11 |
+  12 |    const frame = await page.frameLocator('iframe[title="ds"]');
+  13 |    await page.waitForTimeout(10000);
+  14 |   //await frame.locator('span').filter({ hasText: 'I agree to use electronic' }).first().click();  
+  15 |   const agreeText = frame.locator('span').filter({ hasText: 'I agree to use electronic' }).first();
+  16 |
+  17 |   if (await agreeText.isVisible()) {
+  18 |     await agreeText.click();
+  19 |   }
+  20 |   // 1. Navigate button
+  21 | /* const navigateBtn = frame.locator('#navigate-btn');
+  22 | if (await navigateBtn.isVisible()) {
+  23 |   await navigateBtn.click();
+  24 | } */
+> 25 | await page.locator('iframe[title="ds"]').contentFrame().locator('#navigate-btn').click();
+     |                                                                                  ^ Error: locator.click: Target page, context or browser has been closed
+  26 |
+  27 | // 2. First "Required - Sign Here" button
+  28 | const requiredSignFirst = frame.getByRole('button', { name: 'Required - Sign Here' }).first();
+  29 | if (await requiredSignFirst.isVisible()) {
+  30 |   await requiredSignFirst.click();
+  31 | }
+  32 |
+  33 | // 3. Signature style option
+  34 | const signatureOption = frame.getByLabel('Select Style').getByText('Jaida Schultz');
+  35 | if (await signatureOption.isVisible()) {
+  36 |   await signatureOption.click();
+  37 | }
+  38 |
+  39 | // 4. "Adopt and Sign" button
+  40 | const adoptSignBtn = frame.getByRole('button', { name: 'Adopt and Sign' });
+  41 | if (await adoptSignBtn.isVisible()) {
+  42 |   await adoptSignBtn.click();
+  43 | }
+  44 |
+  45 | // 5. Second "Required - Sign Here" button
+  46 | const requiredSignSecond = frame.getByRole('button', { name: 'Required - Sign Here' });
+  47 | if (await requiredSignSecond.isVisible()) {
+  48 |   await requiredSignSecond.click();
+  49 | }
+  50 | await page.waitForTimeout(3000);
+  51 |
+  52 |
+  53 |
+  54 | // 6. Finish button
+  55 | // Correct way to get iframe's elementHandle
+  56 | const iframeHandle = await page.locator('iframe[title="ds"]').elementHandle();
+  57 |
+  58 | // Then get its internal frame
+  59 | const myFrame = await iframeHandle?.contentFrame();
+  60 |
+  61 | if (myFrame) {
+  62 |   console.log('✅ Iframe located successfully.');
+  63 |
+  64 |   const signButton = await myFrame.$('#navigate-btn');
+  65 |
+  66 |   if (signButton) {
+  67 |     await signButton.scrollIntoViewIfNeeded();
+  68 |     await signButton.click();
+  69 |     console.log('✅ Clicked Sign button (navigate-btn) inside iframe.');
+  70 |   } else {
+  71 |     console.log('⚠️ Sign button not found inside iframe.');
+  72 |   }
+  73 | } else {
+  74 |   console.log('❌ Iframe not available or failed to load.');
+  75 | }
+  76 |
+  77 |   await page.locator('iframe[title="ds"]').contentFrame().locator('#action-bar-btn-finish').click();
+  78 | });
+```

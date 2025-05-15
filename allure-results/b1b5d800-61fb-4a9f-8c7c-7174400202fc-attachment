@@ -1,0 +1,149 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test with dynamic Employer name and State
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:23:5
+
+# Error details
+
+```
+Error: locator.click: Test ended.
+Call log:
+  - waiting for getByText('Yes, I accept this proposal')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:167:53
+```
+
+# Test source
+
+```ts
+   67 |
+   68 |   // 🔄 Map BirthDate
+   69 |   const listbox = page.getByRole('row', { name: /Date of birth/i }).getByRole('listbox');
+   70 |   await listbox.click();
+   71 |   for (let i = 0; i < 5; i++) {
+   72 |     await page.keyboard.press('ArrowDown');
+   73 |     await page.waitForTimeout(100);
+   74 |   }
+   75 |   await page.keyboard.press('Enter');
+   76 |   await page.getByRole('button', { name: 'Next step' }).click();
+   77 |   await page.getByRole('button', { name: 'Next step' }).click();
+   78 |
+   79 |   await page.getByText('Yes').click();
+   80 |   await page.getByText('Accident').click();
+   81 |   await page.getByText('Accident').click();
+   82 |   await page.getByRole('button', { name: 'Next step' }).click();
+   83 |
+   84 |   // 📨 Submit and send email
+   85 |   await page.getByRole('button', { name: 'Submit' }).click();
+   86 |   await page.getByRole('textbox', { name: 'Add another email address...' }).fill('igor.pejin+anselquotetest@joinansel.com');
+   87 |   await page.getByRole('button', { name: 'Send' }).click();
+   88 |
+   89 |   // 🔚 Back to dashboard and go to underwriting
+   90 |   await page.getByRole('button', { name: 'Back to quotes dashboard' }).click();
+   91 |   await page.goto(config.urlUnderWriting);
+   92 |
+   93 |   // 🔐 Salesforce login
+   94 |   await page.getByRole('textbox', { name: 'Username' }).fill(config.userNameSF);
+   95 |   await page.getByRole('textbox', { name: 'Password' }).fill(config.paswordSF);
+   96 |   await page.getByRole('button', { name: config.loginButtonName }).click();
+   97 |
+   98 |   // 🔍 Search for the created company
+   99 |  /*  await page.getByRole('button', { name: 'Search' }).click();
+  100 |   await page.getByRole('searchbox').fill(randomCompanyName);
+  101 |
+  102 |   await page.getByRole('rowheader', { name: 'Crist, Goldner and Carter |' }).getByRole('link') */
+  103 |   // 💬 You already searched for the company here:
+  104 |   await page.getByRole('button', { name: 'Search' }).click();
+  105 |   await page.getByRole('searchbox').fill(randomCompanyName);
+  106 |   await page.waitForTimeout(2000);
+  107 |   
+  108 |   const quoteRow = page.getByRole('rowheader', { name: new RegExp(`${randomCompanyName} \\|`) });
+  109 |   await page.waitForTimeout(2000);
+  110 |   await expect(quoteRow).toBeVisible();
+  111 |   await quoteRow.getByRole('link').click();
+  112 |   
+  113 |   console.log(`✅ Clicked quote row for: ${randomCompanyName}`);
+  114 | await page.getByTitle('Approved').click();
+  115 | await page.locator('button').filter({ hasText: 'Mark as Current Status' }).click();
+  116 | await page.waitForTimeout(4000);
+  117 | await page.getByTitle('Issued').click();
+  118 |
+  119 | await page.locator('button').filter({ hasText: 'Mark as Current Status' }).click();
+  120 | await page.waitForTimeout(5000);
+  121 |
+  122 | /* await page.getByRole('tab', { name: 'Details' }).click();
+  123 | await page.getByRole('link', { name: 'https://qa-ansel-platform.' }).click(); */
+  124 |
+  125 | await page.getByRole('tab', { name: 'Details' }).click();
+  126 | await page.waitForTimeout(500);
+  127 |
+  128 | // ✅ Step 2: Get the Proposal Link (partially matching the visible URL text)
+  129 | const proposalLink = page.getByRole('link', { name: /https:\/\/qa-ansel-platform/ });
+  130 |
+  131 | // ✅ Step 3: Scroll to it (in case it's out of viewport)
+  132 | await proposalLink.scrollIntoViewIfNeeded();
+  133 |
+  134 | // ✅ Step 4: Click the link
+  135 | await proposalLink.click();
+  136 |
+  137 | /* await page.getByText('Yes, I accept this proposal').click();
+  138 |   await page.locator('input[name="contactFirstName"]').fill('Igor');
+  139 |   await page.locator('input[name="contactLastName"]').fill('Pejin');
+  140 |   await page.locator('input[name="contactEmail"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  141 |   await page.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  142 |
+  143 | await page.getByText('Ansel enrollment platform').click();
+  144 | await page.getByText('Ansel enrollment platform').click();
+  145 | await page.getByText('Ansel enrollment platform').click();
+  146 |
+  147 | await page.getByText('Ansel enrollment platform').fill('Ansel enrollment platform');
+  148 | await page.locator('input[name="ackLastName"]').fill('Pejin');
+  149 | await page.locator('input[name="ackEmail"]').fill('igor.pejin+anselquotetest@joinansel.com');
+  150 | await page.getByText('By checking this box, I agree').click(); */
+  151 |
+  152 |
+  153 | // Generate dynamic values
+  154 | const firstName = faker.person.firstName();
+  155 | const lastName = faker.person.lastName();
+  156 | const randomEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  157 |
+  158 | const ackFirstName = faker.person.firstName();
+  159 | const ackLastName = faker.person.lastName();
+  160 | const ackEmail = `igor.pejin+${faker.string.alphanumeric(8)}@joinansel.com`;
+  161 |
+  162 | // 📅 Date logic
+  163 | const today = format(new Date(), 'MM/dd/yyyy');
+  164 | const threeWeeksLater = format(new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), 'MM/dd/yyyy');
+  165 |
+  166 | // Fill in the main form
+> 167 | await page.getByText('Yes, I accept this proposal').click();
+      |                                                     ^ Error: locator.click: Test ended.
+  168 |
+  169 | await page.locator('input[name="contactFirstName"]').fill(firstName);
+  170 | await page.locator('input[name="contactLastName"]').fill(lastName);
+  171 | await page.locator('input[name="contactEmail"]').fill(randomEmail);
+  172 | await page.getByRole('textbox', { name: '(XXX) XXX-XXXX' }).fill('1234567890');
+  173 |
+  174 | // Platform selection (if it's a dropdown or toggle, adjust as needed)
+  175 | await page.getByText('Ansel enrollment platform').click();
+  176 |
+  177 | // Fill in dates (adjust the selectors if needed)
+  178 | await page.locator('input[name="startDate"]').fill(today);
+  179 | await page.locator('input[name="endDate"]').fill(threeWeeksLater);
+  180 |
+  181 | // Acknowledgement section
+  182 | await page.locator('input[name="ackFirstName"]').fill(ackFirstName);
+  183 | await page.locator('input[name="ackLastName"]').fill(ackLastName);
+  184 | await page.locator('input[name="ackEmail"]').fill(ackEmail);
+  185 |
+  186 | await page.getByText('By checking this box, I agree').click();
+  187 |
+  188 |
+  189 | });
+```

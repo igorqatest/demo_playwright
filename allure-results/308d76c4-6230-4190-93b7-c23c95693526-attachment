@@ -1,0 +1,49 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('iframe[title="ds"]').contentFrame().locator('iframe[title="ds"]').contentFrame().locator('#navigate-btn')
+
+    at /Users/pejin/Documents/Playwright QA/tests/test-30.spec.ts:20:85
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://qa-ansel-platform.joinansel.com/employer/login');
+   5 |
+   6 |
+   7 |   await page.getByRole('textbox', { name: 'Enter your email' }).fill('igor.pejin+noxh6zq0@joinansel.com');
+   8 |   await page.locator('input[name="password"]').fill('Demo123456');
+   9 |   await page.getByRole('button', { name: 'Login' }).click();
+  10 |   //await page.goto('https://qa-ansel-platform.joinansel.com/employer/accountCreation/docusign');
+  11 |
+  12 |    const frame = await page.frameLocator('iframe[title="ds"]');
+  13 |    await page.waitForTimeout(4000);
+  14 |   //await frame.locator('span').filter({ hasText: 'I agree to use electronic' }).first().click();  
+  15 |   const agreeText = frame.locator('span').filter({ hasText: 'I agree to use electronic' }).first();
+  16 |
+  17 |   if (await agreeText.isVisible()) {
+  18 |     await agreeText.click();
+  19 |   }
+> 20 |   await frame.locator('iframe[title="ds"]').contentFrame().locator('#navigate-btn').click();
+     |                                                                                     ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  21 |
+  22 |
+  23 | });
+```
