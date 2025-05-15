@@ -73,7 +73,7 @@ await page.getByRole('button', { name: 'Next step' }).click();
 // Confirm uploads
 await page.getByRole('button', { name: 'Next step' }).click();
 await page.waitForTimeout(2000);
-
+// Edit a file, even just a comment
 // Payment preference
 for (let i = 0; i < 10; i++) {
     await page.mouse.wheel(0, 400);
@@ -101,4 +101,4 @@ console.log('✅ Clicked Submit button');
 await page.getByRole('button', { name: 'All done' }).click();
 console.log('✅ Successfully clicked "All done" button');
  
-});
+});// trigger run
