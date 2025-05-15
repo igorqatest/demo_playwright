@@ -11,19 +11,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      # Checkout your repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+      # Cache Playwright browser binaries
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            playwright-browsers-${{ runner.os }}
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      # Install project dependencies
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run only Papercheck test
-      run: npx playwright test tests/ansel_claims/claim_ansel_papercheck.spec.ts
-      continue-on-error: true
+      # Install Playwright and its browser dependencies (only if not cached)
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run only PayPal test
+        run: npx playwright test tests/ansel_claims/claim_ansel_papercheck.spec.ts --headed=false
+        continue-on-error: true
