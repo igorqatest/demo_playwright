@@ -38,6 +38,6 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run only Papercheck test
-        run: xvfb-run --auto-servernum -- npx playwright test tests/nationwide_claims/claim_nationwide.spec.ts --retries=0 --headed
+      - name: Run all Ansel claim tests
+        run: xvfb-run --auto-servernum -- npx playwright test tests/ansel_claims --retries=0 --headed
         continue-on-error: false
