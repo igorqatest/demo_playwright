@@ -25,7 +25,7 @@ test('Bank account Claim', async ({ page }) => {
   await page.locator('textarea[name="providerDiagnosis"]').fill('test');
   await page.locator('textarea[name="treatment"]').fill('test');
   await page.locator('textarea[name="additionalInfo"]').fill('test');
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(1000);
   await page.getByRole('button', { name: 'Next step' }).click();
 
 
