@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input, button {
+      padding: 8px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hello, Playwright!</h1>
+  <p>Enter your name below:</p>
+
+  <input type="text" id="nameInput" placeholder="Your name" />
+  <button onclick="greetUser()">Submit</button>
+
+  <p id="output"></p>
+
+  <script>
+    function greetUser() {
+      const name = document.getElementById("nameInput").value;
+      const message = name
+        ? `Welcome, ${name}!`
+        : "Please enter your name.";
+      document.getElementById("output").innerText = message;
+    }
+  </script>
+
+</body>
+</html>

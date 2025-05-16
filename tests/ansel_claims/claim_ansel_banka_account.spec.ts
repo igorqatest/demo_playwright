@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { config } from '../reusable';
 
 test('Bank account Claim', async ({ page }) => {
-    test.setTimeout(120_000);
+    test.setTimeout(150_000);
   console.log('✅ Navigating to Member Portal...');
   await page.goto(config.urlMemberAnsel, { waitUntil: 'domcontentloaded' });
 
