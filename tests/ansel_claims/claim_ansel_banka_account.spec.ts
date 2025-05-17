@@ -52,23 +52,30 @@ await page.getByRole('button', { name: 'Next step' }).click();
 await page.getByRole('button', { name: 'Next step' }).click();
 // Confirm uploads
 await page.getByRole('button', { name: 'Next step' }).click();
+
 // Payment preference
+// Scroll to ensure elements are in view
 for (let i = 0; i < 10; i++) {
   await page.mouse.wheel(0, 400);
   await page.waitForTimeout(100);
 }
+
 const bankAccountRow = page.getByRole('row', { name: /Bank account/i });
 
+// If the bank account row is already visible, select it and proceed
 if (await bankAccountRow.isVisible()) {
-  console.log('Bank account already added. Skipping add flow.');
+  console.log('Bank account already added. Selecting it and proceeding.');
+  await bankAccountRow.click(); // ensure it's selected
   await page.getByRole('button', { name: 'Next step' }).click();
 } else {
-  console.log('No bank account found. Proceeding to add.');
+  console.log('No bank account found. Adding new.');
 
-  const addPaymentButton = page.getByRole('button', { name: '+Add payment method' });
-  await addPaymentButton.click();
+  // Add new payment method
+  await page.getByRole('button', { name: '+Add payment method' }).click();
 
-  await page.getByRole('row', { name: 'Bank account Configure' }).getByRole('button').click();
+  await page.getByRole('row', { name: 'Bank account Configure' })
+            .getByRole('button').click();
+
   await page.locator('input[name="firstName"]').fill('John');
   await page.locator('input[name="lastName"]').fill('Doe');
   await page.locator('input[name="routingNumber"]').fill('110000000');
@@ -76,16 +83,17 @@ if (await bankAccountRow.isVisible()) {
 
   const errorLocator = page.locator('text=This payment method has already been added');
 
-  if (await errorLocator.isVisible()) {
+  // Check if the error appears after filling
+  if (await errorLocator.isVisible({ timeout: 2000 })) {
+    console.log('Bank account already registered, cancelling.');
     await page.getByRole('button', { name: 'Cancel' }).click();
   } else {
     await page.getByRole('button', { name: 'Submit' }).click();
+    await page.waitForTimeout(2000); // wait for UI to settle
   }
-    await page.waitForTimeout(2000);
 
   await page.getByRole('button', { name: 'Next step' }).click();
 }
-
 for (let i = 0; i < 10; i++) {
     await page.mouse.wheel(0, 400);
     await page.waitForTimeout(100);
