@@ -44,13 +44,6 @@ jobs:
       - name: Run Playwright tests on ${{ matrix.browser }}
         run: xvfb-run --auto-servernum -- npx playwright test tests/ansel_claims --project=${{ matrix.browser }} --retries=0
 
-      - name: Upload Allure results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-${{ matrix.browser }}
-          path: allure-results/
-
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
